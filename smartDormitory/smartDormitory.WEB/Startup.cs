@@ -45,8 +45,18 @@ namespace smartDormitory.WEB
                 .AddEntityFrameworkStores<smartDormitoryDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Disable some password options to test easily!
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+            
             //services.AddScoped<UserManager<User>>();
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender, EmailSender>();            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
