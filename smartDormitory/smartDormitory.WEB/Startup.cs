@@ -15,6 +15,8 @@ using smartDormitory.Data.Context;
 using smartDormitory.Data.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using smartDormitory.WEB.Areas.Identity.Services;
+using smartDormitory.Services;
+using smartDormitory.Services.Contracts;
 
 namespace smartDormitory.WEB
 {
@@ -54,8 +56,9 @@ namespace smartDormitory.WEB
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             });
+
+            services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
             
-            //services.AddScoped<UserManager<User>>();
             services.AddTransient<IEmailSender, EmailSender>();            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
