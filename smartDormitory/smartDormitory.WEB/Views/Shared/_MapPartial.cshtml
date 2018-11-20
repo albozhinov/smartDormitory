@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "_MapPartial";
+}
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <br />
+        <h3>All public sensors all over the world</h3>
+    </div>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // The location of Sofia
+            var sofia = { lat: 42.698334, lng: 23.319941 };
+            // The map, centered at Sofia
+            var map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 4, center: sofia });
+            // The marker, positioned at Uluru
+            var marker = new google.maps.Marker({ position: sofia, map: map });
+
+            var plovdiv = { lat: 42.142582, lng: 24.743277 };
+            var blagoevgrad = { lat: 42.022516, lng: 23.096039 };
+            var burgas = { lat: 42.492521, lng: 27.478111 };
+            var varna = { lat: 43.207705, lng: 27.905096 };
+
+            var plovdivMarker = new google.maps.Marker({ position: plovdiv, map: map });
+            var blagMarker = new google.maps.Marker({ position: blagoevgrad, map: map });
+            var burgasMarker = new google.maps.Marker({ position: burgas, map: map });
+            var varnaMarker = new google.maps.Marker({ position: varna, map: map });
+
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
+    </script>
+</body>
+</html>
