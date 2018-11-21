@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -45,14 +46,25 @@ namespace smartDormitory.WEB.Controllers
         {
             try
             {
-                var sensors = await this.apiSensorsService.GetApiSensorsAsync();
-                return Ok(sensors);
+                await this.apiSensorsService.UpdateSensorsAsync();
+                return Ok();
             }
                    
              catch (HttpRequestException httpRequestException)
             {
                 return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
             }
+        }
+
+        public IActionResult Sensors(List<SensorsViewModel> model)
+        {
+            var sensors = this.apiSensorsService.ListAllSensors();
+
+            foreach (var sensor in sensors)
+            {
+                model.Add(new SensorsViewModel(sensor));
+            }
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
