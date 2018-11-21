@@ -3,10 +3,10 @@ using System;
 
 namespace smartDormitory.WEB.Models
 {
-    public class SensorsViewModel
+    public class SensorViewModel
     {
 
-        public SensorsViewModel(Sensor sensor)
+        public SensorViewModel(Sensor sensor)
         {
             this.SensorId = sensor.Guid;
             this.Tag = sensor.Tag;
@@ -24,7 +24,7 @@ namespace smartDormitory.WEB.Models
         public int MinPollingIntervalInSeconds { get; set; }
         public string MeasureType { get; set; }
         public DateTime TimeStamp { get; set; }
-        public double    Value { get; set; }
+        public double Value { get; set; }
     }
 
 }
