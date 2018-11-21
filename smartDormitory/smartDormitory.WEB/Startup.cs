@@ -58,6 +58,7 @@ namespace smartDormitory.WEB
             });
 
             services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
+            services.AddScoped<IMeasureTypesService, MeasureTypesService>();
             
             services.AddTransient<IEmailSender, EmailSender>();            
 
