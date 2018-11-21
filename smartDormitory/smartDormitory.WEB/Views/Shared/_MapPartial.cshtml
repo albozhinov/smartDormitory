@@ -1,4 +1,7 @@
-﻿@{
+﻿
+
+@* // TODO: In this view must to include ICollection<UserSensorViewModel> and list all public sensors.  *@
+@{
     ViewData["Title"] = "_MapPartial";
 }
 <html>
@@ -29,16 +32,16 @@
             // The marker, positioned at Uluru
             var marker = new google.maps.Marker({ position: sofia, map: map });
 
+            // TODO: On this part of view must to foreach all public sensors!
             var plovdiv = { lat: 42.142582, lng: 24.743277 };
             var blagoevgrad = { lat: 42.022516, lng: 23.096039 };
             var burgas = { lat: 42.492521, lng: 27.478111 };
             var varna = { lat: 43.207705, lng: 27.905096 };
-
+            
             var plovdivMarker = new google.maps.Marker({ position: plovdiv, map: map });
             var blagMarker = new google.maps.Marker({ position: blagoevgrad, map: map });
             var burgasMarker = new google.maps.Marker({ position: burgas, map: map });
             var varnaMarker = new google.maps.Marker({ position: varna, map: map });
-
         }
     </script>
     <script async defer
