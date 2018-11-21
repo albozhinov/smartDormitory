@@ -10,10 +10,12 @@ for details on configuring this project to bundle and minify static web assets. 
 #title {
     font-weight: bold;
     color: #FD8227;
+    transition: all .2s ease-in-out;
 }
 
     #title:hover {
-        color: orangered;
+        /*color: orangered;*/
+        transform: scale(1.1);
     }
 
 /*Register, login and logout buttons*/
@@ -28,5 +30,18 @@ for details on configuring this project to bundle and minify static web assets. 
 
     #loginButton:hover {
         border-color: lightgray;
-        background-color: #EAEAEA;
+        background-color: #EAEAEA;       
+    }
+/*Button - Admin Dashboard*/
+#adminDashboardButtnon {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+    #adminDashboardButtnon:hover {
+        color: #FD8227;
+        border-color: #FD8227;
+        background-color: white;
     }
