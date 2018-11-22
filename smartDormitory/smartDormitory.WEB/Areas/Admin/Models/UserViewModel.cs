@@ -8,19 +8,16 @@ using System.Threading.Tasks;
 namespace smartDormitory.WEB.Areas.Admin.Models
 {
     public class UserViewModel
-    {
-        public UserViewModel(User user)
-        {
-            this.Email = user.Email;
-            this.UserName = user.UserName;
-            this.ID = user.Id;
-        }
+    {       
+        public IEnumerable<User> Users { get; set; }
 
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string UserName { get; set; }
-        [Required]
-        public string ID { get; set; }
+        // Pagination Properties
+        public int TotalPages { get; set; }
+        public int Page { get; set; } = 1;
+        public int PreviousPage => this.Page ==
+            1 ? 1 : this.Page - 1;
+        public int NextPage => this.Page ==
+            this.TotalPages ? this.TotalPages : this.Page + 1;
+        public string SearchText { get; set; } = string.Empty;
     }
 }

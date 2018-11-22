@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using smartDormitory.Data.Models;
+using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Areas.Admin.Models;
 using smartDormitory.WEB.Providers;
-using X.PagedList;
 
 namespace smartDormitory.WEB.Areas.Admin.Controllers
 {
@@ -16,29 +16,24 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
+        private readonly IUserService userService;
         private readonly IUserManager<User> _userManager;
-        private readonly int Page_Size = 1;
+        private readonly int Page_Size = 3;
 
-        public UsersController(IUserManager<User> userManager)
+        public UsersController(IUserManager<User> userManager, IUserService userService)
         {
             this._userManager = userManager;
+            this.userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> AllUsers(UserViewModel viewModel)
         {
             // TODO: Create UserService to Include all information to user (role, sensorsCount, sensortsType and ect.)
-            var indexViewModel = new IndexViewModel(_userManager.Users, 1, Page_Size);
-            return View(indexViewModel);
-        }
+            var isTextNull = viewModel.SearchText ?? "";
+            viewModel.Users = await this.userService.GetUsersAsync(isTextNull, viewModel.Page, Page_Size);
+            viewModel.TotalPages = (int)Math.Ceiling(this.userService.GetTotalUserAsync(isTextNull).Result / (double)Page_Size);
 
-        public IActionResult UserGrid(int? page)
-        {
-            var pagedUsers = this._userManager
-                                 .Users
-                                 .Select(u => new UserViewModel(u))
-                                 .ToPagedList(page ?? 1, Page_Size);
-
-            return PartialView("_UserGrid", pagedUsers);
-        }
+            return View(viewModel);
+        }       
     }
 }

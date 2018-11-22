@@ -44,13 +44,13 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-controller="Sensors" asp-action="AllSensorTypes" class="nav-link">Sensors</a>
+                    <a asp-area="" asp-controller="Sensors" asp-action="AllSensorTypes" class="nav-link">Sensors</a>
                 </li>
             </ul>
             
             @{if (User.IsInRole("Admin"))
                 {
-                    <form class="mr-3">
+                    <form asp-area="Admin" asp-controller="Users" asp-action="AllUsers" class="mr-3">
                         <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Admin Dashboard</button>
                     </form>
                 }}
@@ -60,7 +60,7 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
+    <div class="container body-content">        
         <br />
         @RenderBody()
         <hr />
