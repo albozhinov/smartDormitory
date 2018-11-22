@@ -33,7 +33,6 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<SensorDTOModel>> GetApiSensorsAsync()
         {
-
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(ApiBaseAddress);
@@ -50,11 +49,19 @@ namespace smartDormitory.Services
             }
 
             return sensors;
-
         }
 
         public async Task<SensorDTOModel> GetApiSensorByIdAsync(SensorDTOModel sensor, string id)
         {
+            if (sensor == null)
+            {
+                throw new ArgumentNullException("Sensor cannot be null!");
+            }
+
+            if(id == null)
+            {
+                throw new ArgumentNullException("Id cannot be null!");
+            }
 
             var client = new HttpClient();
 
@@ -71,9 +78,7 @@ namespace smartDormitory.Services
             sensor.ValueType = sen.ValueType;
             sensor.Value = sen.Value;
 
-
             return sensor;
-
         }
 
         public async Task UpdateSensorsAsync()
@@ -81,8 +86,6 @@ namespace smartDormitory.Services
             IEnumerable<SensorDTOModel> dtoSensors = await GetApiSensorsAsync();
 
             var sensors = new List<Sensor>();
-
-           
 
             foreach (var sen in dtoSensors)
             {
@@ -114,7 +117,7 @@ namespace smartDormitory.Services
                     MinValue = minAndMaxValues[0],
                     MaxValue = minAndMaxValues[1],
                     MeasureTypeId = measureType.Id,
-                    URL = $"{ApiBaseAddress}{ApiGetById}{sen.SensorId}"
+                    Url = $"{ApiBaseAddress}{ApiGetById}{sen.SensorId}"
                 };
 
                 sensors.Add(senso);
@@ -129,7 +132,11 @@ namespace smartDormitory.Services
 
         public IEnumerable<Sensor> ListAllSensors(int page = 1, int pageSize = 10)
         {
-            return this.context.Sensors.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return this.context.Sensors
+                .Include(s => s.MeasureType)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
 
         public IEnumerable<Sensor> ListAllSensors()
@@ -137,6 +144,30 @@ namespace smartDormitory.Services
             return this.context.Sensors
                 .Include(s => s.MeasureType)
                 .ToList();
+        }
+
+        public int Total()
+        {
+            return this.context.Sensors.Count();
+        }
+
+        public IEnumerable<Sensor> ListByContainingText(string searchText, int page = 1, int pageSize = 10)
+        {
+            return this.context.Sensors
+                .Include(s => s.MeasureType)
+                .Where(s => s.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public int TotalContainingText(string searchText)
+        {
+            return this.context.Sensors
+                .Include(s => s.MeasureType)
+                .Where(s => s.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .ToList()
+                .Count();
         }
 
         private double ValueParse(string value)

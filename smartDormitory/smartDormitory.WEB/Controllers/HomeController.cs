@@ -42,31 +42,6 @@ namespace smartDormitory.WEB.Controllers
             return View();
         }
 
-        public async Task<IActionResult> RegisterSensor()
-        {
-            try
-            {
-                await this.apiSensorsService.UpdateSensorsAsync();
-                return Ok();
-            }
-                   
-             catch (HttpRequestException httpRequestException)
-            {
-                return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
-            }
-        }
-
-        public IActionResult Sensors(List<SensorsViewModel> model)
-        {
-            var sensors = this.apiSensorsService.ListAllSensors();
-
-            foreach (var sensor in sensors)
-            {
-                model.Add(new SensorsViewModel(sensor));
-            }
-            return View(model);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
