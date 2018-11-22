@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using smartDormitory.WEB.Areas.Identity.Services;
 using smartDormitory.Services;
 using smartDormitory.Services.Contracts;
+using smartDormitory.WEB.Providers;
 
 namespace smartDormitory.WEB
 {
@@ -60,6 +61,8 @@ namespace smartDormitory.WEB
             
             services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
             services.AddScoped<IMeasureTypesService, MeasureTypesService>();
+            services.AddScoped(typeof(IUserManager<>), typeof(UserManagerWrapper<>));
+
 
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -98,10 +101,14 @@ namespace smartDormitory.WEB
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();
+            app.UseAuthentication();            
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "adminArea",
+                    template: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
@@ -129,9 +136,9 @@ namespace smartDormitory.WEB
             }
             //Assign Admin role to the main User here we have given our newly registered  
             //login id for Admin management 
-            User user = await UserManager.FindByEmailAsync("gosho@abv.bg");
-            var User = new User();
-            await UserManager.AddToRoleAsync(user, "Admin");
+            //User user = await UserManager.FindByEmailAsync("gosho@abv.bg");
+            //var User = new User();
+            //await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }
