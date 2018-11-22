@@ -27,6 +27,6 @@ namespace smartDormitory.Data
 
         public double MaxValue { get; set; }
 
-        public string URL { get; set; }
+        public string Url { get; set; }
     }
 }

@@ -129,9 +129,9 @@ namespace smartDormitory.WEB
             }
             //Assign Admin role to the main User here we have given our newly registered  
             //login id for Admin management 
-            User user = await UserManager.FindByEmailAsync("gosho@abv.bg");
-            var User = new User();
-            await UserManager.AddToRoleAsync(user, "Admin");
+        //    User user = await UserManager.FindByEmailAsync("gosho@abv.bg");
+          //  var User = new User();
+           // await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Models;
 using System;
@@ -32,14 +33,20 @@ namespace smartDormitory.WEB.Controllers
             }
         }
 
-        public IActionResult AllSensorTypes(List<SensorViewModel> model)
+        [Authorize]
+        public IActionResult AllSensorTypes(SensorTypesViewModel model)
         {
-            var sensors = this.apiSensorsService.ListAllSensors();
-
-            foreach (var sensor in sensors)
+            if (model.SearchText == null)
             {
-                model.Add(new SensorViewModel(sensor));
+                model.Sensors = this.apiSensorsService.ListAllSensors(model.Page, 10);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)10);
             }
+            else
+            {
+                model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, 10);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)10);
+            }
+
             return View(model);
         }
     }
