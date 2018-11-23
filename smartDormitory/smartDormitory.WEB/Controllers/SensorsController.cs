@@ -19,7 +19,7 @@ namespace smartDormitory.WEB.Controllers
             this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));
         }
 
-        public async Task<IActionResult> RegisterSensor()
+        public async Task<IActionResult> RegisterSensors()
         {
             try
             {
@@ -29,7 +29,7 @@ namespace smartDormitory.WEB.Controllers
 
             catch (HttpRequestException httpRequestException)
             {
-                return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
+                return BadRequest($"Error getting sensor information from ICBApi: {httpRequestException.Message}");
             }
         }
 
