@@ -50,7 +50,7 @@
             
             @{if (User.IsInRole("Admin"))
                 {
-                    <form class="mr-3">
+                    <form asp-area="Admin" asp-controller="Users" asp-action="AllUsers" class="mr-3">
                         <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Admin Dashboard</button>
                     </form>
                 }}
@@ -60,7 +60,7 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
+    <div class="container body-content">        
         <br />
         @RenderBody()
         <hr />

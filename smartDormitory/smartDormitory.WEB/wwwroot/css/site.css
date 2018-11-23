@@ -30,7 +30,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
     #loginButton:hover {
         border-color: lightgray;
-        background-color: #EAEAEA;       
+        background-color: #EAEAEA;
     }
 /*Button - Admin Dashboard*/
 #adminDashboardButtnon {
@@ -40,10 +40,9 @@ for details on configuring this project to bundle and minify static web assets. 
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.2s;
 }
+
     #adminDashboardButtnon:hover {
         color: #FD8227;
         border-color: #FD8227;
         background-color: white;
     }
-
-
