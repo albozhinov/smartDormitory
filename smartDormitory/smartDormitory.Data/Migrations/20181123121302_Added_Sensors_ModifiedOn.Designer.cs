@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using smartDormitory.Data.Context;
 
 namespace smartDormitory.Data.Migrations
 {
     [DbContext(typeof(smartDormitoryDbContext))]
-    partial class smartDormitoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181123121302_Added_Sensors_ModifiedOn")]
+    partial class Added_Sensors_ModifiedOn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,7 +231,7 @@ namespace smartDormitory.Data.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<string>("IcbSensorId")
+                    b.Property<string>("Guid")
                         .IsRequired();
 
                     b.Property<double>("MaxValue");
