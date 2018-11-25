@@ -35,6 +35,5 @@ namespace smartDormitory.Services
                                         .Contains(searchText, StringComparison.InvariantCulture))
                                      .CountAsync();
         }
-
     }
 }

@@ -63,6 +63,7 @@ namespace smartDormitory.WEB
             services.AddScoped<IMeasureTypesService, MeasureTypesService>();
             services.AddScoped(typeof(IUserManager<>), typeof(UserManagerWrapper<>));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISensorService, SensorService>();
 
 
             services.AddTransient<IEmailSender, EmailSender>();
