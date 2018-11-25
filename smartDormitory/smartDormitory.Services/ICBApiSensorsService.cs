@@ -18,7 +18,7 @@ namespace smartDormitory.Services
     {
         private readonly smartDormitoryDbContext context;
         private readonly IMeasureTypesService measureTypesService;
-        
+
         private const string ApiBaseAddress = "http://telerikacademy.icb.bg/";
         private const string ApiGetAll = "api/sensor/all";
         private const string ApiGetById = "api/sensor/";
@@ -58,7 +58,7 @@ namespace smartDormitory.Services
                 throw new ArgumentNullException("Sensor cannot be null!");
             }
 
-            if(id == null)
+            if (id == null)
             {
                 throw new ArgumentNullException("Id cannot be null!");
             }
@@ -81,53 +81,69 @@ namespace smartDormitory.Services
             return sensor;
         }
 
+        private void UpdateSensorsValues(IEnumerable<SensorDTOModel> dtoSensors, IEnumerable<Sensor> currentSensors)
+        {
+            if (currentSensors != null && currentSensors.Count() > 0)
+            {
+                foreach (var sensor in currentSensors)
+                {
+                    var dtoSensor = dtoSensors.First(ds => ds.SensorId == sensor.IcbSensorId);
+                    sensor.Value = this.ValueParse(dtoSensor.Value);
+                    sensor.ModifiedOn = DateTime.Now;
+                }
+                this.context.Sensors.UpdateRange(currentSensors);
+                this.context.SaveChanges();
+            }
+        }
+
+        private void RegisterSensors(IEnumerable<SensorDTOModel> newSensors)
+        {
+            if (newSensors != null && newSensors.Count() > 0)
+            {
+                List<Sensor> sensors = new List<Sensor>();
+                foreach (var sensor in newSensors)
+                {
+                    MeasureType measureType = this.context.MeasureTypes
+                                               .FirstOrDefault(mt => mt.Type == sensor.MeasureType);
+                    if (measureType == null)
+                    {
+                        measureType = this.measureTypesService.AddMeasureType(sensor.MeasureType);
+                    }
+                    var minAndMaxValues = this.MinMaxValues(sensor.Description);
+
+                    var newSensor = new Sensor()
+                    {
+                        IcbSensorId = sensor.SensorId,
+                        Description = sensor.Description,
+                        TimeStamp = sensor.TimeStamp,
+                        Value = this.ValueParse(sensor.Value),
+                        Tag = sensor.Tag,
+                        PollingInterval = sensor.MinPollingIntervalInSeconds,
+                        MinValue = minAndMaxValues[0],
+                        MaxValue = minAndMaxValues[1],
+                        MeasureTypeId = measureType.Id,
+                        Url = $"{ApiBaseAddress}{ApiGetById}{sensor.SensorId}",
+                        ModifiedOn = DateTime.Now
+                    };
+                    sensors.Add(newSensor);
+                }
+                foreach (var sensor in sensors)
+                {
+                    this.context.Add(sensor);
+                }
+                this.context.SaveChanges();
+            }
+        }
+
         public async Task UpdateSensorsAsync()
         {
             IEnumerable<SensorDTOModel> dtoSensors = await GetApiSensorsAsync();
+            var sensorIds = dtoSensors.Select(sensor => sensor.SensorId).ToList();
+            var currentSensors = this.context.Sensors.ToList();
+            var newSensors = dtoSensors.Where(sensor => !currentSensors.Any(cs => cs.IcbSensorId == sensor.SensorId)).ToList();
 
-            var sensors = new List<Sensor>();
-
-            foreach (var sen in dtoSensors)
-            {
-                Sensor sensor = this.context.Sensors.FirstOrDefault(s => s.Guid == sen.SensorId);
-                if ( sensor != null)
-                {
-                    sensor.Value = this.ValueParse(sen.Value);
-                    this.context.Sensors.Update(sensor);
-                    this.context.SaveChanges();
-                    continue;
-                }
-
-                MeasureType measureType = this.context.MeasureTypes
-                                                .FirstOrDefault(mt => mt.Type == sen.MeasureType);
-                if ( measureType == null)
-                {
-                    measureType = this.measureTypesService.AddMeasureType(sen.MeasureType);
-                }
-                var minAndMaxValues = this.MinMaxValues(sen.Description);
-
-                var senso = new Sensor()
-                {
-                    Guid = sen.SensorId,
-                    Description = sen.Description,
-                    TimeStamp = sen.TimeStamp,
-                    Value = this.ValueParse(sen.Value),
-                    Tag = sen.Tag,
-                    PollingInterval = sen.MinPollingIntervalInSeconds,
-                    MinValue = minAndMaxValues[0],
-                    MaxValue = minAndMaxValues[1],
-                    MeasureTypeId = measureType.Id,
-                    Url = $"{ApiBaseAddress}{ApiGetById}{sen.SensorId}"
-                };
-
-                sensors.Add(senso);
-            }
-
-            foreach (var sen in sensors)
-            {
-                this.context.Sensors.Add(sen);
-            }
-            this.context.SaveChanges();
+            this.UpdateSensorsValues(dtoSensors, currentSensors);
+            this.RegisterSensors(newSensors);
         }
 
         public IEnumerable<Sensor> ListAllSensors(int page = 1, int pageSize = 10)
@@ -190,7 +206,7 @@ namespace smartDormitory.Services
 
         private List<double> MinMaxValues(string description)
         {
-            if(description.Contains("true") || description.Contains("false"))
+            if (description.Contains("true") || description.Contains("false"))
             {
                 return new List<double>() { 0, 1 };
             }

@@ -66,3 +66,10 @@ a.disabled {
     .nav-link:hover {
         border-bottom: 2px solid #FD8227;
     }
+#userDropDownButton {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
