@@ -28,24 +28,23 @@
                 </li>
                 <li class="nav-item">
                     <a asp-area="" asp-controller="Sensors" asp-action="CreateSensor" class="nav-link">Create Sensor</a>
-                </li>                
-                
+                </li>
+
                 <li class="nav-item">
                     <a asp-area="" asp-controller="Sensors" asp-action="AllSensorTypes" class="nav-link">Sensors</a>
                 </li>
             </ul>
-            
+
             @{if (User.IsInRole("Admin"))
                 {
                     <form asp-area="Admin" asp-controller="Users" asp-action="AllUsers" class="mr-3">
                         <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Admin Dashboard</button>
                     </form>
                 }}
-            <br />
-            <br />
             <partial name="_LoginPartial" />
         </div>
     </nav>
+
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content my-5">
