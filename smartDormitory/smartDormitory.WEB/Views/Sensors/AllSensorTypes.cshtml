@@ -33,7 +33,7 @@
         @if (Model.Sensors.Count() == 0)
         {
             <tr>
-                <td colspan="5">No data available in table</td>
+                <td colspan="6">No data available in table</td>
             </tr>
         }
         else
@@ -48,6 +48,7 @@
                     <td>@sensor.MeasureType.Type</td>
                     <td>@sensor.Value</td>
                     <td>@sensor.ModifiedOn</td>
+                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" class="btn btn-info">Register</a></td>
 
                 </tr>
                 counter++;
