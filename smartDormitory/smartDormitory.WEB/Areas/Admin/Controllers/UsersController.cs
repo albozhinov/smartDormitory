@@ -31,7 +31,9 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             // TODO: Create UserService to Include all information to user (role, sensorsCount, sensortsType and ect.)
             var isTextNull = viewModel.SearchText ?? "";
             viewModel.Users = await this.userService.GetUsersAsync(isTextNull, viewModel.Page, Page_Size);
-            viewModel.TotalPages = (int)Math.Ceiling(this.userService.GetTotalUserAsync(isTextNull).Result / (double)Page_Size);
+            var totalUsers = await this.userService.GetTotalUserAsync(isTextNull);
+
+            viewModel.TotalPages = (int)Math.Ceiling(totalUsers / (double)Page_Size);
 
             return View(viewModel);
         }       

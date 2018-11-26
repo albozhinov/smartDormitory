@@ -50,6 +50,22 @@ for details on configuring this project to bundle and minify static web assets. 
 a.disabled {
     pointer-events: none;
 }
+
+.table table-striped table-bordered table-hover {
+    width: 100%;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #FD8227;
+    color: white;
+}
+
+.nav-link {
+    color: yellow;
+}
+    .nav-link:hover {
+        border-bottom: 2px solid #FD8227;
+    }
 #userDropDownButton {
     color: white;
     border-radius: 5px 5px;
