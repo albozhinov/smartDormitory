@@ -28,9 +28,6 @@ namespace smartDormitory.Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<UserSensors>()
-                .HasKey(m => new { m.UserId, m.SensorId });
-
             base.OnModelCreating(builder);
         }
 

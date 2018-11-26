@@ -46,7 +46,7 @@ namespace smartDormitory.WEB
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<smartDormitoryDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders();            
 
             //Disable some password options to test easily!
             services.Configure<IdentityOptions>(options =>
