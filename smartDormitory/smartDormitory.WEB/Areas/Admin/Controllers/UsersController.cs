@@ -39,6 +39,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             var totalUsers = await this.userService.GetTotalUserAsync(isTextNull);
 
             viewModel.TotalPages = (int)Math.Ceiling(totalUsers / (double)Page_Size);
+            viewModel.StatusMessage = StatusMessage;            
 
             return View(viewModel);
         }       
@@ -60,7 +61,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!enableLockOutResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could enable the lockout on the user!";
-                return RedirectToAction(nameof(AllUsers));
+                return View("_StatusMessage", this.StatusMessage);
             }
 
             var lockOutTimeResult = await this._userManager.SetLockoutEndDateAsync(user, DateTime.Today.AddYears(10));
@@ -68,12 +69,12 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!lockOutTimeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not add time to user's lockout!";
-                return RedirectToAction(nameof(AllUsers));
+                return View("_StatusMessage", this.StatusMessage);
             }
 
             this.StatusMessage = "The user has been successfully locked for 10 years!";
 
-            return RedirectToAction(nameof(AllUsers));
+            return View("_StatusMessage", this.StatusMessage);
         }
 
         [HttpPost]
@@ -85,7 +86,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (user is null)
             {
                 this.StatusMessage = "Error: User not found!";
-                return RedirectToAction(nameof(AllUsers));
+                return View("_StatusMessage", this.StatusMessage);
             }
 
             var lockoutTimeResult = await this._userManager.SetLockoutEndDateAsync(user, DateTime.Now);
@@ -93,11 +94,11 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!lockoutTimeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not add time to user's lockout!";
-                return this.RedirectToAction(nameof(AllUsers));
+                return View("_StatusMessage", this.StatusMessage);
             }
-
+            
             this.StatusMessage = "The user has been successfully unlocked!";
-            return RedirectToAction(nameof(AllUsers));
+            return View("_StatusMessage", this.StatusMessage);
         }
     }
 }

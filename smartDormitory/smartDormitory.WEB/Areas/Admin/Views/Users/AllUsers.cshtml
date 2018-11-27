@@ -3,26 +3,38 @@
 @{
     ViewData["Title"] = "AllUsers";
 }
-@await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
-
 <h2>All Users</h2>
 
 <partial name="_UserGrid" for="@Model" />
 
-<div class="modal" id="my_modal">
-    <div class="modal-dialog">
-        <partial name="_UserModal" model="null" />
-    </div>
-</div>
-
 @section Scripts{
     <script>
         jQuery.noConflict();
-        $(document).ready(function () {
-            $("#lockButton").click(function () {
-                $("#lock").modal('show');
-            });
+        $('#unlockModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var userId = button.data('user-id')
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('Manage "' + recipient + '"')
+            modal.find('.modal-body').text('You are about to unlock "' + recipient + '", are you sure?')
+            modal.find('input[name="Id"]').val(userId)
+        });
+    </script>
 
+    <script>
+        jQuery.noConflict();
+        $('#lockModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var userId = button.data('user-id')
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('Manage "' + recipient + '"')
+            modal.find('.modal-body').text('You are about to lock "' + recipient + '", are you sure?')
+            modal.find('input[name="Id"]').val(userId)
         });
     </script>
     <partial name="_ValidationScriptsPartial" />

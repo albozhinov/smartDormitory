@@ -10,7 +10,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models
     {
         public IEnumerable<UserViewModel> Users { get; set; }
 
-        // Pagination Properties
+        // Pagination Properties        
         public int TotalPages { get; set; }
         public int Page { get; set; } = 1;
         public int PreviousPage => this.Page ==
