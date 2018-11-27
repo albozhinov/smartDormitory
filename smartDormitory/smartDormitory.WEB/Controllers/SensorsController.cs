@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using smartDormitory.Data;
 using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Models;
 using System;
@@ -64,5 +65,14 @@ namespace smartDormitory.WEB.Controllers
 
             return View(sensorsViewModel);
         }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult RegisterSensor(int sensorId)
+        {
+            
+            return View();
+        }
+
     }
 }
