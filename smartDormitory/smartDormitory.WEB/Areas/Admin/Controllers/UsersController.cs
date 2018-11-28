@@ -100,5 +100,48 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             this.StatusMessage = "The user has been successfully unlocked!";
             return View("_StatusMessage", this.StatusMessage);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(UserModalViewModel input)
+        {
+            var user = _userManager.Users.Where(u => u.Id == input.Id).FirstOrDefault();
+            if (user is null)
+            {
+                this.StatusMessage = "Error: User not found!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            foreach (var validator in _userManager.PasswordValidators)
+            {
+                var result = await validator.ValidateAsync(_userManager.Instance, user, input.ConfirmPassword);
+                if (!result.Succeeded)
+                {
+                    this.StatusMessage = $"Error: {string.Join(" ", result.Errors.Select(e => e.Description)).Replace(".", "!")}";
+                    return View("_StatusMessage", this.StatusMessage);
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                this.StatusMessage = "Error: Passwords do not match!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            var removeResult = await _userManager.RemovePasswordAsync(user);
+            if (!removeResult.Succeeded)
+            {
+                this.StatusMessage = "Error: Could not remove the old password!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, input.NewPassword);
+            if (!addPasswordResult.Succeeded)
+            {
+                this.StatusMessage = "Error: Could not change the password!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+            this.StatusMessage = "The user's password has been changed!";
+            return View("_StatusMessage", this.StatusMessage);
+        }
     }
 }

@@ -36,21 +36,23 @@
                     <td>@user.Email</td>
                     <td>
                         <div class="btn-group">
-                            <form asp-area="Admin" asp-controller="Users" asp-action="LockUser">
-                                <div>
-                                    <!--LOCK BUTTON-->
-                                    <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-lock-24.png" /></button>
-                                    @*<input class="text-hide" data-toggle="button" data-whatever="@user.Id" />*@
-                                </div>
-                            </form>
+                            <!--LOCK BUTTON-->
+                            <div>
 
-                            <form asp-area="Admin" asp-controller="Users" asp-action="UnlockUser">
-                                <div class="ml-2">
-                                    <!--UNLOCK BUTTON-->
-                                    <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-padlock-24.png" /></button>
-                                    @*<input class="text-hide" id="Id" value="@user.Id" />*@
-                                </div>
-                            </form>
+                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-lock-24.png" /></button>
+                            </div>
+
+                            <!--UNLOCK BUTTON-->
+                            <div class="ml-2">
+
+                                <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-padlock-24.png" /></button>
+                            </div>
+
+                            <!--PASSWORD BUTTON-->
+                            <div class="ml-2">
+
+                                <button type="button" class="btn p-1" id="passwordButton" data-toggle="modal" data-target="#passwordModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-password-1-24.png" /></button>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -59,6 +61,7 @@
     </tbody>
 </table>
 
+<!--PAGINATION LOGIC-->
 <nav aria-label="Page navigation example" align="center">
     <ul class="pagination">
         <li class="page-item">
@@ -79,58 +82,3 @@
         </li>
     </ul>
 </nav>
-
-<!-- Modal -->
-<!-- Lock -->
-<div class="modal fade" id="lockModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Manage user</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Include some text here!</p>
-            </div>
-            <div class="modal-footer">
-                <form asp-area="Admin" asp-controller="Users" asp-action="LockUser" method="post">
-                    <div>
-                        <input class="text-hide" name="Id" />
-                        <button type="submit" class="btn btn-danger">Lock user</button>
-                    </div>
-                </form>
-                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<!-- Unlock -->
-<div class="modal fade" id="unlockModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Manage user</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Include here some text!</p>
-            </div>
-            <div class="modal-footer">
-                <form asp-area="Admin" asp-controller="Users" asp-action="UnlockUser" method="post">
-                    <div>
-                        <input class="text-hide" name="Id" />
-                        <button type="submit" class="btn btn-success">Unlock user</button>
-                    </div>
-                </form>
-                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-

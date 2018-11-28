@@ -18,6 +18,6 @@ namespace smartDormitory.WEB.Areas.Admin.Models
                 
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmNewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }
