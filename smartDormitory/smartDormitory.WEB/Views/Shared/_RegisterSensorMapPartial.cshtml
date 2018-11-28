@@ -16,49 +16,7 @@
 
     <!--The div element for the map -->
     <div id="mapp"></div>
-    <script>
-        // Initialize and add the map
-        function initMap() {
-            var myLatlng = new google.maps.LatLng(42.69, 23.32);
-            var myOptions = {
-                zoom: 13,
-                center: myLatlng
-            }
-
-            var map = new google.maps.Map(document.getElementById("mapp"), myOptions);
-            var geocoder = new google.maps.Geocoder();
-            var marker;
-
-            google.maps.event.addListener(map, 'click', function (event) {
-                geocoder.geocode({
-                    'latLng': event.latLng
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-
-                        var splittedLatLang = String(event.latLng).replace('(', '').replace(')', '').replace(' ','').split(',');
-                        var latitudeInputValue = document.getElementById('latitude').value = splittedLatLang[0];
-                        var longitudeInputValue = document.getElementById('longtitude').value = splittedLatLang[1];
-
-                        latitudeInputValue = Number.parseFloat(splittedLatLang[0]);
-                        longitudeInputValue = Number.parseFloat(splittedLatLang[1]);
-
-                        var location = { lat: latitudeInputValue, lng: longitudeInputValue };
-
-                        if (marker == null) {
-                            marker = new google.maps.Marker({ position: location, map: map });
-                        }
-                        else {
-                            marker.setMap(null);
-                            marker = new google.maps.Marker({ position: location, map: map });
-                        }
-                    }
-                });
-            });
-        }
-
-
-
-    </script>
+ 
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
 

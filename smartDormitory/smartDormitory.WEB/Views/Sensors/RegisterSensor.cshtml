@@ -42,14 +42,14 @@
                                 <div class="form-group row">
                                     <label asp-for=MinValue class="col-md-4 col-form-label text-md-right">Sensor Minimal Value</label>
                                     <div class="col-md-6">
-                                        <input asp-for="MinValue" value="" id="full_name" class="form-control">
-                                        <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                        <input asp-for="MinValue" value="" class="form-control">
+                                        <span asp-validation-for="MinValue" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label asp-for="MaxValue" class="col-md-4 col-form-label text-md-right">Sensor Maximal Value</label>
                                     <div class="col-md-6">
-                                        <input asp-for="MaxValue" value="" id="email_address" class="form-control">
+                                        <input asp-for="MaxValue" value="" class="form-control">
                                         <span asp-validation-for="MaxValue" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                             <div class="form-group row">
                                 <label asp-for="IsPublic" class="col-md-4 col-form-label text-md-right">Is Public</label>
                                 <div class="col-md-6">
-                                    <input asp-for="IsPublic" id="user_name" class="form-control">
+                                    <input asp-for="IsPublic" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -102,3 +102,6 @@
         </div>
     </div>
 </main>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
