@@ -21,9 +21,11 @@ namespace smartDormitory.Data.Models
         public Sensor Sensor { get; set; }
 
         [Required]
+        [Range(0,5000)]
         public double MinValue { get; set; }
 
         [Required]
+        [Range(0,5000)]
         public double MaxValue { get; set; }
 
         [Required]

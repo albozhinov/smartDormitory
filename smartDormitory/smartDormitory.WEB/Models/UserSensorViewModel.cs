@@ -25,6 +25,8 @@ namespace smartDormitory.WEB.Models
 
         public double MaxValue { get; set; }
 
+        public string Description { get; set; }
+
         public int PollingInterval { get; set; }
 
         public double Latitude { get; set; }

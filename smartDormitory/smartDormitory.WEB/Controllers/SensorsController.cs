@@ -74,14 +74,15 @@ namespace smartDormitory.WEB.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult RegisterSensor(int sensorId)
+        public IActionResult RegisterSensor(int sensorId, string description)
         {
             var userId = userManager.GetUserId(User);
 
             var userSensorModel = new UserSensorViewModel()
             {
                 Id = sensorId,
-                UserId = userId
+                UserId = userId,
+                Description = description
             };
 
 
@@ -92,7 +93,7 @@ namespace smartDormitory.WEB.Controllers
         [HttpPost]
         public IActionResult RegisterSensor(UserSensorViewModel model)
         {
-            if (!this.ModelState.IsValid)
+                if (!this.ModelState.IsValid)
             {
                 return View(model);
             }

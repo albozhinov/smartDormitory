@@ -20,27 +20,45 @@
                             <div>
                                 <input asp-for="Id" type="hidden" value="@Model.Id" />
                                 <input asp-for="UserId" type="hidden" value="@Model.UserId" />
-
+                                <input asp-for="Description" type="hidden" value="@Model.Description" />
                             </div>
-                            <div class="form-group row">
-                                <label asp-for=MinValue class="col-md-4 col-form-label text-md-right">Sensor Minimal Value</label>
-                                <div class="col-md-6">
-                                    <input asp-for="MinValue" value="" id="full_name" class="form-control">
-                                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                            @if (Model.Description.Contains("true"))
+                            {
+                                <div class="form-group row">
+                                    <label asp-for=MinValue class="col-md-4 col-form-label text-md-right">Set normal sensor state</label>
+                                    <div class="col-md-6">
+                                        <select asp-for="MinValue" class="custom-select form-control" id="boolInputMinValue" onchange="changeMaxValue()">
+                                            <option selected>Choose state</option>
+                                            <option value="1">True</option>
+                                            <option value="2">False</option>
+                                        </select>
+                                        <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                        <input asp-for="MaxValue" value="" type="hidden" id="boolInputMaxValue">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label asp-for="MaxValue" class="col-md-4 col-form-label text-md-right">Sensor Maximal Value</label>
-                                <div class="col-md-6">
-                                    <input asp-for="MaxValue" value="" id="email_address" class="form-control">
-                                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                            }
+                            else
+                            {
+                                <div class="form-group row">
+                                    <label asp-for=MinValue class="col-md-4 col-form-label text-md-right">Sensor Minimal Value</label>
+                                    <div class="col-md-6">
+                                        <input asp-for="MinValue" value="" id="full_name" class="form-control">
+                                        <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group row">
+                                    <label asp-for="MaxValue" class="col-md-4 col-form-label text-md-right">Sensor Maximal Value</label>
+                                    <div class="col-md-6">
+                                        <input asp-for="MaxValue" value="" id="email_address" class="form-control">
+                                        <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
 
                             <div class="form-group row">
                                 <label asp-for="Latitude" class="col-md-4 col-form-label text-md-right">Latitude</label>
                                 <div class="col-md-6">
-                                    <input asp-for="Latitude" type="text" value="" class="form-control" id="latitude" readonly >
+                                    <input asp-for="Latitude" type="text" value="" class="form-control" id="latitude" readonly>
                                     <span asp-validation-for="Latitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -48,7 +66,7 @@
                             <div class="form-group row">
                                 <label asp-for="Longtitude" class="col-md-4 col-form-label text-md-right">Longtitude</label>
                                 <div class="col-md-6">
-                                    <input asp-for="Longtitude" type="text" value="" class="form-control" id="longtitude" readonly >
+                                    <input asp-for="Longtitude" type="text" value="" class="form-control" id="longtitude" readonly>
                                     <span asp-validation-for="Longtitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -56,13 +74,13 @@
                             <div class="form-group row">
                                 <label asp-for="IsPublic" class="col-md-4 col-form-label text-md-right">Is Public</label>
                                 <div class="col-md-6">
-                                    <input input asp-for="IsPublic" id="user_name" class="form-control">
+                                    <input asp-for="IsPublic" id="user_name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label asp-for="Alarm" class="col-md-4 col-form-label text-md-right">Alarm</label>
                                 <div class="col-md-6">
-                                    <input input asp-for="Alarm" class="form-control">
+                                    <input asp-for="Alarm" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
