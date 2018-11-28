@@ -14,11 +14,6 @@ namespace smartDormitory.WEB.Models
 
         }
 
-        public UserSensorViewModel(Sensor sensor, User user)
-        {
-            sensor.Id = Id;
-            UserId = UserId;
-        }
 
         public int Id { get; set; }
 

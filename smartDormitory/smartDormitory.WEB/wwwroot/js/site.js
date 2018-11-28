@@ -7,7 +7,7 @@ var myOptions = {
     zoom: 13,
     center: myLatlng
 }
-var map = new google.maps.Map(document.getElementById("map"), myOptions);
+var map = new google.maps.Map(document.getElementById("mapps"), myOptions);
 var geocoder = new google.maps.Geocoder();
 
 google.maps.event.addListener(map, 'click', function (event) {
@@ -25,3 +25,4 @@ google.maps.event.addListener(map, 'click', function (event) {
         }
     });
 });
+

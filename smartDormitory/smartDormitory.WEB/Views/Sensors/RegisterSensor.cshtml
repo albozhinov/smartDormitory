@@ -1,7 +1,75 @@
-﻿
+﻿@model UserSensorViewModel
 @{
     ViewData["Title"] = "RegisterSensor";
 }
 
 <h2>RegisterSensor</h2>
 
+<div id="map-canvas">
+
+</div>
+
+<main class="my-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Register</div>
+                    <div class="card-body">
+                        <form asp-controller="Sensors" asp-action="RegisterSensor" method="post">
+                            <div>
+                                <input asp-for="Latitude" type="hidden" id="latitude">
+                                <input asp-for="Longtitude" type="hidden" id="longitude">
+                                <input asp-for="Id" type="hidden" value="@Model.Id" />
+                                <input asp-for="UserId" type="hidden" value="@Model.UserId" />
+
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for=MinValue class="col-md-4 col-form-label text-md-right">Sensor Minimal Value</label>
+                                <div class="col-md-6">
+                                    <input asp-for="MinValue" value="" id="full_name" class="form-control">
+                                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="MaxValue" class="col-md-4 col-form-label text-md-right">Sensor Maximal Value</label>
+                                <div class="col-md-6">
+                                    <input asp-for="MaxValue" value="" id="email_address" class="form-control">
+                                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="IsPublic" class="col-md-4 col-form-label text-md-right">Is Public</label>
+                                <div class="col-md-6">
+                                    <input input asp-for="IsPublic" id="user_name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Alarm" class="col-md-4 col-form-label text-md-right">Alarm</label>
+                                <div class="col-md-6">
+                                    <input input asp-for="Alarm" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+
+                                <div> <h2>Choose where to put sensor on the map</h2></div>
+                                <partial name="_RegisterSensorMapPartial" />
+
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+</main>

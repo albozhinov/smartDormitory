@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using smartDormitory.Data;
+using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Models;
 using System;
@@ -15,11 +17,15 @@ namespace smartDormitory.WEB.Controllers
     {
         private readonly IICBApiSensorsService apiSensorsService;
         private readonly ISensorService sensorService;
+        private readonly IUserSensorService userSensorService;
+        private readonly UserManager<User> userManager;
 
-        public SensorsController(IICBApiSensorsService apiSensorsService, ISensorService sensorService)
+        public SensorsController(IICBApiSensorsService apiSensorsService, ISensorService sensorService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
             this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));
             this.sensorService = sensorService ?? throw new ArgumentNullException(nameof(sensorService));
+            this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
+            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<IActionResult> RegisterSensors()
@@ -54,7 +60,7 @@ namespace smartDormitory.WEB.Controllers
         }
 
         [Authorize]
-        [HttpGet]        
+        [HttpGet]
         public async Task<IActionResult> CreateSensor()
         {
             var allSensors = await this.sensorService.GetSensorsAsync();
@@ -70,8 +76,31 @@ namespace smartDormitory.WEB.Controllers
         [HttpGet]
         public IActionResult RegisterSensor(int sensorId)
         {
-            
-            return View();
+            var userId = userManager.GetUserId(User);
+
+            var userSensorModel = new UserSensorViewModel()
+            {
+                Id = sensorId,
+                UserId = userId
+            };
+
+
+            return View(userSensorModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult RegisterSensor(UserSensorViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            this.userSensorService.AddSensor(model.UserId, model.Id, model.MinValue, model.MaxValue,
+                 model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
+
+            return RedirectToAction("Index", "Home");
         }
 
     }

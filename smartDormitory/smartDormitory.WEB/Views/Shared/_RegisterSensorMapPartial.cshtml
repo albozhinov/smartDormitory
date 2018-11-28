@@ -1,0 +1,72 @@
+﻿@* // TODO: In this view must to include ICollection<UserSensorViewModel> and list all public sensors.  *@
+@{
+    ViewData["Title"] = "_RegisterSensorMapPartial";
+}
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #mapp {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>
+
+    <!--The div element for the map -->
+    <div id="mapp"></div>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // The location of Sofia
+            var sofia = { lat: 42.698334, lng: 23.319941 };
+            // The map, centered at Sofia
+            var map = new google.maps.Map(
+                document.getElementById('mapp'), { zoom: 4, center: sofia });
+            // The marker, positioned at Uluru
+            var marker = new google.maps.Marker({ position: sofia, map: map });
+            
+
+
+            var myLatlng = new google.maps.LatLng(42.69, 23.32);
+            var myOptions = {
+                zoom: 13,
+                center: myLatlng
+            }
+
+            var map = new google.maps.Map(document.getElementById("mapp"), myOptions);
+            var geocoder = new google.maps.Geocoder();
+           
+            google.maps.event.addListener(map, 'click', function (event) {
+                geocoder.geocode({
+                    'latLng': event.latLng
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var splittedLatLang = String(event.latLng).replace('(', '').replace(')', '').split(',');
+                        var gosho = document.getElementById('latitude');
+                        var pesho = document.getElementById('longitude');
+                        gosho.value = splittedLatLang[0];
+                        pesho.value = splittedLatLang[1];
+                        gosho = gosho.value
+                        alert(gosho + "asdasd");
+                        alert(splittedLatLang[0])
+                        alert(splittedLatLang[1])
+                        if (results[0]) {
+                            alert(results[0].formatted_address);
+                        }
+                    }
+                });
+            });
+        }
+
+            
+            
+        
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
+       
+    </script>
+</body>
+</html>
