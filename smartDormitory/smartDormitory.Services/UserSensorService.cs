@@ -68,12 +68,12 @@ namespace smartDormitory.Services
                 throw new ArgumentException("Polling interval cannot be less than 0!");
             }
 
-            if (latitude < 0)
+            if (latitude <= 0)
             {
                 throw new ArgumentException("Latitude cannot be less than 0!");
             }
 
-            if (longitude < 0)
+            if (longitude <= 0)
             {
                 throw new ArgumentException("Longitude cannot be less than 0!");
             }
