@@ -57,15 +57,17 @@ a.disabled {
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: #FD8227;
-    color: white;
+    color: black;
 }
 
 .nav-link {
     color: yellow;
 }
+
     .nav-link:hover {
         border-bottom: 2px solid #FD8227;
     }
+
 #userDropDownButton {
     color: white;
     border-radius: 5px 5px;
@@ -73,4 +75,33 @@ a.disabled {
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.2s;
 }
-/*Register Sensor Form*/
+
+#lockButton {
+    border: solid 1px red;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #lockButton:hover {
+        background-color: lightgray;
+    }
+
+#unlockButton {
+    border: solid 1px #249E84;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #unlockButton:hover {
+        background-color: lightgray;
+    }
+
+#passwordButton {
+    border: solid 1px grey;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #passwordButton:hover {
+        background-color: lightgray;
+    }

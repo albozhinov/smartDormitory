@@ -9,6 +9,5 @@ namespace smartDormitory.Services.Contracts
     public interface ISensorService
     {
         Task<IEnumerable<Sensor>> GetSensorsAsync();
-
     }
 }

@@ -16,8 +16,4 @@
     <ProjectReference Include="..\smartDormitory.Services\smartDormitory.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
-  </ItemGroup>
-
 </Project>

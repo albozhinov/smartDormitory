@@ -20,21 +20,20 @@
 
 <table class="table table-striped table-bordered table-hover">
     <thead>
-        <tr class="text-center">
-            <th><label>Number</label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Tag"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Description"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().MeasureType.Type"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Value"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().ModifiedOn"></label></th>
-            <th><label>Register Sensor</label></th>
+        <tr>
+            <th>Number</th>
+            <th>Tag</th>
+            <th>Description</th>
+            <th>MeasureType</th>
+            <th>Value</th>
+            <th>ModifiedOn</th>
         </tr>
     </thead>
     <tbody>
         @if (Model.Sensors.Count() == 0)
         {
             <tr>
-                <td colspan="7">No data available in table</td>
+                <td colspan="6">No data available in table</td>
             </tr>
         }
         else
@@ -49,7 +48,7 @@
                     <td>@sensor.MeasureType.Type</td>
                     <td>@sensor.Value</td>
                     <td>@sensor.ModifiedOn</td>
-                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" class="btn" id="adminDashboardButtnon">Register</a></td>
+                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" class="btn btn-info">Register</a></td>
 
                 </tr>
                 counter++;

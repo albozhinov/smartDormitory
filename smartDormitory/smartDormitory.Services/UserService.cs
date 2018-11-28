@@ -34,6 +34,6 @@ namespace smartDormitory.Services
                                      .Where(u => u.UserName
                                         .Contains(searchText, StringComparison.InvariantCulture))
                                      .CountAsync();
-        }
+        }     
     }
 }

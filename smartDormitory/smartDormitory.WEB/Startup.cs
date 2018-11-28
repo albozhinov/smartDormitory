@@ -49,14 +49,14 @@ namespace smartDormitory.WEB
                 .AddDefaultTokenProviders();            
 
             //Disable some password options to test easily!
-            services.Configure<IdentityOptions>(options =>
-           {
-               options.Password.RequireDigit = false;
-               options.Password.RequiredLength = 3;
-               options.Password.RequireLowercase = false;
-               options.Password.RequireNonAlphanumeric = false;
-               options.Password.RequireUppercase = false;
-           });
+           // services.Configure<IdentityOptions>(options =>
+           //{
+           //    options.Password.RequireDigit = false;
+           //    options.Password.RequiredLength = 3;
+           //    options.Password.RequireLowercase = false;
+           //    options.Password.RequireNonAlphanumeric = false;
+           //    options.Password.RequireUppercase = false;
+           //});
 
             
             services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
