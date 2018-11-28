@@ -22,11 +22,11 @@
     <thead>
         <tr>
             <th>Number</th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Tag"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Description"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().MeasureType.Type"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().Value"></label></th>
-            <th><label asp-for="@Model.Sensors.FirstOrDefault().ModifiedOn"></label></th>
+            <th>Tag</th>
+            <th>Description</th>
+            <th>MeasureType</th>
+            <th>Value</th>
+            <th>ModifiedOn</th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
                     <td>@sensor.MeasureType.Type</td>
                     <td>@sensor.Value</td>
                     <td>@sensor.ModifiedOn</td>
-                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" class="btn" id="adminDashboardButtnon">Register</a></td>
+                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" class="btn" id="registerButton">Register</a></td>
 
                 </tr>
                 counter++;
