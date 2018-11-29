@@ -2,6 +2,7 @@
 using smartDormitory.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,8 +22,10 @@ namespace smartDormitory.WEB.Models
         
         public int SensorId { get; set; }
 
+        [Range(0,5000)]
         public double MinValue { get; set; }
 
+        [Range(0, 5000)]
         public double MaxValue { get; set; }
 
         public string Description { get; set; }

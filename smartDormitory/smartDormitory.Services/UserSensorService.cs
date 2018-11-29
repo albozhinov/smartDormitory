@@ -54,6 +54,11 @@ namespace smartDormitory.Services
                 .Where(s => s.Id == sensorId)
                 .ToList();
 
+            if(sensor == null || sensor.Count < 1)
+            {
+                throw new ArgumentNullException($"Sensor with Id {sensorId} does not exist!");
+            }
+
             if(minValue < sensor[0].MinValue || minValue > sensor[0].MaxValue)
             {
                 throw new ArgumentException($"Minimal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}!");
