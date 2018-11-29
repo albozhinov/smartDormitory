@@ -112,7 +112,10 @@ namespace smartDormitory.WEB
                     name: "adminArea",
                     template: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
 
-               
+                routes.MapRoute(
+                    name: "userArea",
+                    template: "{area:exists}/{controller=User}/{action=MySensors}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
