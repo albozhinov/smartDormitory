@@ -39,5 +39,13 @@ namespace smartDormitory.WEB.Models
         public bool IsPublic { get; set; }
 
         public bool Alarm { get; set; }
+
+        public string Tag { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
+
+        public double Value { get; set; }
     }
 }

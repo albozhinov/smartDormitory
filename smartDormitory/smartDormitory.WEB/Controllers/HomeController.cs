@@ -30,35 +30,16 @@ namespace smartDormitory.WEB.Controllers
                                     {
                                         Latitude = s.Latitude,
                                         Longtitude = s.Longitude,
+                                        UserName = s.User.UserName,
+                                        Description = s.Sensor.Description,
+                                        Tag = s.Sensor.Tag,
+                                        Id = s.Id,
+                                        ModifiedOn = s.Sensor.ModifiedOn,
+                                        Value = s.Sensor.Value
                                     })
                                     .ToList();
 
             return View(sensorsViewModel);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

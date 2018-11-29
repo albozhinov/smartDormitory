@@ -111,6 +111,8 @@ namespace smartDormitory.Services
             return await this.context
                                 .UserSensors
                                 .Where(s => s.IsPublic)
+                                .Include(u => u.User)
+                                .Include(s => s.Sensor)
                                 .ToListAsync();
         }
     }

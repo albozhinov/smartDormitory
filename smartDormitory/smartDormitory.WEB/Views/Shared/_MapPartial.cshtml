@@ -28,22 +28,49 @@
             // The map, centered at Sofia
             var map = new google.maps.Map(
                 document.getElementById('map'), { zoom: 3.7, center: sofia });
-            // The marker, positioned at Uluru
-            var marker = new google.maps.Marker({ position: sofia, map: map });
 
-            // TODO: On this part of view must to foreach all public sensors!
             @{
+                //int counter = 1;
                 foreach (var user in Model)
                 {
                     <text>
-                            var currentPin = { lat: @user.Latitude, lng: @user.Longtitude };
+                            var pin = { lat: @user.Latitude, lng: @user.Longtitude };
                     </text>
-                    
+
                     <text>
-                            var plovdivMarker = new google.maps.Marker({ position: currentPin, map: map });
+                            var contentString = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h5 id="firstHeading" class="firstHeading">@user.Tag</h5>' +
+                                '<div id="bodyContent">' +
+                                '<div><b>Username:</b> @user.UserName</div>' +
+                                '<div><b>Description:</b> @user.Description</div>' +
+                                '<div><b>Alarm:</b> @user.Alarm</div>' +
+                                '<div><b>Value:</b> @user.Value °C</div>' +
+                                '<div><b>ModifiedOn:</b> @user.ModifiedOn</div>' +
+                                '<div><b>Latitude:</b> @user.Latitude</div>' +
+                                '<div><b>Longitude:</b> @user.Longtitude</div>' +
+                                '</div>' +
+                                '</div>';
+
+                                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString,
+                                disableAutoPan: true
+                            });
+                            
+                            var marker = new google.maps.Marker({
+                                position: pin, animation: google.maps.Animation.DROP, map: map, title: '@user.Tag'
+                            });
+
+                            google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
+                                        return function () {
+                                            infowindow.setContent(contentString);
+                                            infowindow.open(map, marker);
+                                        };
+                                    })(marker, contentString, infowindow));
                     </text>
                 }
-            }            
+            }
         }
     </script>
     <script async defer
