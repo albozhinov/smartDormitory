@@ -21,7 +21,7 @@ namespace smartDormitory.WEB.Controllers
 
         public SensorsController(IICBApiSensorsService apiSensorsService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
-            this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));            
+            this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));
             this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
@@ -55,7 +55,7 @@ namespace smartDormitory.WEB.Controllers
             }
 
             return View(model);
-        }    
+        }
 
         [Authorize]
         [HttpGet]
@@ -78,7 +78,7 @@ namespace smartDormitory.WEB.Controllers
         [HttpPost]
         public IActionResult RegisterSensor(UserSensorViewModel model)
         {
-                if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return View(model);
             }
