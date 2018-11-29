@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace smartDormitory.Services
 {
@@ -98,6 +99,14 @@ namespace smartDormitory.Services
 
             this.context.UserSensors.Add(newUserSensor);
             this.context.SaveChanges();
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllPublicUsersSensors()
+        {
+            return await this.context
+                                .UserSensors
+                                .Where(s => s.IsPublic)
+                                .ToListAsync();
         }
     }
 }

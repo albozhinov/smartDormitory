@@ -16,14 +16,12 @@ namespace smartDormitory.WEB.Controllers
     public class SensorsController : Controller
     {
         private readonly IICBApiSensorsService apiSensorsService;
-        private readonly ISensorService sensorService;
         private readonly IUserSensorService userSensorService;
         private readonly UserManager<User> userManager;
 
-        public SensorsController(IICBApiSensorsService apiSensorsService, ISensorService sensorService, IUserSensorService userSensorService, UserManager<User> userManager)
+        public SensorsController(IICBApiSensorsService apiSensorsService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
-            this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));
-            this.sensorService = sensorService ?? throw new ArgumentNullException(nameof(sensorService));
+            this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));            
             this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
@@ -57,20 +55,7 @@ namespace smartDormitory.WEB.Controllers
             }
 
             return View(model);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> CreateSensor()
-        {
-            var allSensors = await this.sensorService.GetSensorsAsync();
-
-            var sensorsViewModel = allSensors
-                                    .Select(s => new SensorViewModel(s))
-                                    .ToList();
-
-            return View(sensorsViewModel);
-        }
+        }    
 
         [Authorize]
         [HttpGet]

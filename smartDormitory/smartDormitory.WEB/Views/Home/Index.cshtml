@@ -1,7 +1,7 @@
-﻿@{
+﻿@model IEnumerable<UserSensorViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-
-
-<partial name="_MapPartial" />
+<partial name="_MapPartial" model="@Model" />

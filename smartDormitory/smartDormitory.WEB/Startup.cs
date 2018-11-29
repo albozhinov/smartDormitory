@@ -46,24 +46,23 @@ namespace smartDormitory.WEB
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<smartDormitoryDbContext>()
-                .AddDefaultTokenProviders();            
+                .AddDefaultTokenProviders();
 
             //Disable some password options to test easily!
-           // services.Configure<IdentityOptions>(options =>
-           //{
-           //    options.Password.RequireDigit = false;
-           //    options.Password.RequiredLength = 3;
-           //    options.Password.RequireLowercase = false;
-           //    options.Password.RequireNonAlphanumeric = false;
-           //    options.Password.RequireUppercase = false;
-           //});
+            services.Configure<IdentityOptions>(options =>
+           {
+               options.Password.RequireDigit = false;
+               options.Password.RequiredLength = 3;
+               options.Password.RequireLowercase = false;
+               options.Password.RequireNonAlphanumeric = false;
+               options.Password.RequireUppercase = false;
+           });
 
-            
+
             services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
             services.AddScoped<IMeasureTypesService, MeasureTypesService>();
             services.AddScoped(typeof(IUserManager<>), typeof(UserManagerWrapper<>));
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IUserSensorService, UserSensorService>();
 
 
