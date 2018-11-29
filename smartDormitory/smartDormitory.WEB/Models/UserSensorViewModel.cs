@@ -40,6 +40,8 @@ namespace smartDormitory.WEB.Models
 
         public bool Alarm { get; set; }
 
+        public List<double> ValidationsMinMax { get; set; }
+
         public string Tag { get; set; }
 
         public string UserName { get; set; }

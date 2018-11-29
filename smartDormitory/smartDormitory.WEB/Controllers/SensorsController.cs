@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace smartDormitory.WEB.Controllers
@@ -59,17 +60,19 @@ namespace smartDormitory.WEB.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult RegisterSensor(int sensorId, string description)
+        public IActionResult RegisterSensor(int sensorId, string tag, string description)
         {
             var userId = userManager.GetUserId(User);
+            var validationsMinMax = this.GetMinMaxValidations(description);
 
             var userSensorModel = new UserSensorViewModel()
             {
                 Id = sensorId,
                 UserId = userId,
-                Description = description
+                Tag = tag,
+                Description = description,
+                ValidationsMinMax = validationsMinMax         
             };
-
 
             return View(userSensorModel);
         }
@@ -87,6 +90,21 @@ namespace smartDormitory.WEB.Controllers
                  model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private List<double> GetMinMaxValidations(string description)
+        {
+            var validations = new List<double>();
+
+            string[] numbers = Regex.Split(description, @"\D+");
+            foreach (string value in numbers)
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    validations.Add(double.Parse(value));
+                }
+            }
+            return validations;
         }
 
     }
