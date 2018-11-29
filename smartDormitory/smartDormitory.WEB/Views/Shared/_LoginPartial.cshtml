@@ -11,7 +11,7 @@
         <div class="dropdown">
             <button type="button" id="adminDashboardButtnon" class="mr-3 my-auto btn dropdown-toggle" data-toggle="dropdown">@UserManager.GetUserName(User)</button>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Link 1</a>
+                <a class="dropdown-item" asp-area="UserManagement" asp-controller="User" asp-action="MySensors" asp-route-id="@UserManager.GetUserId(User)">My Sensors</a>
                 <a class="dropdown-item" href="#">Link 2</a>
                 <a class="dropdown-item" href="#">Link 3</a>
                 <div class="dropdown-divider"></div>

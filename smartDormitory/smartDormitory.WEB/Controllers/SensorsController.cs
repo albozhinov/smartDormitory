@@ -74,7 +74,6 @@ namespace smartDormitory.WEB.Controllers
                 ValidationsMinMax = validationsMinMax         
             };
 
-
             return View(userSensorModel);
         }
 
@@ -96,7 +95,7 @@ namespace smartDormitory.WEB.Controllers
         private List<double> GetMinMaxValidations(string description)
         {
             var validations = new List<double>();
-            // Split on one or more non-digit characters.
+
             string[] numbers = Regex.Split(description, @"\D+");
             foreach (string value in numbers)
             {

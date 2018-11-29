@@ -34,6 +34,14 @@ namespace smartDormitory.Services
                                      .Where(u => u.UserName
                                         .Contains(searchText, StringComparison.InvariantCulture))
                                      .CountAsync();
-        }     
+        }   
+        
+        public IEnumerable<UserSensors> GetAllUserSensors(string id)
+        {
+            return this.context.UserSensors
+                .Where(us => us.UserId == id)
+                .Include(s => s.Sensor)
+                .ToList();
+        }
     }
 }
