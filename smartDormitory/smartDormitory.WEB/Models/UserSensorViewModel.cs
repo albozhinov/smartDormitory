@@ -22,6 +22,8 @@ namespace smartDormitory.WEB.Models
         
         public int SensorId { get; set; }
 
+        public string Tag { get; set; }
+
         [Range(0,5000)]
         public double MinValue { get; set; }
 
@@ -39,5 +41,7 @@ namespace smartDormitory.WEB.Models
         public bool IsPublic { get; set; }
 
         public bool Alarm { get; set; }
+
+        public List<double> ValidationsMinMax { get; set; }
     }
 }

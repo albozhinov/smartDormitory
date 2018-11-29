@@ -49,7 +49,7 @@
                     <td>@sensor.MeasureType.Type</td>
                     <td>@sensor.Value</td>
                     <td>@sensor.ModifiedOn</td>
-                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-description="@sensor.Description" class="btn" id="registerButton">Register</a></td>
+                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-tag="@sensor.Tag" asp-route-description="@sensor.Description" class="btn" id="registerButton">Register</a></td>
 
                 </tr>
                 counter++;
