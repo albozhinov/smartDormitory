@@ -30,16 +30,16 @@
                                         <select asp-for="MinValue" class="custom-select form-control" id="boolInputMinValue" onchange="changeMaxValue()">
                                             @if (@Model.Tag.Contains("Door"))
                                             {
-                                                <option value="1">Open</option>
+                                                <option value ="1" selected>Open</option>
                                                 <option value="2">Close</option>
                                             }
                                             else
                                             {
-                                                <option value="1">True</option>
+                                                <option value="1" selected>True</option>
                                                 <option value="2">False</option>
                                             }
                                         </select>
-                                        <input asp-for="MaxValue" value="" type="hidden" id="boolInputMaxValue">
+                                        <input asp-for="MaxValue" value="1" type="hidden" id="boolInputMaxValue">
                                     </div>
                                 </div>
                             }
