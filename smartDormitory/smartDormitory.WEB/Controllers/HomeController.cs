@@ -35,7 +35,8 @@ namespace smartDormitory.WEB.Controllers
                                         Tag = s.Sensor.Tag,
                                         Id = s.Id,
                                         ModifiedOn = s.Sensor.ModifiedOn,
-                                        Value = s.Sensor.Value
+                                        Value = s.Sensor.Value,
+                                        Alarm = s.Alarm
                                     })
                                     .ToList();
 

@@ -30,44 +30,78 @@
                 document.getElementById('map'), { zoom: 3.7, center: sofia });
 
             @{
-                //int counter = 1;
-                foreach (var user in Model)
-                {
+                        string symbol = "";
+                        string value = "";
+                        string alarm = "";
+                        foreach (var userSensor in Model)
+                        {
                     <text>
-                            var pin = { lat: @user.Latitude, lng: @user.Longtitude };
+                            var pin = { lat: @userSensor.Latitude, lng: @userSensor.Longtitude };
                     </text>
+
+                            value = userSensor.Value.ToString();
+                            alarm = userSensor.Alarm.ToString();
+                            alarm = userSensor.Alarm ? "On" : "Off";
+
+                            if (userSensor.Tag.StartsWith("Temperature"))
+                            {
+                                symbol = "°C";
+                            }
+                            else if (userSensor.Tag.StartsWith("Humidity"))
+                            {
+                                symbol = "%";
+                            }
+                            else if (userSensor.Tag.StartsWith("Electric"))
+                            {
+                                symbol = "W";
+                            }
+                            else if (userSensor.Tag.StartsWith("Occupancy"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "false" : "true";
+                            }
+                            else if (userSensor.Tag.StartsWith("Door"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "close" : "open";
+                            }
+                            else if (userSensor.Tag.StartsWith("Noise"))
+                            {
+                                symbol = "dB";
+                            }
 
                     <text>
                             var contentString = '<div id="content">' +
                                 '<div id="siteNotice">' +
                                 '</div>' +
-                                '<h5 id="firstHeading" class="firstHeading">@user.Tag</h5>' +
+                                '<h5 id="firstHeading" class="firstHeading">@userSensor.Tag</h5>' +
                                 '<div id="bodyContent">' +
-                                '<div><b>Username:</b> @user.UserName</div>' +
-                                '<div><b>Description:</b> @user.Description</div>' +
-                                '<div><b>Alarm:</b> @user.Alarm</div>' +
-                                '<div><b>Value:</b> @user.Value °C</div>' +
-                                '<div><b>ModifiedOn:</b> @user.ModifiedOn</div>' +
-                                '<div><b>Latitude:</b> @user.Latitude</div>' +
-                                '<div><b>Longitude:</b> @user.Longtitude</div>' +
+                                '<div><b>Username:</b> @userSensor.UserName</div>' +
+                                '<div><b>Description:</b> @userSensor.Description</div>' +
+                                '<div><b>Alarm:</b> @alarm</div>' +
+                                '<div><b>Value:</b> @value @symbol</div>' +
+                                '<div><b>ModifiedOn:</b> @userSensor.ModifiedOn</div>' +
+                                '<div><b>Latitude:</b> @userSensor.Latitude</div>' +
+                                '<div><b>Longitude:</b> @userSensor.Longtitude</div>' +
                                 '</div>' +
                                 '</div>';
 
-                                            var infowindow = new google.maps.InfoWindow({
+                            var infowindow = new google.maps.InfoWindow({
                                 content: contentString,
                                 disableAutoPan: true
-                            });
-                            
-                            var marker = new google.maps.Marker({
-                                position: pin, animation: google.maps.Animation.DROP, map: map, title: '@user.Tag'
+                                    });
+
+                        var marker = new google.maps.Marker({
+                                position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
                             });
 
                             google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
                                         return function () {
-                                            infowindow.setContent(contentString);
+                        infowindow.setContent(contentString);
                                             infowindow.open(map, marker);
-                                        };
-                                    })(marker, contentString, infowindow));
+                                            setTimeout(function () { infowindow.close(); }, 10000);
+                    };
+                })(marker, contentString, infowindow));
                     </text>
                 }
             }
