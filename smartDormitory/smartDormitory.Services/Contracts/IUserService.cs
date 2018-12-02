@@ -1,4 +1,5 @@
-﻿using smartDormitory.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using smartDormitory.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

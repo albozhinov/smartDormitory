@@ -106,7 +106,7 @@ namespace smartDormitory.Services
             this.context.SaveChanges();
         }
 
-        public async Task<IEnumerable<UserSensors>> GetAllPublicUsersSensors()
+        public async Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync()
         {
             return await this.context
                                 .UserSensors

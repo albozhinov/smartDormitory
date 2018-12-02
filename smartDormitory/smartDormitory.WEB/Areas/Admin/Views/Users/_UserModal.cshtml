@@ -93,3 +93,32 @@
     </div>
 </div>
 
+<!-- Modal -->
+<!-- Role -->
+<div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manage user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Include here some text!</p>
+                
+            </div>
+            <div class="modal-footer"> 
+                <form asp-area="Admin" asp-controller="Users" asp-action="ChangeRole" method="post">
+                    <div>
+                        <input class="text-hide" name="Id" />
+                        <input class="text-hide" name="Role" />
+                        <button type="submit" class="btn btn-success"><span id="setRoleButton"></span></button>
+                    </div>
+                </form>
+                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

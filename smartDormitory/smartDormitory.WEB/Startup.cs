@@ -62,6 +62,7 @@ namespace smartDormitory.WEB
             services.AddScoped<IICBApiSensorsService, ICBApiSensorsService>();
             services.AddScoped<IMeasureTypesService, MeasureTypesService>();
             services.AddScoped(typeof(IUserManager<>), typeof(UserManagerWrapper<>));
+            services.AddScoped(typeof(IRoleManager<>), typeof(RoleManagerWrapper<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserSensorService, UserSensorService>();
 

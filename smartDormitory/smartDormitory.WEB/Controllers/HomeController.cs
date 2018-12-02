@@ -23,7 +23,7 @@ namespace smartDormitory.WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var allPublicSensors = await this.userSensorService.GetAllPublicUsersSensors();
+            var allPublicSensors = await this.userSensorService.GetAllPublicUsersSensorsAsync();
 
             var sensorsViewModel = allPublicSensors
                                     .Select(s => new UserSensorViewModel()
