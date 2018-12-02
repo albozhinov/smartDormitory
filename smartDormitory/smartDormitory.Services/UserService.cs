@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using smartDormitory.Data.Context;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
@@ -23,7 +24,7 @@ namespace smartDormitory.Services
         {
             return await this.context
                                     .Users
-                                    .Where(u => u.UserName.Contains(searchText, StringComparison.InvariantCulture))
+                                    .Where(u => u.UserName.Contains(searchText, StringComparison.InvariantCulture))                                    
                                     .Skip((page - 1) * pageSize)
                                     .Take(pageSize)
                                     .ToListAsync();            
@@ -42,6 +43,6 @@ namespace smartDormitory.Services
                 .Where(us => us.UserId == id)
                 .Include(s => s.Sensor)
                 .ToList();
-        }
+        }        
     }
 }

@@ -8,6 +8,9 @@ namespace smartDormitory.WEB.Areas.Admin.Models
         public string Id { get; set; }
 
         [Required]
+        public string Role { get; set; }
+
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "NewPassword")]
         public string NewPassword { get; set; }

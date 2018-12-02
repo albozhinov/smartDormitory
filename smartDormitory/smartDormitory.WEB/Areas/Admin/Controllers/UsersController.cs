@@ -18,23 +18,24 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
     {
         private readonly IUserService userService;
         private readonly IUserManager<User> _userManager;
+        private readonly IRoleManager<IdentityRole> _roleManager;
         private readonly int Page_Size = 3;
 
         [TempData]
         public string StatusMessage { get; set; }
 
-        public UsersController(IUserManager<User> userManager, IUserService userService)
+        public UsersController(IUserManager<User> userManager, IUserService userService, IRoleManager<IdentityRole> roleManager)
         {
             this._userManager = userManager;
             this.userService = userService;
+            this._roleManager = roleManager;
         }
 
         public async Task<IActionResult> AllUsers(AllUsersViewModel viewModel)
         {
-            // TODO: Create UserService to Include all information to user (role, sensorsCount, sensortsType and ect.)
             var isTextNull = viewModel.SearchText ?? "";
             var users = await this.userService.GetUsersAsync(isTextNull, viewModel.Page, Page_Size);
-
+            
             viewModel.Users = users.Select(u => new UserViewModel(u));
             var totalUsers = await this.userService.GetTotalUserAsync(isTextNull);
 
@@ -141,6 +142,71 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
                 return View("_StatusMessage", this.StatusMessage);
             }
             this.StatusMessage = "The user's password has been changed!";
+            return View("_StatusMessage", this.StatusMessage);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetRole(string Id)
+        {
+            var user = this._userManager.Users.Where(u => u.Id == Id).FirstOrDefault();
+            if (user is null)
+            {
+                return new JsonResult("Error: User not found!");
+            }
+
+            var role = await this._userManager.GetRolesAsync(user);
+            var myRole = role.FirstOrDefault();
+
+            return new JsonResult(myRole);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllExistsRoles()
+        {
+            var roles = this._roleManager.Roles.ToList();
+
+            return new JsonResult(roles);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeRole(UserModalViewModel input)
+        {
+            var user = this._userManager.Users.Where(u => u.Id == input.Id).FirstOrDefault();
+
+            if (user is null)
+            {
+                this.StatusMessage = "Error: User not found!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                this.StatusMessage = "Error: Role do not match!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            var roleCheck = await this._roleManager.RoleExistsAsync(input.Role);
+            if (!roleCheck)
+            {
+                this.StatusMessage = "Error: Role not found!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            var removeResult = await this._userManager.RemoveFromRoleAsync(user, input.Role);
+            if (!removeResult.Succeeded)
+            {
+                this.StatusMessage = "Error: Could not remove the old role!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            var addRoleResult = await this._userManager.AddToRoleAsync(user, input.Role);
+            if (!addRoleResult.Succeeded)
+            {
+                this.StatusMessage = "Error: Could not change the role!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+            this.StatusMessage = "The user's role has been changed!";
             return View("_StatusMessage", this.StatusMessage);
         }
     }

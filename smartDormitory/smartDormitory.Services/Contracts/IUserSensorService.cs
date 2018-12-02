@@ -12,6 +12,6 @@ namespace smartDormitory.Services.Contracts
 
         void AddSensor(string userId, int sensorId, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
 
-        Task<IEnumerable<UserSensors>> GetAllPublicUsersSensors();
+        Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync();
     }
 }

@@ -23,9 +23,8 @@
             modal.find('.modal-body').text('You are about to unlock "' + recipient + '", are you sure?')
             modal.find('input[name="Id"]').val(userId)
         });
-    </script>
 
-    <script>
+
         jQuery.noConflict();
         $('#lockModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
@@ -38,9 +37,8 @@
             modal.find('.modal-body').text('You are about to lock "' + recipient + '", are you sure?')
             modal.find('input[name="Id"]').val(userId)
         });
-    </script>
 
-    <script>
+
         jQuery.noConflict();
         $('#passwordModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
@@ -51,6 +49,43 @@
             var modal = $(this)
             modal.find('.modal-title').text('Manage "' + recipient + '"')
             modal.find('.modal-body input[name="Id"]').val(userId)
+        });
+
+        jQuery.noConflict();
+        $('#roleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var userId = button.data('user-id')
+            var currRole = "";
+            var newRole = "";
+
+            // Get current user's role!!!
+            $.post('@Url.Action("GetRole", "Users")', { Id: userId }, function (data) {
+                $(".modal-body").text('Current role: "' + data + '".');
+                //console.log(data);
+                currRole = data;
+            }).fail(function () { });
+            
+            // Get all exists roles!!!
+            $.get('@Url.Action("GetAllExistsRoles", "Users")', function (data) {
+                data.forEach((value) => {
+                    if (value.name != currRole) {
+                        newRole = value.name;
+                        console.log(currRole);
+                        console.log("Test");
+                    }
+                    $(".modal-body").append('<div>You can set only ' + value.name + ' role!</div>');
+                })
+            }).fail(function () { });      
+
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.            
+            var modal = $(this)
+            modal.find('.modal-title').text('Manage "' + recipient + '"')
+            modal.find('input[name="Id"]').val(userId)
+
+            // Помисли как да изпратиш другата роля за да се смени!!!
+            modal.find('input[name="Role"]').val()
         });
     </script>
 

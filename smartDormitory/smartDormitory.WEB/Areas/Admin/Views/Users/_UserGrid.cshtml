@@ -32,6 +32,9 @@
         {
             foreach (var user in Model.Users)
             {
+                var unlockButtonDisabled = user.LockoutEnd < DateTimeOffset.Now ? "disabled" : string.Empty;
+                var lockButtonDisabled = user.LockoutEnd < DateTimeOffset.Now ? string.Empty : "disabled";
+
                 <tr>
                     <td>@counter</td>
                     <td>@user.UserName</td>
@@ -40,21 +43,23 @@
                         <div class="btn-group">
                             <!--LOCK BUTTON-->
                             <div>
-
-                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-lock-24.png" /></button>
+                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id" @lockButtonDisabled><img src="~/images/icons8-lock-24.png" /></button>
                             </div>
 
                             <!--UNLOCK BUTTON-->
                             <div class="ml-2">
-
-                                <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-padlock-24.png" /></button>
+                                <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" data-whatever="@user.UserName" data-user-id="@user.Id" @unlockButtonDisabled><img src="~/images/icons8-padlock-24.png" /></button>
                             </div>
 
                             <!--PASSWORD BUTTON-->
                             <div class="ml-2">
-
                                 <button type="button" class="btn p-1" id="passwordButton" data-toggle="modal" data-target="#passwordModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-password-1-24.png" /></button>
                             </div>
+
+                            <!--ROLE BUTTON-->
+                                <div class="ml-2">
+                                    <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
+                                </div>
                         </div>
                     </td>
                 </tr>
