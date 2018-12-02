@@ -104,18 +104,17 @@ namespace smartDormitory.WEB
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();            
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                     name: "userArea",
+                     template: "{area:exists}/{controller=User}/{action=MySensors}");
 
                 routes.MapRoute(
                     name: "adminArea",
                     template: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
-
-                routes.MapRoute(
-                    name: "userArea",
-                    template: "{area:exists}/{controller=User}/{action=MySensors}/{id?}");
 
                 routes.MapRoute(
                     name: "default",
@@ -128,7 +127,7 @@ namespace smartDormitory.WEB
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            
+
             //Adding Admin Role 
             var roleCheck = await RoleManager.RoleExistsAsync("Admin");
             if (!roleCheck)
