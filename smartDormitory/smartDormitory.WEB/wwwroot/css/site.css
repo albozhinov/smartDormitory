@@ -5,7 +5,6 @@ for details on configuring this project to bundle and minify static web assets. 
 .navbar {
     background-color: #EBEBEB;
 }
-
 /*Page title*/
 #title {
     font-weight: bold;
@@ -129,3 +128,10 @@ a.disabled {
     #roleButton:hover {
         background-color: lightgray;
     }
+
+    /*Home page*/
+#allRegisterSensors {
+    border: 1px solid #38C974;
+    border-radius: 5px;
+    background-color: #EAEAEA;
+}
