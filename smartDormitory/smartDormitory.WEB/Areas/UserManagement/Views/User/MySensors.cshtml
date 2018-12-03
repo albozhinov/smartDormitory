@@ -63,27 +63,30 @@
 
 
                     <td>
-                       @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
+                        @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
                         {
-                        <div>danger</div>
+                            <div>danger</div>
                         }
                         else
                         {
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="width: @((userSensor.Value - userSensor.MinValue)*100/(userSensor.MaxValue - userSensor.MinValue))%"></div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="width: @((userSensor.Value - userSensor.MinValue)*100/(userSensor.MaxValue - userSensor.MinValue))%"></div>
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
                         }
                     </td>
                 </tr>
-     
+
                 counter++;
+
+
+                <partial name="_MySensorGrid" for="@userSensor" />
             }
         }
     </tbody>
@@ -112,9 +115,6 @@
 </nav>
 
 
-
-<div id="d">1</div>
-<button onclick="myFunction()"></button>
 <script>
     function a() {
         location.reload();
