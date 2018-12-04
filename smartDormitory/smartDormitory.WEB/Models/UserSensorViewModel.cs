@@ -20,7 +20,6 @@ namespace smartDormitory.WEB.Models
 
         [Required]
         [StringLength(30, MinimumLength = 3)]
-
         public string Name { get; set; }
 
         [Range(0,5000)]
@@ -55,5 +54,7 @@ namespace smartDormitory.WEB.Models
         public DateTime? ModifiedOn { get; set; }
 
         public double Value { get; set; }
+
+        public string URL { get; set; }
     }
 }

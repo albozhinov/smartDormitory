@@ -31,12 +31,14 @@ namespace smartDormitory.WEB.Controllers
                                         Latitude = s.Latitude,
                                         Longtitude = s.Longitude,
                                         UserName = s.User.UserName,
-                                        Description = s.Sensor.Description,
+                                        Description = s.Description,
                                         Tag = s.Sensor.Tag,
                                         Id = s.Id,
                                         ModifiedOn = s.Sensor.ModifiedOn,
                                         Value = s.Sensor.Value,
-                                        Alarm = s.Alarm,                                 
+                                        Alarm = s.Alarm,
+                                        Name = s.Name,
+                                        URL = s.Sensor.Url,
                                     })
                                     .ToList();
 
