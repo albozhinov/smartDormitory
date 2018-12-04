@@ -46,6 +46,20 @@ for details on configuring this project to bundle and minify static web assets. 
         background-color: white;
     }
 
+#userSettingsButton {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #userSettingsButton:hover {
+        color: #FD8227;
+        border-color: #FD8227;
+        background-color: white;
+    }
+
 #registerButton {
     color: white;
     border-color: white;
@@ -129,9 +143,61 @@ a.disabled {
         background-color: lightgray;
     }
 
-    /*Home page*/
+/*Home page*/
 #allRegisterSensors {
     border: 1px solid #38C974;
     border-radius: 5px;
     background-color: #EAEAEA;
 }
+
+/*body{
+    background: url(/images/1280px-Blank_Map_Pacific_World.svg.png);
+    padding-top: 0px;
+    background-size: cover;
+}*/
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+        /* Tooltip arrow */
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+

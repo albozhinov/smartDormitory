@@ -9,5 +9,3 @@ function changeMaxValue() {
 
 /* Register map */
 // Initialize and add the map
-
-

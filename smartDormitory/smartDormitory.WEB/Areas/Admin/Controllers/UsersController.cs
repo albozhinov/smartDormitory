@@ -170,37 +170,47 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ChangeRole(UserModalViewModel input)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRole(string Id, string Role)
         {
-            var user = this._userManager.Users.Where(u => u.Id == input.Id).FirstOrDefault();
+            if (string.IsNullOrEmpty(Id))
+            {
+                this.StatusMessage = "Error: User's Id is incorrect!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            if (string.IsNullOrEmpty(Role))
+            {
+                this.StatusMessage = "Error: Role is incorrect!";
+                return View("_StatusMessage", this.StatusMessage);
+            }
+
+            var user = this._userManager.Users.Where(u => u.Id == Id).FirstOrDefault();
 
             if (user is null)
             {
                 this.StatusMessage = "Error: User not found!";
                 return View("_StatusMessage", this.StatusMessage);
             }
-
-            if (!ModelState.IsValid)
-            {
-                this.StatusMessage = "Error: Role do not match!";
-                return View("_StatusMessage", this.StatusMessage);
-            }
-
-            var roleCheck = await this._roleManager.RoleExistsAsync(input.Role);
+            
+            var roleCheck = await this._roleManager.RoleExistsAsync(Role);
             if (!roleCheck)
             {
                 this.StatusMessage = "Error: Role not found!";
                 return View("_StatusMessage", this.StatusMessage);
             }
 
-            var removeResult = await this._userManager.RemoveFromRoleAsync(user, input.Role);
+            var userRole = await this._userManager.GetRolesAsync(user);
+            var currentRole = userRole.FirstOrDefault();
+
+            var removeResult = await this._userManager.RemoveFromRoleAsync(user, currentRole);
             if (!removeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not remove the old role!";
                 return View("_StatusMessage", this.StatusMessage);
             }
 
-            var addRoleResult = await this._userManager.AddToRoleAsync(user, input.Role);
+            var addRoleResult = await this._userManager.AddToRoleAsync(user, Role);
             if (!addRoleResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not change the role!";

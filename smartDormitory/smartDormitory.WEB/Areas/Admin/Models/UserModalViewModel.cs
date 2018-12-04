@@ -5,10 +5,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models
     public class UserModalViewModel
     {
         [Required]
-        public string Id { get; set; }
-
-        [Required]
-        public string Role { get; set; }
+        public string Id { get; set; }        
 
         [Required]
         [DataType(DataType.Password)]
