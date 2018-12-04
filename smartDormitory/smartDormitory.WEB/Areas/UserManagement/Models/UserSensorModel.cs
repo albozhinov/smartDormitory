@@ -1,10 +1,6 @@
-﻿using smartDormitory.Data;
-using smartDormitory.Data.Models;
+﻿using smartDormitory.Data.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace smartDormitory.WEB.Areas.UserManagement.Models
 {
@@ -14,7 +10,8 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         {
             this.IcbSensorId = userSensor.Sensor.IcbSensorId;
             this.Tag = userSensor.Sensor.Tag;
-            this.Description = userSensor.Sensor.Description;
+            this.Name = userSensor.Name;
+            this.Description = userSensor.Description;
             this.PollingInterval = userSensor.PollingInterval;
             this.MeasureType = userSensor.Sensor.MeasureType;
             this.TimeStamp = userSensor.Sensor.TimeStamp;
@@ -28,6 +25,8 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         public string IcbSensorId { get; set; }
         
         public string Tag { get; set; }
+
+        public string Name { get; set; }
 
         public string Description { get; set; }
 

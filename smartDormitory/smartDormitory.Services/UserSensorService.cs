@@ -38,7 +38,7 @@ namespace smartDormitory.Services
                   .ToList();
         }
 
-        public void AddSensor(string userId, int sensorId, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
+        public void AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
         {
             if(userId == null)
             {
@@ -48,6 +48,21 @@ namespace smartDormitory.Services
             if(sensorId < 0)
             {
                 throw new ArgumentException("Sensor Id cannot be less than 0!");
+            }
+
+            if(name == null) 
+            {
+                throw new ArgumentNullException("Name cannot be null!");
+            }
+
+            if (name.Length < 3 || name.Length > 30)
+            {
+                throw new ArgumentException("Name must be between 3 and 30 symbols!");
+            }
+
+            if(description == null)
+            {
+                throw new ArgumentNullException("Description cannot be null!");
             }
 
             var sensor = this.context.Sensors
@@ -61,17 +76,17 @@ namespace smartDormitory.Services
 
             if(minValue < sensor[0].MinValue || minValue > sensor[0].MaxValue)
             {
-                throw new ArgumentException($"Minimal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}!");
+                throw new ArgumentException($"Minimal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}symbols!");
             }
 
             if (maxValue < sensor[0].MinValue || maxValue > sensor[0].MaxValue)
             {
-                throw new ArgumentException($"Maximal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}!");
+                throw new ArgumentException($"Maximal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue} symbols!");
             }
 
-            if(pollingInterval < 0)
+            if(pollingInterval < 10 || pollingInterval > 40)
             {
-                throw new ArgumentException("Polling interval cannot be less than 0!");
+                throw new ArgumentException("Polling interval must be between 10 and 40 symbols!");
             }
 
             if (latitude <= 0)
@@ -93,6 +108,8 @@ namespace smartDormitory.Services
             {
                 SensorId = sensorId,
                 UserId = userId,
+                Name = name,
+                Description = description,
                 MinValue = minValue,
                 MaxValue = maxValue,
                 PollingInterval = pollingInterval,

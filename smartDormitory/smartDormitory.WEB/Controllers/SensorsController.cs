@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using smartDormitory.Data;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -70,7 +68,6 @@ namespace smartDormitory.WEB.Controllers
                 Id = sensorId,
                 UserId = userId,
                 Tag = tag,
-                Description = description,
                 ValidationsMinMax = validationsMinMax         
             };
 
@@ -86,7 +83,7 @@ namespace smartDormitory.WEB.Controllers
                 return View(model);
             }
 
-            this.userSensorService.AddSensor(model.UserId, model.Id, model.MinValue, model.MaxValue,
+            this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
                  model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
 
             return RedirectToAction("Index", "Home");
