@@ -22,7 +22,7 @@ namespace smartDormitory.Services
         {
             return await this.context
                                     .Users
-                                    .Where(u => u.UserName.Contains(searchText, StringComparison.InvariantCulture))
+                                    .Where(u => u.UserName.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCulture))
                                     .Skip((page - 1) * pageSize)
                                     .Take(pageSize)
                                     .ToListAsync();

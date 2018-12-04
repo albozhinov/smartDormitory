@@ -143,7 +143,7 @@ a.disabled {
         background-color: lightgray;
     }
 
- /* Circular Progress Bar */
+/* Circular Progress Bar */
 
 #humidityProgressBar .progress {
     width: 150px;
@@ -323,13 +323,14 @@ a.disabled {
         margin-bottom: 20px;
     }
 }
-    }
 
-    /*Home page*/
+}
+
+/*Home page*/
 #allRegisterSensors {
-    border: 1px solid #38C974;
+    border: 1px solid black;
     border-radius: 5px;
-    background-color: #EAEAEA;
+    background-color: white;
 }
 
 /*body{
@@ -338,48 +339,85 @@ a.disabled {
     background-size: cover;
 }*/
 
-/* Tooltip container */
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
 
-    /* Tooltip text */
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-        /* Position the tooltip text */
+textarea {
+    resize: none;
+}
+
+/* Customize the label (the container) */
+#checkbox {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default checkbox */
+    #checkbox input {
         position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        /* Fade in tooltip */
         opacity: 0;
-        transition: opacity 0.3s;
+        cursor: pointer;
+        height: 0;
+        width: 0;
     }
 
-        /* Tooltip arrow */
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 30px;
+    border: 1px solid grey;
+    border-radius: 5px 5px;
+    background-color: #1A7EFB;
+}
 
-    /* Show the tooltip text when you mouse over the tooltip container */
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-    }
+/* On mouse-over, add a grey background color */
+#checkbox:hover input ~ .checkmark {
+    background-color: cornflowerblue;
+}
 
+/* When the checkbox is checked, add a blue background */
+#checkbox input:checked ~ .checkmark {
+    background-color: #1A7EFB;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+#checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+#checkbox .checkmark:after {
+    left: 10px;
+    top: 4px;
+    width: 10px;
+    height: 17px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+#mapp {
+    border: 1px solid #E8EBEE;
+    border-radius: 15px
+}
