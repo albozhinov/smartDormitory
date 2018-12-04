@@ -39,7 +39,7 @@ namespace smartDormitory.Services
         {
             return await this.context.UserSensors
                 .Where(us => us.UserId == id)
-                .Where(us => us.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                 .Include(s => s.Sensor)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)

@@ -68,7 +68,6 @@ namespace smartDormitory.WEB.Controllers
                 Id = sensorId,
                 UserId = userId,
                 Tag = tag,
-                Description = description,
                 ValidationsMinMax = validationsMinMax         
             };
 
@@ -84,7 +83,7 @@ namespace smartDormitory.WEB.Controllers
                 return View(model);
             }
 
-            this.userSensorService.AddSensor(model.UserId, model.Id, model.MinValue, model.MaxValue,
+            this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
                  model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
 
             return RedirectToAction("Index", "Home");

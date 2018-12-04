@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using smartDormitory.Data.Context;
 
 namespace smartDormitory.Data.Migrations
 {
     [DbContext(typeof(smartDormitoryDbContext))]
-    partial class smartDormitoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181204130646_Added_Description_To_UserSensors")]
+    partial class Added_Description_To_UserSensors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
