@@ -3,66 +3,100 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<div class="container">
-    <h1>Responsive Bootstrap</h1>
-    <div class="row">
-        <div class="col" style="padding:0px">
-            <div>@Model.Tag</div>
-            <div>@Model.Description</div>
-            <div>@Model.Value</div>
-            <div>@Model.IsPublic</div>
-        </div>
-
-        @if (Model.Value < Model.MinValue || Model.Value > Model.MaxValue)
+@{
+    string imageUrl = String.Empty;
+    var currentValue = "" + Model.Value;
+    if (Model.Tag.Contains("Door"))
+    {
+        imageUrl = "/images/doorSensor.png";
+        if (Model.Value == 0)
         {
-            <div class="col">danger</div>
+            currentValue = "Close";
         }
         else
         {
-            <div class="col container">
-                <div class="form-row my-5">
-                    
-                    <div class="col-lg-10">
-                        <div class="progress" style="height:2em;">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color:#FD8227; width: @((Model.Value - Model.MinValue)*100/(Model.MaxValue - Model.MinValue))%"> @Model.Value &#8451;</div>
+            currentValue = "Open";
+        }
+    }
 
+    else if (Model.Tag.Contains("Occupancy"))
+    {
+        imageUrl = "/images/occupancySensor.png";
+        if (Model.Value == 0)
+        {
+            currentValue = "False";
+        }
+        else
+        {
+            currentValue = "True";
+        }
+    }
+
+    else if (Model.Tag.Contains("Temperature"))
+    {
+        imageUrl = "/images/temperatureSensor.png";
+    }
+
+    else if (Model.Tag.Contains("Humidity"))
+    {
+        imageUrl = "/images/humiditySensor.png";
+    }
+
+    else if (Model.Tag.Contains("Electric"))
+    {
+        imageUrl = "/images/electricSensor.png";
+    }
+
+    else if (Model.Tag.Contains("Noise"))
+    {
+        imageUrl = "/images/noiseSensor.png";
+    }
+
+
+
+}
+
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src=@imageUrl alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Description</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">IsPublic: @Model.IsPublic</li>
+        <li class="list-group-item">Alarm:</li>
+        <li class="list-group-item"> @currentValue</li>
+        @if (Model.Value < Model.MinValue || Model.Value > Model.MaxValue)
+        {
+            <li class="list-group-item">danger</li>
+        }
+        else
+        {
+            <li class="list-group-item">
+                <div class="col container">
+                    <div class="form-row my-5">
+                        <div class="col-lg-10">
+                            <div class="progress" style="height:2em;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color:#FD8227; width: @((Model.Value - Model.MinValue)*100/(Model.MaxValue - Model.MinValue))%"> @Model.Value &#8451;</div>
+
+                            </div>
                         </div>
+
                     </div>
-
                 </div>
+            </li>
 
-            </div>
         }
 
+    </ul>
+    <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
     </div>
 </div>
 
-<div id="hui" class="container">
-    <div class="row">
-        <div class="col-md-3 col-sm-6">
-            <div class="progress blue">
-                <span class="progress-left">
-                    <span class="progress-bar"></span>
-                </span>
-                <span class="progress-right">
-                    <span class="progress-bar"></span>
-                </span>
-                <div class="progress-value">90%</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="progress yellow">
-                <span class="progress-left">
-                    <span class="progress-bar"></span>
-                </span>
-                <span class="progress-right">
-                    <span class="progress-bar"></span>
-                </span>
-                <div class="progress-value">65%</div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script>
     document.getElementById('humidityProgressBar');
