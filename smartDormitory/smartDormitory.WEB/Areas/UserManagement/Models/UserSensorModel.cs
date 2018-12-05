@@ -20,6 +20,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
             this.MaxValue = userSensor.MaxValue;
             this.ModifiedOn = userSensor.Sensor.ModifiedOn;
             this.IsPublic = userSensor.IsPublic;
+            this.Alarm = userSensor.Alarm;
         }
 
         public string IcbSensorId { get; set; }
@@ -52,5 +53,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         public DateTime? ModifiedOn { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public bool Alarm { get; set; }
     }
 }

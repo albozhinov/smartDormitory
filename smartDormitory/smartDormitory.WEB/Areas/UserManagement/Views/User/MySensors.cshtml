@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "MySensors";
 }
-
-@foreach (var userSensor in Model.UserSensors)
-{
-
-
-
-    <partial name="_MySensorGrid" for="@userSensor" />
-}
+<div class="row img-responsive" style="background-size:100% auto;">
+    @foreach (var userSensor in Model.UserSensors)
+    {
+        <div class="col-sm-3 p-3">
+            <partial name="_MySensorGrid" for="@userSensor" />
+        </div>
+    }
+</div>
 
 <script>
     function a() {

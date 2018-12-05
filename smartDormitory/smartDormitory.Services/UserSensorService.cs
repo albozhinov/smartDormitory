@@ -55,9 +55,9 @@ namespace smartDormitory.Services
                 throw new ArgumentNullException("Name cannot be null!");
             }
 
-            if (name.Length < 3 || name.Length > 30)
+            if (name.Length < 3 || name.Length > 20)
             {
-                throw new ArgumentException("Name must be between 3 and 30 symbols!");
+                throw new ArgumentException("Name must be between 3 and 20 symbols!");
             }
 
             if(description == null)

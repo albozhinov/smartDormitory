@@ -19,7 +19,7 @@ namespace smartDormitory.WEB.Models
         public int SensorId { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(20, MinimumLength = 3)]
         public string Name { get; set; }
 
         [Range(0,5000)]

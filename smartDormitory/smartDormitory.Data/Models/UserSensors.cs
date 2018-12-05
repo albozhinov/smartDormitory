@@ -21,7 +21,7 @@ namespace smartDormitory.Data.Models
         public Sensor Sensor { get; set; }
 
         [Required]
-        [Range(3,30)]
+        [Range(3,20)]
         public string Name { get; set; }
 
         [Required]
