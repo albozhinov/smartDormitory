@@ -3,62 +3,13 @@
     ViewData["Title"] = "_RegisterSensorMapPartial";
 }
 <html>
-<head>
-    <style>
-        /* Set the size of the div element that contains the map */
-        #mapp {
-            height: 400px; /* The height is 400 pixels */
-            width: 100%; /* The width is the width of the web page */
-        }
-    </style>
-</head>
 <body>
 
     <!--The div element for the map -->
-    <div id="mapp"></div>
-    <script>
-        function initMap() {
-            var myLatlng = new google.maps.LatLng(42.69, 23.32);
-            var myOptions = {
-                zoom: 5,
-                center: myLatlng
-            }
-
-            var map = new google.maps.Map(document.getElementById("mapp"), myOptions);
-            var geocoder = new google.maps.Geocoder();
-            var marker;
-
-            google.maps.event.addListener(map, 'click', function (event) {
-                geocoder.geocode({
-                    'latLng': event.latLng
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-
-                        var splittedLatLang = String(event.latLng).replace('(', '').replace(')', '').replace(' ', '').split(',');
-                        var latitudeInputValue = document.getElementById('latitude').value = splittedLatLang[0];
-                        var longitudeInputValue = document.getElementById('longtitude').value = splittedLatLang[1];
-
-                        latitudeInputValue = Number.parseFloat(splittedLatLang[0]);
-                        longitudeInputValue = Number.parseFloat(splittedLatLang[1]);
-
-                        var location = { lat: latitudeInputValue, lng: longitudeInputValue };
-
-                        if (marker == null) {
-                            marker = new google.maps.Marker({ position: location, map: map });
-                        }
-                        else {
-                            marker.setMap(null);
-                            marker = new google.maps.Marker({ position: location, map: map });
-                        }
-                    }
-                });
-            });
-        }
-    </script>
-
+    <div id="registerMap"></div>
  
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initialMap">
     </script>
 </body>
 </html>
