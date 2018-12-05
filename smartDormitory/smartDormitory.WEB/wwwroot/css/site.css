@@ -152,16 +152,10 @@ a.disabled {
 }
 
 /*body{
-    background: url(/images/1280px-Blank_Map_Pacific_World.svg.png);
+    background: url(/images/kisspng-information-technology-high-tech-silver-gear-background-vector-material-5a815646d6df68.8950274715184256708801.png);
     padding-top: 0px;
     background-size: cover;
 }*/
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
 
 textarea {
     resize: none;

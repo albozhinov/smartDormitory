@@ -41,9 +41,12 @@
                     <td>@user.Email</td>
                     <td>
                         <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                Tooltip on top
+                            </button>
                             <!--LOCK BUTTON-->
                             <div>
-                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id" @lockButtonDisabled><img src="~/images/icons8-lock-24.png" /></button>
+                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" title="Lock user" data-whatever="@user.UserName" data-user-id="@user.Id" @lockButtonDisabled><img src="~/images/icons8-lock-24.png" /></button>
                             </div>
 
                             <!--UNLOCK BUTTON-->
@@ -57,9 +60,9 @@
                             </div>
 
                             <!--ROLE BUTTON-->
-                                <div class="ml-2">
-                                    <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
-                                </div>
+                            <div class="ml-2">
+                                <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -90,3 +93,8 @@
         </li>
     </ul>
 </nav>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
