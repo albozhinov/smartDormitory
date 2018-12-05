@@ -380,17 +380,17 @@ textarea {
     width: 30px;
     border: 1px solid grey;
     border-radius: 5px 5px;
-    background-color: #1A7EFB;
+    background-color: #FD8227;
 }
 
 /* On mouse-over, add a grey background color */
 #checkbox:hover input ~ .checkmark {
-    background-color: cornflowerblue;
+    background-color: orange;
 }
 
 /* When the checkbox is checked, add a blue background */
 #checkbox input:checked ~ .checkmark {
-    background-color: #1A7EFB;
+    background-color: #FD8227;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -417,7 +417,23 @@ textarea {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
 #mapp {
     border: 1px solid #E8EBEE;
     border-radius: 15px
 }
+
+#registerSensorButton {
+    color: white;
+    border-color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #registerSensorButton:hover {
+        color: #FD8227;
+        background-color: white;
+        border-color: #FD8227;
+    }

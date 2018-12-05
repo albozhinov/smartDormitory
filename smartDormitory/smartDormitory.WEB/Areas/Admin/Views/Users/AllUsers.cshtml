@@ -67,14 +67,12 @@ $('#roleModal').on('show.bs.modal', function (event) {
     var modal = $(this);
 
     // Get current user's role!!!
-    $.post('@Url.Action("GetRole", "Users")', { Id: userId }, function gosho (data) {
+    $.post('@Url.Action("GetRole", "Users")', { Id: userId }, function (data) {
         modal.find('.modal-body').text('Current role: "' + data + '".');
-        //console.log(data);
         currRole = data;
-        var role = "";
 
         // Get all exists roles!!!
-        role = $.get('@Url.Action("GetAllExistsRoles", "Users")', function (data) {
+        $.get('@Url.Action("GetAllExistsRoles", "Users")', function (data) {
             data.forEach((value) => {
                 if (value.name != currRole) {
 
