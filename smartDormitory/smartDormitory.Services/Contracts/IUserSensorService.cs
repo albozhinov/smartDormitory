@@ -8,10 +8,16 @@ namespace smartDormitory.Services.Contracts
 {
     public interface IUserSensorService
     {
-        IEnumerable<UserSensors> GetAllUserSensors(int sensorId, string userId);
+        Task<IEnumerable<UserSensors>> GetAllUserSensorsByContainingTagAsync(string id, string searchText, int page = 1, int pageSize = 10);
 
         void AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
 
         Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync();
+
+        Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id, int page = 1, int pageSize = 10);
+
+        int TotalContainingText(string searchText);
+
+        int Total();
     }
 }
