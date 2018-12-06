@@ -12,7 +12,7 @@
 @section Scripts{
 
     <script>
-        jQuery.noConflict();
+jQuery.noConflict();
 $('#unlockModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var recipient = button.data('whatever') // Extract info from data-* attributes
@@ -81,7 +81,7 @@ $('#roleModal').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     modal.find('.modal-title').text('Change The ' + recipient + '\'s Role')
     modal.find('input[name="Id"]').val(userId)
-        });                 
+});
     </script>
 
     <partial name="_ValidationScriptsPartial" />
