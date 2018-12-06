@@ -100,7 +100,11 @@
                                         return function () {
                         infowindow.setContent(contentString);
                                             infowindow.open(map, marker);
-                                            setTimeout(function () { infowindow.close(); }, 10000);
+
+                                            google.maps.event.addListener(map, 'click', function () {
+                                                infowindow.close(map, marker);
+                                            });
+                                            setTimeout(function () { infowindow.close(); }, 5000);
                     };
                 })(marker, contentString, infowindow));
                     </text>

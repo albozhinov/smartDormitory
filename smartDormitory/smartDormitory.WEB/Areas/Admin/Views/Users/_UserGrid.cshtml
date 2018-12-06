@@ -40,25 +40,30 @@
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>
-                        <div class="btn-group">                            
+                        <div class="btn-group">
+
                             <!--LOCK BUTTON-->
-                            <div>
-                                <button type="button" class="btn p-1" id="lockButton" data-toggle="modal" data-target="#lockModal" title="Lock User" data-whatever="@user.UserName" data-user-id="@user.Id" @lockButtonDisabled><img src="~/images/icons8-lock-24.png" /></button>
+                            <div class="tooltip-inside">
+                                <button type="button" class="btn p-1 tooltip-inside" id="lockButton" data-toggle="modal" data-target="#lockModal" data-whatever="@user.UserName" data-user-id="@user.Id" @lockButtonDisabled><img src="~/images/icons8-lock-24.png" /></button>
+                                <span class="tooltiptext">Lock User</span>
                             </div>
 
                             <!--UNLOCK BUTTON-->
-                            <div class="ml-2">
-                                <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" title="Unlock User" data-whatever="@user.UserName" data-user-id="@user.Id" @unlockButtonDisabled><img src="~/images/icons8-padlock-24.png" /></button>
+                            <div class="tooltip-inside ml-2 ">
+                                <button type="button" class="btn p-1" id="unlockButton" data-toggle="modal" data-target="#unlockModal" data-whatever="@user.UserName" data-user-id="@user.Id" @unlockButtonDisabled><img src="~/images/icons8-padlock-24.png" /></button>
+                                <span class="tooltiptext">Unlock User</span>
                             </div>
 
                             <!--PASSWORD BUTTON-->
-                            <div class="ml-2">
-                                <button type="button" class="btn p-1" id="passwordButton" data-toggle="modal" data-target="#passwordModal" title="Change Password" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-password-1-24.png" /></button>
+                            <div class="tooltip-inside ml-2">
+                                <button type="button" class="btn p-1" id="passwordButton" data-toggle="modal" data-target="#passwordModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-password-1-24.png" /></button>
+                                <span class="tooltiptext">Change Password</span>
                             </div>
 
                             <!--ROLE BUTTON-->
-                            <div class="ml-2">
-                                <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" title="Change Role" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
+                            <div class="tooltip-inside ml-2">
+                                <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
+                                <span class="tooltiptext">Change Role</span>
                             </div>
                         </div>
                     </td>
