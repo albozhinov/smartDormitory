@@ -17,26 +17,7 @@ namespace smartDormitory.Services
         public UserSensorService(smartDormitoryDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public IEnumerable<UserSensors> GetAllUserSensors(int sensorId, string userId)
-        {
-            if(sensorId < 0)
-            {
-                throw new ArgumentException("Sensor Id cannot be less than 0!");
-            }
-
-            if(userId == null)
-            {
-                throw new ArgumentNullException("User Id cannot be null!");
-            }
-
-            return this.context.UserSensors
-                  .Where(s => s.SensorId == sensorId)
-                  .Include(s => s.Sensor)
-                  .Where(s => s.UserId == userId)
-                  .ToList();
-        }
+        }        
 
         public void AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
         {
@@ -131,6 +112,40 @@ namespace smartDormitory.Services
                                 .Include(u => u.User)
                                 .Include(s => s.Sensor)
                                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllUserSensorsByContainingTagAsync(string id, string searchText, int page = 1, int pageSize = 10)
+        {
+            return await this.context.UserSensors
+                .Where(us => us.UserId == id)
+                .Where(us => us.Name.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                .Include(s => s.Sensor)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id, int page = 1, int pageSize = 10)
+        {
+            return await this.context.UserSensors
+                .Where(us => us.UserId == id)
+                .Include(s => s.Sensor)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public int TotalContainingText(string searchText)
+        {
+            return this.context.UserSensors
+                .Where(s => s.Sensor.Tag.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                .ToList()
+                .Count();
+        }
+
+        public int Total()
+        {
+            return this.context.UserSensors.Count();
         }
     }
 }

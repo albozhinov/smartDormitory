@@ -17,12 +17,14 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
+        private readonly IUserSensorService userSensorService;
         private readonly UserManager<User> userManager;
         private readonly int Page_Size = 10;
 
-        public UserController(IUserService userService, UserManager<User> userManager)
+        public UserController(IUserService userService, IUserSensorService userSensorService , UserManager<User> userManager)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
@@ -32,15 +34,15 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             IEnumerable<UserSensors> userSensors = new List<UserSensors>();
             if (userSensorsModel.SearchText == null || userSensorsModel.SearchText == "")
             {
-                userSensors = await this.userService.GetAllUserSensorsAsync(userManager.GetUserId(User), userSensorsModel.Page, Page_Size);
-                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userService.Total() / (double)Page_Size);
+                userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User), userSensorsModel.Page, Page_Size);
+                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userSensorService.Total() / (double)Page_Size);
             }
 
             else
             {
                
-                userSensors = await this.userService.GetAllUserSensorsByContainingTagAsync(userManager.GetUserId(User), userSensorsModel.SearchText, userSensorsModel.Page, 10);
-                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userService.TotalContainingText(userSensorsModel.SearchText) / (double)10);
+                userSensors = await this.userSensorService.GetAllUserSensorsByContainingTagAsync(userManager.GetUserId(User), userSensorsModel.SearchText, userSensorsModel.Page, 10);
+                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userSensorService.TotalContainingText(userSensorsModel.SearchText) / (double)10);
             }
 
             userSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));

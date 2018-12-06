@@ -3,18 +3,4 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div class="container">
-    <div class="row">
-        <div class="col-sm p-md-4" id="allRegisterSensors">
-            <img src="~/images/icons8-cellular-network-48.png" />
-           <span class="pl-md-5"><b>@Model.Count() public sensors</b></span>
-        </div>
-        <div class="col-sm p-md-4"> 
-            One of three columns
-        </div>
-        <div class="col-sm p-md-4">
-            One of three columns
-        </div>
-    </div>
-</div>
 <partial name="_MapPartial" model="@Model" />
