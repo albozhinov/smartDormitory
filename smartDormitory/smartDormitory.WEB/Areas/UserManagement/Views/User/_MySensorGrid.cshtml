@@ -4,6 +4,25 @@
 *@
 
 @{
+    var dictModel = new Dictionary<string, string>
+{
+        {"IcbSensorId", "" + @Model.IcbSensorId },
+        {"Tag", "" + @Model.Tag },
+        {"Name", "" + @Model.Name },
+        {"Description", "" + @Model.Description },
+        {"PollingInterval", "" + @Model.PollingInterval },
+        {"MeasureType", "" + @Model.MeasureType },
+        {"TimeStamp", "" + @Model.TimeStamp },
+        {"Value", "" + @Model.Value },
+        {"MinValue", "" + @Model.MinValue },
+        {"MaxValue", "" + @Model.MaxValue },
+        {"ModifiedOn", "" + @Model.ModifiedOn },
+        {"IsPublic", "" + @Model.IsPublic },
+        {"Alarm", "" + @Model.Alarm },
+        {"Latitude", "" + @Model.Latitude },
+        {"Longtitude", "" + @Model.Longtitude }
+
+};
     string imageUrl = String.Empty;
     var currentValue = "" + Model.Value;
     if (Model.Tag.Contains("Door"))
@@ -53,6 +72,10 @@
     }
 }
 
+<div>
+    <input asp-for="Latitude" type="hidden" value="@Model.Latitude" />
+    <input asp-for="Longtitude" type="hidden" value="@Model.Longtitude" />
+</div>
 
 <div class="card" style="width:17rem;">
     <img class="card-img-top" src=@imageUrl style="height:13rem;" alt="Card image cap">
@@ -109,8 +132,9 @@
             Last Update: @Model.ModifiedOn
         </li>
 
+        <li class="list-group-item">
+            <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2 my-sm-0" id="adminDashboardButtnon">Modify</a>
+        </li>
+
     </ul>
-    <div class="card-body">
-        <input class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon" value="Modify" />
-    </div>
 </div>

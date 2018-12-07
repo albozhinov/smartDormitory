@@ -19,6 +19,16 @@ function initialMap() {
     var map = new google.maps.Map(document.getElementById("registerMap"), myOptions);
     var geocoder = new google.maps.Geocoder();
     var marker;
+    var latitudeInputValue = document.getElementById('latitude');
+    var longitudeInputValue = document.getElementById('longtitude');
+    var location;
+
+    if (latitudeInputValue != "" && longitudeInputValue.value != "") {
+        latitudeInputValue = Number.parseFloat(latitudeInputValue.value);
+        longitudeInputValue = Number.parseFloat(longitudeInputValue.value);
+        location = { lat: latitudeInputValue, lng: longitudeInputValue };
+        marker = new google.maps.Marker({ position: location, map: map });
+    }
 
     google.maps.event.addListener(map, 'click', function (event) {
         geocoder.geocode({
@@ -27,13 +37,13 @@ function initialMap() {
             if (status == google.maps.GeocoderStatus.OK) {
 
                 var splittedLatLang = String(event.latLng).replace('(', '').replace(')', '').replace(' ', '').split(',');
-                var latitudeInputValue = document.getElementById('latitude').value = splittedLatLang[0];
-                var longitudeInputValue = document.getElementById('longtitude').value = splittedLatLang[1];
+                latitudeInputValue = document.getElementById('latitude').value = splittedLatLang[0];
+                longitudeInputValue = document.getElementById('longtitude').value = splittedLatLang[1];
 
                 latitudeInputValue = Number.parseFloat(splittedLatLang[0]);
                 longitudeInputValue = Number.parseFloat(splittedLatLang[1]);
 
-                var location = { lat: latitudeInputValue, lng: longitudeInputValue };
+                location = { lat: latitudeInputValue, lng: longitudeInputValue };
 
                 if (marker == null) {
                     marker = new google.maps.Marker({ position: location, map: map });
