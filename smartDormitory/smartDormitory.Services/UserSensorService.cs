@@ -17,21 +17,21 @@ namespace smartDormitory.Services
         public UserSensorService(smartDormitoryDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-        }        
+        }
 
         public void AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
         {
-            if(userId == null)
+            if (userId == null)
             {
                 throw new ArgumentNullException("User Id cannot be null!");
             }
 
-            if(sensorId < 0)
+            if (sensorId < 0)
             {
                 throw new ArgumentException("Sensor Id cannot be less than 0!");
             }
 
-            if(name == null) 
+            if (name == null)
             {
                 throw new ArgumentNullException("Name cannot be null!");
             }
@@ -41,7 +41,7 @@ namespace smartDormitory.Services
                 throw new ArgumentException("Name must be between 3 and 20 symbols!");
             }
 
-            if(description == null)
+            if (description == null)
             {
                 throw new ArgumentNullException("Description cannot be null!");
             }
@@ -50,12 +50,12 @@ namespace smartDormitory.Services
                 .Where(s => s.Id == sensorId)
                 .ToList();
 
-            if(sensor == null || sensor.Count < 1)
+            if (sensor == null || sensor.Count < 1)
             {
                 throw new ArgumentNullException($"Sensor with Id {sensorId} does not exist!");
             }
 
-            if(minValue < sensor[0].MinValue || minValue > sensor[0].MaxValue)
+            if (minValue < sensor[0].MinValue || minValue > sensor[0].MaxValue)
             {
                 throw new ArgumentException($"Minimal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}symbols!");
             }
@@ -65,7 +65,7 @@ namespace smartDormitory.Services
                 throw new ArgumentException($"Maximal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue} symbols!");
             }
 
-            if(pollingInterval < 10 || pollingInterval > 40)
+            if (pollingInterval < 10 || pollingInterval > 40)
             {
                 throw new ArgumentException("Polling interval must be between 10 and 40 symbols!");
             }
@@ -114,6 +114,18 @@ namespace smartDormitory.Services
                                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<double>> GetSensorsTypeMinMaxValues(string tag)
+        {
+            var minMax = await this.context.Sensors
+                .Where(s => s.Tag.Contains(tag.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                .Select(s => new
+                {
+                    s.MinValue,
+                    s.MaxValue
+                })
+               .ToListAsync();
+
+            return new List<double>{minMax[0].MinValue, minMax[0].MaxValue };
         public async Task<IEnumerable<UserSensors>> GetAllUserSensorsByContainingTagAsync(string id, string searchText, int page = 1, int pageSize = 10)
         {
             return await this.context.UserSensors

@@ -21,7 +21,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         private readonly UserManager<User> userManager;
         private readonly int Page_Size = 10;
 
-        public UserController(IUserService userService, IUserSensorService userSensorService , UserManager<User> userManager)
+        public UserController(IUserService userService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
@@ -32,22 +32,22 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         public async Task<IActionResult> MySensors(UserAllSensorsModel userSensorsModel)
         {
             IEnumerable<UserSensors> userSensors = new List<UserSensors>();
-            if (userSensorsModel.SearchText == null || userSensorsModel.SearchText == "")
-            {
-                userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User), userSensorsModel.Page, Page_Size);
-                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userSensorService.Total() / (double)Page_Size);
-            }
-
-            else
-            {
-               
-                userSensors = await this.userSensorService.GetAllUserSensorsByContainingTagAsync(userManager.GetUserId(User), userSensorsModel.SearchText, userSensorsModel.Page, 10);
-                userSensorsModel.TotalPages = (int)Math.Ceiling(this.userSensorService.TotalContainingText(userSensorsModel.SearchText) / (double)10);
-            }
-
+            userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             userSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
             return View(userSensorsModel);
+        }
+
+
+        public async Task<IActionResult> ModifySensor(UserSensorModel mySensorModel)
+        {
+            var sensorMinMaxValuesList = new List<double>(await this.userSensorService.GetSensorsTypeMinMaxValues(mySensorModel.Tag));
+
+            mySensorModel.SensorTypeMinVal = sensorMinMaxValuesList[0];
+
+            mySensorModel.SensorTypeMaxVal = sensorMinMaxValuesList[1];
+
+            return View(mySensorModel);
         }
     }
 }
