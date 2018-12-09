@@ -8,7 +8,6 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -24,19 +23,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto my-auto">
                 <li class="nav-item active">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home <span class="sr-only">(current)</span></a>
-                </li>               
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link text-light">Home <span class="sr-only">(current)</span></a>
+                </li>
 
                 <li class="nav-item">
-                    <a asp-area="" asp-controller="Sensors" asp-action="AllSensorTypes" class="nav-link">Sensors</a>
+                    <a asp-area="" asp-controller="Sensors" asp-action="AllSensorTypes" class="nav-link text-light">Sensors</a>
                 </li>
             </ul>
 
             @{if (User.IsInRole("Admin"))
                 {
-                    <form asp-area="Admin" asp-controller="Users" asp-action="AllUsers" class="mr-3">
-                        <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Admin Dashboard</button>
-                    </form>
+                    <div class="dropdown">
+                        <button class="btn my-md-0 my-md-0 mr-md-2 dropdown-toggle" data-toggle="dropdown" type="button" id="adminDashboardButtnon">Admin Dashboard</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="AllUsers">Manage Users</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Sensors" asp-action="AllSensors">Manage Sensors</a>
+                        </div>
+                    </div>
+
                 }}
             <partial name="_LoginPartial" />
         </div>
@@ -46,10 +51,12 @@
 
     <div class="container body-content">
         <br />
+        <br />
+        <br />
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - smartDormitory.WEB</p>
+            <p class="text-muted">&copy; 2018 - smartDormitory.WEB</p>
         </footer>
     </div>
 
@@ -78,5 +85,38 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
+
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">
+            ❄
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        <div class="snowflake">
+            ❄
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        <div class="snowflake">
+            ❄
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        <div class="snowflake">
+            ❄
+        </div>
+    </div>
 </body>
 </html>

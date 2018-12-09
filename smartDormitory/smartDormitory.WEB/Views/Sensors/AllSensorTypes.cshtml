@@ -3,37 +3,36 @@
     ViewData["Title"] = "AllSensorTypes";
 }
 
+<h2 class="text-light">AllSensorTypes</h2>
+
 @{
     var previousDisabled = Model.Page == 1 ? "disabled" : string.Empty;
     var nextDisabled = Model.Page == Model.TotalPages ? "disabled" : string.Empty;
 }
 
-<h2>AllSensorTypes</h2>
-
-
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-light">
     <form asp-action="AllSensorTypes" asp-controller="Sensors" method="GET" class="form-inline">
         <input asp-for="@Model.SearchText" class="form-control mr-sm-2" type="search" placeholder="Search sensor" aria-label="Search">
         <button id="adminDashboardButtnon" class="btn btn-outline my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
 
-<table class="table table-responsive-md table-striped table-bordered table-hover">
+<table class="table table-responsive-md table-hover text-light">
     <thead>
-        <tr class="text-center">
+        <tr class="text-md-center">
             <th><label>Number</label></th>
             <th><label>Tag</label></th>
-            <th><label>Description</label></th>
+            <th class="w-25"><label>Description</label></th>
             <th><label>MeasureType</label></th>
             <th><label>Value</label></th>
-            <th><label>ModifiedOn</label></th>
+            <th class="w-25"><label>ModifiedOn</label></th>
             <th><label>Register Sensor</label></th>
         </tr>
     </thead>
     <tbody>
         @if (Model.Sensors.Count() == 0)
         {
-            <tr>
+            <tr class="text-md-center">
                 <td colspan="7">No data available in table</td>
             </tr>
         }
@@ -42,21 +41,21 @@
             int counter = 1;
             @foreach (var sensor in Model.Sensors)
             {
-                <tr>
+                <tr class="text-md-center">
                     <td>@counter</td>
                     <td class="sorting_1">@sensor.Tag</td>
-                    <td>@sensor.Description</td>
+                    <td class="w-25">@sensor.Description</td>
                     <td>@sensor.MeasureType.Type</td>
                     <td>@sensor.Value</td>
-                    <td>@sensor.ModifiedOn</td>
-                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-tag="@sensor.Tag" asp-route-description="@sensor.Description" class="btn" id="registerButton">Register</a></td>
+                    <td class="w-25">@sensor.ModifiedOn</td>
+                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-tag="@sensor.Tag" asp-route-description="@sensor.Description" asp- class="btn" id="registerButton">Register</a></td>
 
                 </tr>
                 counter++;
             }
         }
 
-    </tbody>  
+    </tbody>
 </table>
 
 <nav aria-label="Page navigation example" align="center">
@@ -79,3 +78,4 @@
         </li>
     </ul>
 </nav>
+

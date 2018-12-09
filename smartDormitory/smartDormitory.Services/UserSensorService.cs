@@ -70,15 +70,15 @@ namespace smartDormitory.Services
                 throw new ArgumentException("Polling interval must be between 10 and 40 symbols!");
             }
 
-            if (latitude <= 0)
-            {
-                throw new ArgumentException("Latitude cannot be less than 0!");
-            }
+            //if (latitude <= 0)
+            //{
+            //    throw new ArgumentException("Latitude cannot be less than 0!");
+            //}
 
-            if (longitude <= 0)
-            {
-                throw new ArgumentException("Longitude cannot be less than 0!");
-            }
+            //if (longitude <= 0)
+            //{
+            //    throw new ArgumentException("Longitude cannot be less than 0!");
+            //}
 
             if (sensor == null)
             {
@@ -118,7 +118,7 @@ namespace smartDormitory.Services
         {
             return await this.context.UserSensors
                 .Where(us => us.UserId == id)
-                .Where(us => us.Name.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                 .Include(s => s.Sensor)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -138,7 +138,7 @@ namespace smartDormitory.Services
         public int TotalContainingText(string searchText)
         {
             return this.context.UserSensors
-                .Where(s => s.Sensor.Tag.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                 .ToList()
                 .Count();
         }
@@ -146,6 +146,35 @@ namespace smartDormitory.Services
         public int Total()
         {
             return this.context.UserSensors.Count();
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id)
+        {
+            return await this.context.UserSensors
+                                     .Where(s => s.UserId == id && !s.IsPublic)
+                                     .Include(u => u.User)
+                                     .Include(s => s.Sensor)
+                                     .ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllUsersSensorsAsync(string searchByName, string searchByTag, int page = 1, int pageSize = 10)
+        {
+            return await this.context.UserSensors
+                .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase))
+                .Include(s => s.Sensor)
+                .Include(u => u.User)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public int TotalByName(string textName)
+        {
+            return this.context.UserSensors.Where(s => s.User.UserName
+                                               .Contains(textName, StringComparison.InvariantCultureIgnoreCase))
+                                           .Include(s => s.User)
+                                           .Count();
         }
     }
 }

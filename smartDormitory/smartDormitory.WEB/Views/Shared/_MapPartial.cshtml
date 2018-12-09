@@ -16,10 +16,11 @@
 </head>
 <body>
     <div>
-        <h3>All public sensors all over the world</h3>
+        <h3 class="text-light">All public sensors all over the world</h3>
     </div>
     <!--The div element for the map -->
     <div id="map"></div>
+    <script src="~/js/markerCluster/markerclusterer.js"></script>
     <script>
         // Initialize and add the map
         function initMap() {
@@ -28,6 +29,7 @@
             // The map, centered at Sofia
             var map = new google.maps.Map(
                 document.getElementById('map'), { zoom: 3.7, center: sofia });
+            var markers = [];
 
             @{
                         string symbol = "";
@@ -94,8 +96,8 @@
 
                         var marker = new google.maps.Marker({
                                 position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
-                            });
-
+            });
+            markers.push(marker);
                             google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
                                         return function () {
                         infowindow.setContent(contentString);
@@ -110,6 +112,8 @@
                     </text>
                 }
             }
+            console.log(markers);
+            var markerCluster = new MarkerClusterer(map, markers,);
         }
     </script>
     <script async defer

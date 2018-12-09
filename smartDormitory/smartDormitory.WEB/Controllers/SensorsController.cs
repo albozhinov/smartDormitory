@@ -54,7 +54,7 @@ namespace smartDormitory.WEB.Controllers
             }
 
             return View(model);
-        }
+        }       
 
         [Authorize]
         [HttpGet]

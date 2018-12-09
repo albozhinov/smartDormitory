@@ -14,10 +14,16 @@ namespace smartDormitory.Services.Contracts
 
         Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync();
 
+        Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id);
+
         Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id, int page = 1, int pageSize = 10);
+
+        Task<IEnumerable<UserSensors>> GetAllUsersSensorsAsync(string searchByName, string searchByTag, int page = 1, int pageSize = 10);
 
         int TotalContainingText(string searchText);
 
         int Total();
+
+        int TotalByName(string textName);
     }
 }

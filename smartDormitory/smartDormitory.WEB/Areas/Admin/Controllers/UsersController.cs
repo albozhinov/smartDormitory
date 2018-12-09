@@ -34,16 +34,30 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
         public async Task<IActionResult> AllUsers(AllUsersViewModel viewModel)
         {
             var isTextNull = viewModel.SearchText ?? "";
+
+            var users = await this.userService.GetUsersAsync(isTextNull, 1, Page_Size);
+            viewModel.Users = users.Select(u => new UserViewModel(u));
+
+            var totalUsers = await this.userService.GetTotalUserAsync(isTextNull);
+
+            viewModel.TotalPages = (int)Math.Ceiling(totalUsers / (double)Page_Size);
+
+            return View(viewModel);
+        }
+                
+        public async Task<IActionResult> UserGrid(AllUsersViewModel viewModel)
+        {
+            var isTextNull = viewModel.SearchText ?? "";
             var users = await this.userService.GetUsersAsync(isTextNull, viewModel.Page, Page_Size);
-            
+
             viewModel.Users = users.Select(u => new UserViewModel(u));
             var totalUsers = await this.userService.GetTotalUserAsync(isTextNull);
 
             viewModel.TotalPages = (int)Math.Ceiling(totalUsers / (double)Page_Size);
-            viewModel.StatusMessage = StatusMessage;            
 
-            return View(viewModel);
-        }       
+            
+            return PartialView("_UserGrid", viewModel);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

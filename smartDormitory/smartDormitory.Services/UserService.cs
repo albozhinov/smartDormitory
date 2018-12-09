@@ -22,7 +22,7 @@ namespace smartDormitory.Services
         {
             return await this.context
                                     .Users
-                                    .Where(u => u.UserName.ToLower().Contains(searchText.ToLower(), StringComparison.InvariantCulture))
+                                    .Where(u => u.UserName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                     .Skip((page - 1) * pageSize)
                                     .Take(pageSize)
                                     .ToListAsync();
@@ -30,8 +30,8 @@ namespace smartDormitory.Services
         public async Task<int> GetTotalUserAsync(string searchText)
         {
             return await this.context.Users
-                                     .Where(u => u.UserName.ToLower()
-                                        .Contains(searchText.ToLower(), StringComparison.InvariantCulture))
+                                     .Where(u => u.UserName
+                                        .Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                      .CountAsync();
         }        
     }
