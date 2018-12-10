@@ -123,17 +123,17 @@
     <nav aria-label="Page navigation example" align="center">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link @previousDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.PreviousPage" aria-label="Previous">
+                <a class="page-link @previousDisabled" href="/Admin/Sensors/SensorGrid/?searchtext=@Model.SearchByName&page=@Model.PreviousPage" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">Previous</span>
                 </a>
             </li>
             @for (int i = 1; i <= Model.TotalPages; i++)
             {
-                <li class="page-item"><a class="page-link" href="/Admin/Sensors/AllSensors?searchtext=@Model.SearchByName&page=@i">@i</a></li>
+                <li class="page-item"><a class="page-link" href="/Admin/Sensors/SensorGrid?searchtext=@Model.SearchByName&page=@i">@i</a></li>
             }
             <li class="page-item">
-                <a class="page-link @nextDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.NextPage" aria-label="Next">
+                <a class="page-link @nextDisabled" href="/Admin/Sensors/SensorGrid/?searchtext=@Model.SearchByName&page=@Model.NextPage" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Next</span>
                 </a>
