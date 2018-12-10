@@ -76,16 +76,19 @@
     <input asp-for="Latitude" type="hidden" value="@Model.Latitude" />
     <input asp-for="Longtitude" type="hidden" value="@Model.Longtitude" />
 </div>
+@{ string isPublic = Model.IsPublic ? "On" : "Off";
+    string alarm = Model.Alarm ? "On" : "Off";
+    }
 
-<div class="card" style="width:17rem;">
+<div class="card">
     <img class="card-img-top" src=@imageUrl style="height:13rem;" alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.Description</p>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">IsPublic: @Model.IsPublic</li>
-        <li class="list-group-item">Alarm: @Model.Alarm</li>
+        <li class="list-group-item">Public: @isPublic</li>
+        <li class="list-group-item">Alarm: @alarm</li>
         <li class="list-group-item">Value: @currentValue</li>
         @if (Model.Value < Model.MinValue || Model.Value > Model.MaxValue)
         {
@@ -128,13 +131,11 @@
             }
         }
 
-        <li class="list-group-item">
-            Last Update: @Model.ModifiedOn
-        </li>
-
-        <li class="list-group-item">
+        <li class="list-group-item text-center">
             <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2 my-sm-0" id="adminDashboardButtnon">Modify</a>
         </li>
-
     </ul>
+    <div class="card-footer">
+        <small class="text-muted">Last updated @Model.ModifiedOn</small>
+    </div>
 </div>

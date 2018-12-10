@@ -19,7 +19,7 @@ namespace smartDormitory.Services
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
+        public async Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
         {
             if (userId == null)
             {
@@ -46,44 +46,27 @@ namespace smartDormitory.Services
                 throw new ArgumentNullException("Description cannot be null!");
             }
 
-            var sensor = this.context.Sensors
-                .Where(s => s.Id == sensorId)
-                .ToList();
+            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);                
 
-            if (sensor == null || sensor.Count < 1)
+            if (sensor is null)
             {
                 throw new ArgumentNullException($"Sensor with Id {sensorId} does not exist!");
             }
 
-            if (minValue < sensor[0].MinValue || minValue > sensor[0].MaxValue)
+            if (minValue < sensor.MinValue || minValue > sensor.MaxValue)
             {
-                throw new ArgumentException($"Minimal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue}symbols!");
+                throw new ArgumentException($"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
             }
 
-            if (maxValue < sensor[0].MinValue || maxValue > sensor[0].MaxValue)
+            if (maxValue < sensor.MinValue || maxValue > sensor.MaxValue)
             {
-                throw new ArgumentException($"Maximal value must be between {sensor[0].MinValue} and {sensor[0].MaxValue} symbols!");
+                throw new ArgumentException($"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
             }
 
             if (pollingInterval < 10 || pollingInterval > 40)
             {
-                throw new ArgumentException("Polling interval must be between 10 and 40 symbols!");
-            }
-
-            //if (latitude <= 0)
-            //{
-            //    throw new ArgumentException("Latitude cannot be less than 0!");
-            //}
-
-            //if (longitude <= 0)
-            //{
-            //    throw new ArgumentException("Longitude cannot be less than 0!");
-            //}
-
-            if (sensor == null)
-            {
-                throw new ArgumentNullException("Sensor does not exist!");
-            }
+                throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
+            }                 
 
             var newUserSensor = new UserSensors
             {
@@ -125,25 +108,14 @@ namespace smartDormitory.Services
                 })
                .ToListAsync();
 
-            return new List<double>{minMax[0].MinValue, minMax[0].MaxValue };
-        public async Task<IEnumerable<UserSensors>> GetAllUserSensorsByContainingTagAsync(string id, string searchText, int page = 1, int pageSize = 10)
-        {
-            return await this.context.UserSensors
-                .Where(us => us.UserId == id)
-                .Where(us => us.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
-                .Include(s => s.Sensor)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            return new List<double> { minMax[0].MinValue, minMax[0].MaxValue };
         }
 
-        public async Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id, int page = 1, int pageSize = 10)
+        public async Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id)
         {
             return await this.context.UserSensors
                 .Where(us => us.UserId == id)
                 .Include(s => s.Sensor)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
         }
 
@@ -187,6 +159,73 @@ namespace smartDormitory.Services
                                                .Contains(textName, StringComparison.InvariantCultureIgnoreCase))
                                            .Include(s => s.User)
                                            .Count();
+        }
+
+        public async Task EditSensor(int userSensorId, string icbSensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
+        {   
+
+            if (userSensorId <= 0 )
+            {
+                throw new ArgumentException("Sensor Id cannot be less or equal 0!");
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("Name cannot be null!");
+            }
+
+            if (name.Length < 3 || name.Length > 20)
+            {
+                throw new ArgumentException("Name must be between 3 and 20 symbols!");
+            }
+
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentNullException("Description cannot be null!");
+            }
+
+            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == icbSensorId);               
+
+            if (sensor is null)
+            {
+                throw new ArgumentNullException($"ICB Sensor with Id {icbSensorId} does not exist!");
+            }
+
+            if (minValue < sensor.MinValue || minValue > sensor.MaxValue)
+            {
+                throw new ArgumentException($"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
+            }
+
+            if (maxValue < sensor.MinValue || maxValue > sensor.MaxValue)
+            {
+                throw new ArgumentException($"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
+            }
+
+            if (pollingInterval < 10 || pollingInterval > 40)
+            {
+                throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
+            }
+
+            var userSensorToUpdate = await this.context.UserSensors.FirstOrDefaultAsync(s => s.Id == userSensorId);
+
+            if (userSensorToUpdate is null)
+            {
+                throw new ArgumentNullException("Error: Sensor not found!");
+            }
+
+
+            userSensorToUpdate.Name = name;
+            userSensorToUpdate.Description = description;
+            userSensorToUpdate.MinValue = minValue;
+            userSensorToUpdate.MaxValue = maxValue;
+            userSensorToUpdate.PollingInterval = pollingInterval;
+            userSensorToUpdate.Latitude = latitude;
+            userSensorToUpdate.Longitude = longitude;
+            userSensorToUpdate.IsPublic = isPublic;
+            userSensorToUpdate.Alarm = alarm;        
+
+            this.context.UserSensors.Update(userSensorToUpdate);
+            this.context.SaveChanges();
         }
     }
 }

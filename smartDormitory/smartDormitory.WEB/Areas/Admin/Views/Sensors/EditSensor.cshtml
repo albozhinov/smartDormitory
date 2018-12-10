@@ -1,9 +1,6 @@
-﻿@model UserSensorModel
-@{
-    ViewData["Title"] = "ModifySensor";
-}
+﻿@model SensorViewModel
 
-<h2 class="text-light">ModifySensor</h2>
+<h2 class="text-light">Edit Sensor</h2>
 @{
     string imageUrl = String.Empty;
     var currentValue = "" + Model.Value;
@@ -54,7 +51,7 @@
     }
 }
 
-<form asp-controller="Sensors" asp-action="RegisterSensor" method="post">
+<form asp-area="Admin" asp-controller="Sensors" asp-action="EditSensorPost" method="post">
     <div class="row">
         <div class="col-md-4">
             <div class="card" style="width:20rem;">
@@ -122,8 +119,13 @@
                         </div>
                     </li>
                     <li class="list-group-item text-center">
+                        <div class="text-hide">
+                            <input asp-for="@Model.IcbSensorId" type="hidden" value="@Model.IcbSensorId" />
+                            <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+                            <input asp-for="@Model.Tag" type="hidden" value="@Model.Tag" />
+                        </div>
                         <button type="submit" class="btn" id="registerSensorButton">
-                            Update
+                            Apply
                         </button>
                     </li>
                 </ul>

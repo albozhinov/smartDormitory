@@ -4,6 +4,20 @@
     ViewData["Title"] = "AllSensors";
 }
 
-<h2>AllSensors</h2>
+<h2 class="text-light">AllSensors</h2>
 
 <partial name="_SensorGrid" model="@Model" />
+
+@*<script>
+        $(document).on("click", ".page-item a", function () {
+            $.ajax({
+                url: $(this).attr("href"),                
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+            return false;
+        });
+</script>*@

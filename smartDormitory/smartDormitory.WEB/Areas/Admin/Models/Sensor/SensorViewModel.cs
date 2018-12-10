@@ -9,26 +9,36 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
 {
     public class SensorViewModel
     {
+        public SensorViewModel()
+        {
+
+        }
+
         public SensorViewModel(UserSensors userSensors)
         {
             this.Id = userSensors.Id;
+            this.IcbSensorId = userSensors.Sensor.IcbSensorId;
             this.Name = userSensors.Name;
             this.UserName = userSensors.User.UserName;
             this.Description = userSensors.Description;
             this.Tag = userSensors.Sensor.Tag;
             this.Value = userSensors.Sensor.Value;
+            this.PollingInterval = userSensors.PollingInterval;
             this.ModifiedOn = userSensors.Sensor.ModifiedOn;
             this.Alarm = userSensors.Alarm;
             this.Latitude = userSensors.Latitude;
             this.Longtitude = userSensors.Longitude;
             this.URL = userSensors.Sensor.Url;
+            this.IsPublic = userSensors.IsPublic;
+            this.MinValue = userSensors.MinValue;
+            this.MaxValue = userSensors.MaxValue;
         }
-        
+        [Required]
         public int Id { get; set; }
 
         public string UserId { get; set; }
-
-        public int SensorId { get; set; }
+        [Required]
+        public string IcbSensorId { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
@@ -41,6 +51,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
         public double MaxValue { get; set; }
 
         [Required]
+        [StringLength(150, MinimumLength = 5)]
         public string Description { get; set; }
 
         [Required]
@@ -70,5 +81,9 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
         public double Value { get; set; }
 
         public string URL { get; set; }
+
+        public double SensorTypeMinVal { get; set; }
+
+        public double SensorTypeMaxVal { get; set; }
     }
 }

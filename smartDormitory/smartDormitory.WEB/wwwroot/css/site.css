@@ -5,6 +5,19 @@ for details on configuring this project to bundle and minify static web assets. 
 .navbar {
     background-color: none;
 }
+
+#navigationBar .nav-link {
+    color: white;
+}
+
+#navigationBar.scrolled {
+    background-color: #F1F3F4 !important;
+    transition: background-color 200ms linear;
+}
+
+    #navigationBar.scrolled .nav-link {
+        color: black;
+    }
 /*Page title*/
 #title {
     font-weight: bold;
@@ -151,7 +164,7 @@ a.disabled {
     background-color: white;
 }
 
-body{
+body {
     background: url(/images/home-banner.jpg);
     padding-top: 0px;
     background-size: cover;
@@ -559,3 +572,10 @@ textarea {
         -webkit-animation-delay: 3s,1.5s;
         animation-delay: 3s,1.5s
     }
+
+.card {
+    width: 17rem;
+}
+.card-img-top {
+    background-color: #DDE0E5;
+}

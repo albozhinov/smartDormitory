@@ -76,14 +76,15 @@ namespace smartDormitory.WEB.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult RegisterSensor(UserSensorViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterSensor(UserSensorViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return View(model);
             }
 
-            this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
+            await this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
                  model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
 
             return RedirectToAction("Index", "Home");

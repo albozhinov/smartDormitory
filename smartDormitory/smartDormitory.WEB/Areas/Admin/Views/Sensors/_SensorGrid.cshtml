@@ -7,99 +7,138 @@
     var previousDisabled = Model.Page == 1 ? "disabled" : string.Empty;
     var nextDisabled = Model.Page == Model.TotalPages ? "disabled" : string.Empty;
 }
+<div id="content">
+    <nav class="navbar navbar-expand-md">
+        <form asp-area="Admin" asp-action="AllSensors" asp-controller="Sensors" method="GET" class="form-inline">
+            <input asp-for="@Model.SearchByName" class="form-control mr-sm-2" type="search" placeholder="Search user by name..." aria-label="Search">
+            <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Search</button>
+        </form>
+    </nav>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <form asp-area="Admin" asp-action="AllSensors" asp-controller="Sensors" method="GET" class="form-inline">
-        <input asp-for="@Model.SearchByName" class="form-control mr-sm-2" type="search" placeholder="Search user by name..." aria-label="Search">
-        <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Search</button>
-    </form>
-</nav>
-
-@{
-    if (Model.Sensors.Count() == 0)
-    {
-        <h5>No data available</h5>
-    }
-    else
-    {
-        foreach (var sensor in Model.Sensors.OrderBy(s => s.UserName))
+    @{
+        if (Model.Sensors.Count() == 0)
         {
-            <div class="card-deck">
-                <div class="card" style="width: 11rem;">
-                    <img class="card-img-top" src="~/images/humiditySensor.png" style="height: 13rem; width: 11rem;" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Tag: @sensor.Tag</h5>
-                        <h4>Sensor Name: @sensor.Name</h4>
-                        <h4>User Name: @sensor.UserName</h4>
+            <h5>No data available</h5>
+        }
+        else
+        {
+            <div class="row img-responsive">
 
-                        @*<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>*@
+                @foreach (var sensor in Model.Sensors.OrderBy(s => s.UserName))
+                {
+
+                    var dictModel = new Dictionary<string, string>
+{
+{"Id", "" + sensor.Id },
+{"IcbSensorId", "" + sensor.IcbSensorId },
+{"Tag", "" + sensor.Tag },
+{"Name", "" + sensor.Name },
+{"Description", "" + sensor.Description },
+{"PollingInterval", "" + sensor.PollingInterval },
+{"Value", "" + sensor.Value },
+{"MinValue", "" + sensor.MinValue },
+{"MaxValue", "" + sensor.MaxValue },
+{"ModifiedOn", "" + sensor.ModifiedOn },
+{"IsPublic", "" + sensor.IsPublic },
+{"Alarm", "" + sensor.Alarm },
+{"Latitude", "" + sensor.Latitude },
+{"Longtitude", "" + sensor.Longtitude }
+
+};
+                    string imageUrl = String.Empty;
+                    var currentValue = "" + sensor.Value;
+                    if (sensor.Tag.Contains("Door"))
+                    {
+                        imageUrl = "/images/doorSensor.png";
+                        if (sensor.Value == 0)
+                        {
+                            currentValue = "Close";
+                        }
+                        else
+                        {
+                            currentValue = "Open";
+                        }
+                    }
+
+                    else if (sensor.Tag.Contains("Occupancy"))
+                    {
+                        imageUrl = "/images/occupancySensor.png";
+                        if (sensor.Value == 0)
+                        {
+                            currentValue = "False";
+                        }
+                        else
+                        {
+                            currentValue = "True";
+                        }
+                    }
+
+                    else if (sensor.Tag.Contains("Temperature"))
+                    {
+                        imageUrl = "/images/temperatureSensor.png";
+                    }
+
+                    else if (sensor.Tag.Contains("Humidity"))
+                    {
+                        imageUrl = "/images/humiditySensor.png";
+                    }
+
+                    else if (sensor.Tag.Contains("Electric"))
+                    {
+                        imageUrl = "/images/electricSensor.png";
+                    }
+
+                    else if (sensor.Tag.Contains("Noise"))
+                    {
+                        imageUrl = "/images/noiseSensor.png";
+                    }
+                    string isPublic = sensor.IsPublic ? "On" : "Off";
+                    string alarm = sensor.Alarm ? "On" : "Off";
+
+
+                    <div class="col-md-3 p-md-3">
+                        <div class="card">
+                            <img class="card-img-top" src="@imageUrl" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">@sensor.Name</h5>
+                                <p class="card-text">@sensor.Description</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">User Name: @sensor.UserName</li>
+                                    <li class="list-group-item">Public: @isPublic</li>
+                                    <li class="list-group-item">Alarm: @alarm</li>
+                                    <li class="list-group-item">Value: @sensor.Value</li>
+                                </ul>
+                            </div>
+                            <a asp-area="Admin" asp-controller="Sensors" asp-action="EditSensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
+                            <div class="card-footer">
+                                <small class="text-muted">Last updated @sensor.ModifiedOn</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated @sensor.ModifiedOn</small>
-                    </div>
-                </div>
-                @*<div class="card">
-                        <img class="card-img-top" src="..." alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="..." alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </div>
-                    </div>*@
+                }
             </div>
         }
     }
-}
-<!--PAGINATION LOGIC-->
-<nav aria-label="Page navigation example" align="center">
-    <ul class="pagination">
-        @{ if (Model.Sensors.Count() == 0)
+    <!--PAGINATION LOGIC-->
+    <nav aria-label="Page navigation example" align="center">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link @previousDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.PreviousPage" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
             {
-                <li class="page-item">
-                    <a class="page-link disabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.PreviousPage" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link disabled" href="/Admin/Sensors/AllSensors?searchtext=@Model.SearchByName&page=1">1</a></li>
-                <li class="page-item">
-                    <a class="page-link disabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.NextPage" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
+                <li class="page-item"><a class="page-link" href="/Admin/Sensors/AllSensors?searchtext=@Model.SearchByName&page=@i">@i</a></li>
             }
-            else
-            {
-                <li class="page-item">
-                    <a class="page-link @previousDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.PreviousPage" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="page-item"><a class="page-link" href="/Admin/Sensors/AllSensors?searchtext=@Model.SearchByName&page=@i">@i</a></li>
-                }
-                <li class="page-item">
-                    <a class="page-link @nextDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.NextPage" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            }
-        }
-    </ul>
-</nav>
+            <li class="page-item">
+                <a class="page-link @nextDisabled" href="/Admin/Sensors/AllSensors/?searchtext=@Model.SearchByName&page=@Model.NextPage" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
