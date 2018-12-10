@@ -38,12 +38,12 @@
                     @if (@Model.Tag.Contains("Door"))
                     {
                         <option value="1" selected>Open</option>
-                        <option value="2">Close</option>
+                        <option value="0">Close</option>
                     }
                     else
                     {
                         <option value="1" selected>True</option>
-                        <option value="2">False</option>
+                        <option value="0">False</option>
                     }
                 </select>
                 <input asp-for="MaxValue" value="1" type="hidden" id="boolInputMaxValue">

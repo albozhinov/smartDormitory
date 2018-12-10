@@ -6,13 +6,12 @@
 @{
     var dictModel = new Dictionary<string, string>
 {
+        {"Id", "" + Model.Id },
         {"IcbSensorId", "" + @Model.IcbSensorId },
         {"Tag", "" + @Model.Tag },
         {"Name", "" + @Model.Name },
         {"Description", "" + @Model.Description },
         {"PollingInterval", "" + @Model.PollingInterval },
-        {"MeasureType", "" + @Model.MeasureType },
-        {"TimeStamp", "" + @Model.TimeStamp },
         {"Value", "" + @Model.Value },
         {"MinValue", "" + @Model.MinValue },
         {"MaxValue", "" + @Model.MaxValue },
@@ -81,7 +80,7 @@
     }
 
 <div class="card">
-    <img class="card-img-top" src=@imageUrl style="height:13rem;" alt="Card image cap">
+    <img class="card-img-top" src=@imageUrl alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.Description</p>
@@ -93,7 +92,7 @@
         @if (Model.Value < Model.MinValue || Model.Value > Model.MaxValue)
         {
 
-            <li class="list-group-item">
+            <li class="list-group-item progressBarField">
 
                 <div class="led-box">
 
@@ -132,7 +131,7 @@
         }
 
         <li class="list-group-item text-center">
-            <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2 my-sm-0" id="adminDashboardButtnon">Modify</a>
+            <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2 my-sm-0" id="adminDashboardButtnon">Edit</a>
         </li>
     </ul>
     <div class="card-footer">

@@ -12,12 +12,12 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         }
         public UserSensorModel(UserSensors userSensor)
         {
+            this.Id = userSensor.Id;
             this.IcbSensorId = userSensor.Sensor.IcbSensorId;
             this.Tag = userSensor.Sensor.Tag;
             this.Name = userSensor.Name;
             this.Description = userSensor.Description;
             this.PollingInterval = userSensor.PollingInterval;
-            this.MeasureType = userSensor.Sensor.MeasureType;
             this.TimeStamp = userSensor.Sensor.TimeStamp;
             this.Value = userSensor.Sensor.Value;
             this.MinValue = userSensor.MinValue;
@@ -28,6 +28,8 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
             this.Latitude = userSensor.Latitude;
             this.Longtitude = userSensor.Longitude;
         }
+
+        public int Id { get; set; }
 
         public string IcbSensorId { get; set; }
         
@@ -42,9 +44,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         [Required]
         [Range(10, 40)]
         public int PollingInterval { get; set; }
-
-        public MeasureType MeasureType { get; set; }
-
+        
         public DateTime TimeStamp { get; set; }
 
         [Range(0, 5000)]

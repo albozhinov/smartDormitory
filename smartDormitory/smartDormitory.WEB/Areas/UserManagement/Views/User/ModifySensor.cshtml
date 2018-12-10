@@ -54,7 +54,7 @@
     }
 }
 
-<form asp-controller="Sensors" asp-action="RegisterSensor" method="post">
+<form asp-area="UserManagement" asp-controller="User" asp-action="ModifySensorPost" method="post">
     <div class="row">
         <div class="col-md-4">
             <div class="card" style="width:20rem;">
@@ -94,12 +94,12 @@
                                         @if (@Model.Tag.Contains("Door"))
                                         {
                                             <option value="1" selected>Open</option>
-                                            <option value="2">Close</option>
+                                            <option value="0">Close</option>
                                         }
                                         else
                                         {
                                             <option value="1" selected>True</option>
-                                            <option value="2">False</option>
+                                            <option value="0">False</option>
                                         }
                                     </select>
                                     <input asp-for="MaxValue" value="1" type="hidden" id="boolInputMaxValue">
@@ -122,6 +122,12 @@
                         </div>
                     </li>
                     <li class="list-group-item text-center">
+                        <div class="text-hide">
+                            <input asp-for="@Model.IcbSensorId" type="hidden" value="@Model.IcbSensorId" />
+                            <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+                            <input asp-for="@Model.Tag" type="hidden" value="@Model.Tag" />
+                            <input asp-for="@Model.ModifiedOn" type="hidden" value="@Model.ModifiedOn" />
+                        </div>
                         <button type="submit" class="btn" id="registerSensorButton">
                             Update
                         </button>
