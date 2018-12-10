@@ -21,6 +21,9 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         private readonly UserManager<User> userManager;
         private readonly int Page_Size = 10;
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public UserController(IUserService userService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
@@ -38,7 +41,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             return View(userSensorsModel);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> ModifySensor(UserSensorModel mySensorModel)
         {
             var sensorMinMaxValuesList = new List<double>(await this.userSensorService.GetSensorsTypeMinMaxValues(mySensorModel.Tag));
@@ -48,6 +51,29 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             mySensorModel.SensorTypeMaxVal = sensorMinMaxValuesList[1];
 
             return View(mySensorModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ModifySensorPost(UserSensorModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.StatusMessage = "Error: The data is incorrect!";
+                return View("_EditStatusMessage", this.StatusMessage);
+            }
+
+            try
+            {
+                await this.userSensorService.EditSensor(model.Id, model.IcbSensorId, model.Name, model.Description, model.MinValue, model.MaxValue, model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
+            }
+            catch (Exception)
+            {
+                this.StatusMessage = "Error: The data is incorrect!";
+                return View("_EditStatusMessage", this.StatusMessage);
+            }
+
+            this.StatusMessage = "The sensor has been successfully edited!";
+            return View("_EditStatusMessage", this.StatusMessage);
         }
     }
 }
