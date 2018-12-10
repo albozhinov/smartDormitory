@@ -580,3 +580,32 @@ textarea {
     background-color: #DDE0E5;
     height:13rem;
 }
+
+.clear:before,
+.clear:after {
+    content: "";
+    display: table;
+}
+
+.clear:after {
+    clear: both;
+}
+
+.clear {
+    *zoom: 1;
+}
+
+.gauge {
+    display: block;
+    float: left;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin: 0 0 1% 0;
+}
+
+.size-3 {
+    width: 48%;
+}
+
+
+

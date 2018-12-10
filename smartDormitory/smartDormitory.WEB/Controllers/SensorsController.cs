@@ -17,6 +17,7 @@ namespace smartDormitory.WEB.Controllers
         private readonly IICBApiSensorsService apiSensorsService;
         private readonly IUserSensorService userSensorService;
         private readonly UserManager<User> userManager;
+        private const int Page_Size = 5;
 
         public SensorsController(IICBApiSensorsService apiSensorsService, IUserSensorService userSensorService, UserManager<User> userManager)
         {
@@ -44,17 +45,34 @@ namespace smartDormitory.WEB.Controllers
         {
             if (model.SearchText == null)
             {
-                model.Sensors = this.apiSensorsService.ListAllSensors(model.Page, 10);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)10);
+                model.Sensors = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)Page_Size);
             }
             else
             {
-                model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, 10);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)10);
+                model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
             }
 
             return View(model);
         }       
+
+        [Authorize]
+        public IActionResult AllSensorTypesGrid(SensorTypesViewModel model)
+        {
+            if (model.SearchText == null)
+            {
+                model.Sensors = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)Page_Size);
+            }
+            else
+            {
+                model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
+            }
+
+            return PartialView("_AllSensorTypesGrid", model);
+        }
 
         [Authorize]
         [HttpGet]
@@ -104,6 +122,5 @@ namespace smartDormitory.WEB.Controllers
             }
             return validations;
         }
-
     }
 }

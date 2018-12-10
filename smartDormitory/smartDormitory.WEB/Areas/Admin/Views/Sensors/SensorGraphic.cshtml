@@ -1,0 +1,50 @@
+﻿@model SensorViewModel
+
+@{
+    ViewData["Title"] = "SensorGraphicRepresentation";
+}
+
+<h2 class="text-light">SensorGraphicRepresentation</h2>
+
+
+<div id="jg3" class="gauge size-3"></div>
+
+<div id="g1" class="gauge"></div>
+
+
+
+@section Scripts{
+    <script src="~/lib/guage/justgage.js"></script>
+    <script src="~/lib/guage/raphael-2.1.4.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            var defs1 = {
+                label: "label",
+                value: @Model.Value,
+                min: 0,
+                max: 100,
+                decimals: 0,
+                gaugeWidthScale: 0.6,
+                pointer: true,
+                pointerOptions: {
+                    toplength: -15,
+                    bottomlength: 10,
+                    bottomwidth: 12,
+                    color: '#8e8e93',
+                    stroke: '#ffffff',
+                    stroke_width: 3,
+                    stroke_linecap: 'round'
+                },
+                counter: true,
+                relativeGaugeSize: true
+            };
+
+            var jg3 = new JustGage({
+                id: "jg3",
+                defaults: defs1,
+            });       
+        });
+    </script>
+}

@@ -1,81 +1,25 @@
 ﻿@model SensorTypesViewModel
+
 @{
     ViewData["Title"] = "AllSensorTypes";
 }
 
 <h2 class="text-light">AllSensorTypes</h2>
 
-@{
-    var previousDisabled = Model.Page == 1 ? "disabled" : string.Empty;
-    var nextDisabled = Model.Page == Model.TotalPages ? "disabled" : string.Empty;
+<partial name="_AllSensorTypesGrid" model="@Model" />
+
+@section Scripts{
+    <script>
+        $(document).on("click", ".page-item a", function () {
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+            return false;
+        });
+    </script> 
 }
-
-<nav class="navbar navbar-expand-md navbar-light">
-    <form asp-action="AllSensorTypes" asp-controller="Sensors" method="GET" class="form-inline">
-        <input asp-for="@Model.SearchText" class="form-control mr-sm-2" type="search" placeholder="Search sensor" aria-label="Search">
-        <button id="adminDashboardButtnon" class="btn btn-outline my-2 my-sm-0" type="submit">Search</button>
-    </form>
-</nav>
-
-<table class="table table-responsive-md table-hover text-light">
-    <thead>
-        <tr class="text-md-center">
-            <th><label>Number</label></th>
-            <th><label>Tag</label></th>
-            <th class="w-25"><label>Description</label></th>
-            <th><label>MeasureType</label></th>
-            <th><label>Value</label></th>
-            <th class="w-25"><label>ModifiedOn</label></th>
-            <th><label>Register Sensor</label></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Sensors.Count() == 0)
-        {
-            <tr class="text-md-center">
-                <td colspan="7">No data available in table</td>
-            </tr>
-        }
-        else
-        {
-            int counter = 1;
-            @foreach (var sensor in Model.Sensors)
-            {
-                <tr class="text-md-center">
-                    <td>@counter</td>
-                    <td class="sorting_1">@sensor.Tag</td>
-                    <td class="w-25">@sensor.Description</td>
-                    <td>@sensor.MeasureType.Type</td>
-                    <td>@sensor.Value</td>
-                    <td class="w-25">@sensor.ModifiedOn</td>
-                    <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-tag="@sensor.Tag" asp-route-description="@sensor.Description" asp- class="btn" id="registerButton">Register</a></td>
-
-                </tr>
-                counter++;
-            }
-        }
-
-    </tbody>
-</table>
-
-<nav aria-label="Page navigation example" align="center">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link @previousDisabled" href="/Sensors/AllSensorTypes/?searchtext=@Model.SearchText&page=@Model.PreviousPage" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        @for (int i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item"><a class="page-link" href="/Sensors/AllSensorTypes?searchtext=@Model.SearchText&page=@i">@i</a></li>
-        }
-        <li class="page-item">
-            <a class="page-link @nextDisabled" href="/Sensors/AllSensorTypes/?searchtext=@Model.SearchText&page=@Model.NextPage" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-

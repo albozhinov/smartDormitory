@@ -109,6 +109,7 @@
                                     <li class="list-group-item">Value: @sensor.Value</li>
                                 </ul>
                             </div>
+                            <a asp-area="Admin" asp-controller="Sensors" asp-action="SensorGraphic" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Graphic View</a>
                             <a asp-area="Admin" asp-controller="Sensors" asp-action="EditSensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
                             <div class="card-footer">
                                 <small class="text-muted">Last updated @sensor.ModifiedOn</small>

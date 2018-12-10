@@ -8,10 +8,11 @@
 
 <partial name="_SensorGrid" model="@Model" />
 
-<script>
+@section Scripts {
+    <script>
         $(document).on("click", ".page-item a", function () {
             $.ajax({
-                url: $(this).attr("href"),                
+                url: $(this).attr("href"),
                 type: 'GET',
                 cache: false,
                 success: function (result) {
@@ -20,4 +21,5 @@
             });
             return false;
         });
-</script>
+    </script>
+}   

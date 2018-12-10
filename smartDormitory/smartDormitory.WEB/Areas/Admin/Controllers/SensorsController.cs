@@ -14,7 +14,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
     public class SensorsController : Controller
     {
         private readonly IUserSensorService userSensorService;
-        private readonly int Page_Size = 8;
+        private readonly int Page_Size = 4;
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -112,6 +112,11 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
 
             this.StatusMessage = "The sensor has been successfully edited!";
             return View("_EditStatusMessage", this.StatusMessage);
+        }
+
+        public IActionResult SensorGraphic(SensorViewModel viewModel)
+        {
+            return View(viewModel);
         }
     }
 }
