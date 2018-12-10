@@ -56,5 +56,7 @@ namespace smartDormitory.WEB.Models
         public double Value { get; set; }
 
         public string URL { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

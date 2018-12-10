@@ -2,13 +2,47 @@
 @{
     ViewData["Title"] = "RegisterSensor";
 }
+@{
+    string imageUrl = String.Empty;
 
+    if (Model.Tag.Contains("Door"))
+    {
+        imageUrl = "/images/doorSensor.png";   
+    }
+
+    else if (Model.Tag.Contains("Occupancy"))
+    {
+        imageUrl = "/images/occupancySensor.png";
+    }
+
+    else if (Model.Tag.Contains("Temperature"))
+    {
+        imageUrl = "/images/temperatureSensor.png";
+    }
+
+    else if (Model.Tag.Contains("Humidity"))
+    {
+        imageUrl = "/images/humiditySensor.png";
+    }
+
+    else if (Model.Tag.Contains("Electric"))
+    {
+        imageUrl = "/images/electricSensor.png";
+    }
+
+    else if (Model.Tag.Contains("Noise"))
+    {
+        imageUrl = "/images/noiseSensor.png";
+    }
+}
+}
 <h2 class="text-light">RegisterSensor</h2>
 
 <form asp-controller="Sensors" asp-action="RegisterSensor" method="post" class="text-light">
-    <div>
+    <div class="text-hide">
         <input asp-for="Id" type="hidden" value="@Model.Id" />
         <input asp-for="UserId" type="hidden" value="@Model.UserId" />
+        <input asp-for="ImageUrl" type="hidden" value="@imageUrl"/>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">

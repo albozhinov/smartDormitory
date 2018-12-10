@@ -6,27 +6,25 @@
 @{
     var dictModel = new Dictionary<string, string>
 {
-        {"Id", "" + Model.Id },
-        {"IcbSensorId", "" + @Model.IcbSensorId },
-        {"Tag", "" + @Model.Tag },
-        {"Name", "" + @Model.Name },
-        {"Description", "" + @Model.Description },
-        {"PollingInterval", "" + @Model.PollingInterval },
-        {"Value", "" + @Model.Value },
-        {"MinValue", "" + @Model.MinValue },
-        {"MaxValue", "" + @Model.MaxValue },
-        {"ModifiedOn", "" + @Model.ModifiedOn },
-        {"IsPublic", "" + @Model.IsPublic },
-        {"Alarm", "" + @Model.Alarm },
-        {"Latitude", "" + @Model.Latitude },
-        {"Longtitude", "" + @Model.Longtitude }
+{"Id", "" + Model.Id },
+{"IcbSensorId", "" + @Model.IcbSensorId },
+{"Tag", "" + @Model.Tag },
+{"Name", "" + @Model.Name },
+{"Description", "" + @Model.Description },
+{"PollingInterval", "" + @Model.PollingInterval },
+{"Value", "" + @Model.Value },
+{"MinValue", "" + @Model.MinValue },
+{"MaxValue", "" + @Model.MaxValue },
+{"ModifiedOn", "" + @Model.ModifiedOn },
+{"IsPublic", "" + @Model.IsPublic },
+{"Alarm", "" + @Model.Alarm },
+{"Latitude", "" + @Model.Latitude },
+{"Longtitude", "" + @Model.Longtitude }
 
 };
-    string imageUrl = String.Empty;
-    var currentValue = "" + Model.Value;
+    var currentValue = Model.Value.ToString();
     if (Model.Tag.Contains("Door"))
     {
-        imageUrl = "/images/doorSensor.png";
         if (Model.Value == 0)
         {
             currentValue = "Close";
@@ -39,7 +37,6 @@
 
     else if (Model.Tag.Contains("Occupancy"))
     {
-        imageUrl = "/images/occupancySensor.png";
         if (Model.Value == 0)
         {
             currentValue = "False";
@@ -49,26 +46,6 @@
             currentValue = "True";
         }
     }
-
-    else if (Model.Tag.Contains("Temperature"))
-    {
-        imageUrl = "/images/temperatureSensor.png";
-    }
-
-    else if (Model.Tag.Contains("Humidity"))
-    {
-        imageUrl = "/images/humiditySensor.png";
-    }
-
-    else if (Model.Tag.Contains("Electric"))
-    {
-        imageUrl = "/images/electricSensor.png";
-    }
-
-    else if (Model.Tag.Contains("Noise"))
-    {
-        imageUrl = "/images/noiseSensor.png";
-    }
 }
 
 <div>
@@ -77,10 +54,10 @@
 </div>
 @{ string isPublic = Model.IsPublic ? "On" : "Off";
     string alarm = Model.Alarm ? "On" : "Off";
-    }
+}
 
 <div class="card">
-    <img class="card-img-top" src=@imageUrl alt="Card image cap">
+    <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.Description</p>
@@ -129,11 +106,9 @@
                 </li>
             }
         }
-
-        <li class="list-group-item text-center">
-            <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2 my-sm-0" id="adminDashboardButtnon">Edit</a>
-        </li>
     </ul>
+    <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2  my-md-2" id="adminDashboardButtnon">Edit</a>
+    <a asp-controller="User" asp-action="DeleteSensor" asp-route-name="@Model.Name" class="btn my-2  my-md-2" id="adminDashboardButtnon">Delete</a>
     <div class="card-footer">
         <small class="text-muted">Last updated @Model.ModifiedOn</small>
     </div>

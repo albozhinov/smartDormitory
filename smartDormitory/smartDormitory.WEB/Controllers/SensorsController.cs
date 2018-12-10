@@ -103,7 +103,7 @@ namespace smartDormitory.WEB.Controllers
             }
 
             await this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
-                 model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm);
+                 model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm, model.ImageUrl);
 
             return RedirectToAction("Index", "Home");
         }

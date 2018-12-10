@@ -27,6 +27,8 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
             this.Alarm = userSensor.Alarm;
             this.Latitude = userSensor.Latitude;
             this.Longtitude = userSensor.Longitude;
+            this.ImageUrl = userSensor.ImageUrl;
+            this.IsDeleted = userSensor.IsDeleted;
         }
 
         public int Id { get; set; }
@@ -70,8 +72,12 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
 
         public double Longtitude { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public double SensorTypeMinVal { get; set; }
 
         public double SensorTypeMaxVal { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
