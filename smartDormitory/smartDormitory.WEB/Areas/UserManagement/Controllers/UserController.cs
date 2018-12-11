@@ -92,5 +92,14 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             this.StatusMessage = "The sensor has been successfully deleted!";
             return View("_EditStatusMessage", this.StatusMessage);
         }
+
+        public async Task<IActionResult> UpdateSensors(UserAllSensorsModel allSensorsModel)
+        {
+            IEnumerable<UserSensors> userSensors = new List<UserSensors>();
+            userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
+            allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
+
+            return PartialView("_MySensorGrid", allSensorsModel);
+        }
     }
 }

@@ -1,7 +1,4 @@
 ﻿@model AllSensorsViewModel
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
 
 @{
     var previousDisabled = Model.Page == 1 ? "disabled" : string.Empty;
@@ -10,7 +7,7 @@
 <div id="content">
     <nav class="navbar navbar-expand-md">
         <form asp-area="Admin" asp-action="AllSensors" asp-controller="Sensors" method="GET" class="form-inline">
-            <input asp-for="@Model.SearchByName" class="form-control mr-sm-2" type="search" placeholder="Search user by name..." aria-label="Search">
+            <input asp-for="@Model.SearchByName" class="form-control mr-md-2" type="search" placeholder="Search by username..." aria-label="Search">
             <button class="btn my-2 my-sm-0" type="submit" id="adminDashboardButtnon">Search</button>
         </form>
     </nav>
@@ -43,14 +40,12 @@
 {"IsPublic", "" + sensor.IsPublic },
 {"Alarm", "" + sensor.Alarm },
 {"Latitude", "" + sensor.Latitude },
-{"Longtitude", "" + sensor.Longtitude }
-
+{"Longtitude", "" + sensor.Longtitude },
+{"ImageURL", "" + sensor.ImageURL },
 };
-                    string imageUrl = String.Empty;
                     var currentValue = "" + sensor.Value;
                     if (sensor.Tag.Contains("Door"))
                     {
-                        imageUrl = "/images/doorSensor.png";
                         if (sensor.Value == 0)
                         {
                             currentValue = "Close";
@@ -63,7 +58,6 @@
 
                     else if (sensor.Tag.Contains("Occupancy"))
                     {
-                        imageUrl = "/images/occupancySensor.png";
                         if (sensor.Value == 0)
                         {
                             currentValue = "False";
@@ -73,33 +67,13 @@
                             currentValue = "True";
                         }
                     }
-
-                    else if (sensor.Tag.Contains("Temperature"))
-                    {
-                        imageUrl = "/images/temperatureSensor.png";
-                    }
-
-                    else if (sensor.Tag.Contains("Humidity"))
-                    {
-                        imageUrl = "/images/humiditySensor.png";
-                    }
-
-                    else if (sensor.Tag.Contains("Electric"))
-                    {
-                        imageUrl = "/images/electricSensor.png";
-                    }
-
-                    else if (sensor.Tag.Contains("Noise"))
-                    {
-                        imageUrl = "/images/noiseSensor.png";
-                    }
                     string isPublic = sensor.IsPublic ? "On" : "Off";
                     string alarm = sensor.Alarm ? "On" : "Off";
 
 
                     <div class="col-md-3 p-md-3">
                         <div class="card">
-                            <img class="card-img-top" src="@imageUrl" alt="Card image cap">
+                            <img class="card-img-top" src="@sensor.ImageURL" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">@sensor.Name</h5>
                                 <p class="card-text">@sensor.Description</p>

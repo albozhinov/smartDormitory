@@ -5,21 +5,43 @@
 }
 
 <h2 class="text-light">AllSensors</h2>
+@{
+    int minimalPolling = 1000 * Model.Sensors.Min(s => s.PollingInterval);
+}
+
 
 <partial name="_SensorGrid" model="@Model" />
 
 @section Scripts {
     <script>
+        var page = 1;
         $(document).on("click", ".page-item a", function () {
             $.ajax({
                 url: $(this).attr("href"),
                 type: 'GET',
                 cache: false,
                 success: function (result) {
+
                     $('#content').html(result);
                 }
             });
             return false;
         });
+
+         function ajaxCall() {
+             $.ajax({
+                 url: '/Admin/Sensors/SensorGrid?searchtext=@Model.SearchByName&page=' + page,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+        }
+        setInterval(ajaxCall, @minimalPolling);
     </script>
-}   
+
+    <script>        
+       
+    </script>
+}

@@ -32,7 +32,7 @@
     <br />
     <div class="row text-md-center">
         <div class="col">
-            <h3 class="text-md-left">Description:</h3><h3 class="border-bottom"> @Model.Description</h3>
+            <h3 class="text-md-left">Description:</h3><h3 class="border-bottom">  @Model.Description</h3>
         </div>
     </div>
     <div class="row">
@@ -46,8 +46,10 @@
     <script src="~/lib/guage/raphael-2.1.4.min.js"></script>
 
     <script>
+       
+
         document.addEventListener("DOMContentLoaded", function (event) {
-            
+
             var defs1 = {
                 label: "@Model.Tag",
                 value: @Model.Value,
@@ -75,7 +77,7 @@
                         return 'Cold';
                     } else if (value > @Model.MaxValue) {
                         return 'Hot';
-                    } 
+                    }
                 },*@
             };
 
@@ -85,8 +87,17 @@
             });
 
             setInterval(function () {
-                jg3.refresh(getRandomInt(16, 28));
-            }, 10000);
-        });
+                $.post('@Url.Action("UpdateSensor", "Sensors")', {apiSensroId: "@Model.IcbSensorId" },function (data) {
+                    //isSwitchGauge.refresh(data.userCurrentValue);
+                }, 1000);
+            });
+
+        });     
+
+        @*var newValuew = ;
+        var postFunction = $.post('@Url.Action("UpdateSensor", "Sensors")', { apiSensroId: "@Model.IcbSensorId" }, function (data) {
+
+        }).fail(function () { });*@
+
     </script>
 }

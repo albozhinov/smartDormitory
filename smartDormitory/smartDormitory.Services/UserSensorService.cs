@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using smartDormitory.Data;
 using smartDormitory.Data.Context;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
@@ -121,7 +122,7 @@ namespace smartDormitory.Services
         public async Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id)
         {
             return await this.context.UserSensors
-                .Where(us => us.UserId == id)
+                .Where(us => us.UserId == id && !us.IsDeleted)
                 .Include(s => s.Sensor)
                 .ToListAsync();
         }
@@ -254,6 +255,31 @@ namespace smartDormitory.Services
 
             this.context.UserSensors.Update(sensor);
             this.context.SaveChanges();
+        }
+
+        public async Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn)
+        {
+            if (string.IsNullOrEmpty(apiSensorId))
+            {
+                throw new ArgumentNullException("Sensor Id cannot be null!");
+            }
+            if (modifiedOn > DateTime.Now)
+            {
+                throw new ArgumentNullException("Last Modified date is inccorect!");
+            }
+            if (pollingInterval < 10)
+            {                
+                throw new ArgumentException("Polling interval cannot be less than 10!");
+            }
+
+            var nextUpdate = modifiedOn.AddSeconds(pollingInterval);
+
+            if (nextUpdate > DateTime.Now)
+            {
+                return new Sensor() { Value = value, ModifiedOn = modifiedOn };
+            }
+
+            return await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == apiSensorId);
         }
     }
 }

@@ -2,26 +2,30 @@
 @{
     ViewData["Title"] = "MySensors";
 }
-<div class="row img-responsive" style="background-size:100% auto;">
-    @foreach (var userSensor in Model.UserSensors)
-    {
-        if (userSensor.IsDeleted)
-        {
-            continue;
+
+@{
+    int minimalPolling = 1000 * Model.UserSensors.Min(s => s.PollingInterval);
+}
+
+<partial name="_MysensorGrid" model="Model" />
+
+
+
+@section Scripts{
+
+    <script>
+        function ajaxCall() {
+            $.ajax({
+                url: '/UserManagement/User/UpdateSensors',
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
         }
-        <div class="col-md-3 p-3">
-            <partial name="_MySensorGrid" for="@userSensor" />
-        </div>
-    }
-</div>
+        setInterval(ajaxCall, @minimalPolling);
+    </script>
+}
 
-<script>
-    function a() {
-        location.reload();
-    };
-
-
-    setInterval(a, 30000);
-
-</script>
 

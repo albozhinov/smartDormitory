@@ -1,115 +1,130 @@
-﻿@model UserSensorModel
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model UserAllSensorsModel
 
-@{
-    var dictModel = new Dictionary<string, string>
+
+<div id="content">
+    <div class="row img-responsive" style="background-size:100% auto;">
+        @foreach (var userSensor in Model.UserSensors)
+        {           
+            <div class="col-md-3 p-3">
+
+                @{
+                    var dictModel = new Dictionary<string, string>
 {
-{"Id", "" + Model.Id },
-{"IcbSensorId", "" + @Model.IcbSensorId },
-{"Tag", "" + @Model.Tag },
-{"Name", "" + @Model.Name },
-{"Description", "" + @Model.Description },
-{"PollingInterval", "" + @Model.PollingInterval },
-{"Value", "" + @Model.Value },
-{"MinValue", "" + @Model.MinValue },
-{"MaxValue", "" + @Model.MaxValue },
-{"ModifiedOn", "" + @Model.ModifiedOn },
-{"IsPublic", "" + @Model.IsPublic },
-{"Alarm", "" + @Model.Alarm },
-{"Latitude", "" + @Model.Latitude },
-{"Longtitude", "" + @Model.Longtitude }
-
+{"Id", "" + userSensor.Id },
+{"IcbSensorId", "" + @userSensor.IcbSensorId },
+{"Tag", "" + @userSensor.Tag },
+{"Name", "" + @userSensor.Name },
+{"Description", "" + @userSensor.Description },
+{"PollingInterval", "" + @userSensor.PollingInterval },
+{"Value", "" + @userSensor.Value },
+{"MinValue", "" + @userSensor.MinValue },
+{"MaxValue", "" + @userSensor.MaxValue },
+{"ModifiedOn", "" + @userSensor.ModifiedOn },
+{"IsPublic", "" + @userSensor.IsPublic },
+{"Alarm", "" + @userSensor.Alarm },
+{"Latitude", "" + @userSensor.Latitude },
+{"Longtitude", "" + @userSensor.Longtitude },
+{"ImageURL", "" + @userSensor.ImageUrl },
 };
-    var currentValue = Model.Value.ToString();
-    if (Model.Tag.Contains("Door"))
-    {
-        if (Model.Value == 0)
-        {
-            currentValue = "Close";
-        }
-        else
-        {
-            currentValue = "Open";
-        }
-    }
+                    var currentValue = userSensor.Value.ToString();
+                    if (userSensor.Tag.Contains("Door"))
+                    {
+                        if (userSensor.Value == 0)
+                        {
+                            currentValue = "Close";
+                        }
+                        else
+                        {
+                            currentValue = "Open";
+                        }
+                    }
 
-    else if (Model.Tag.Contains("Occupancy"))
-    {
-        if (Model.Value == 0)
-        {
-            currentValue = "False";
-        }
-        else
-        {
-            currentValue = "True";
-        }
-    }
-}
+                    else if (userSensor.Tag.Contains("Occupancy"))
+                    {
+                        if (userSensor.Value == 0)
+                        {
+                            currentValue = "False";
+                        }
+                        else
+                        {
+                            currentValue = "True";
+                        }
+                    }
+                }
 
-<div>
-    <input asp-for="Latitude" type="hidden" value="@Model.Latitude" />
-    <input asp-for="Longtitude" type="hidden" value="@Model.Longtitude" />
-</div>
-@{ string isPublic = Model.IsPublic ? "On" : "Off";
-    string alarm = Model.Alarm ? "On" : "Off";
-}
-
-<div class="card">
-    <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
-        <p class="card-text">@Model.Description</p>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Public: @isPublic</li>
-        <li class="list-group-item">Alarm: @alarm</li>
-        <li class="list-group-item">Value: @currentValue</li>
-        @if (Model.Value < Model.MinValue || Model.Value > Model.MaxValue)
-        {
-
-            <li class="list-group-item progressBarField">
-
-                <div class="led-box">
-
-                    <div class="led-box">
-                        <div class="led-red"></div>
-                    </div>
-
+                <div>
+                    <input asp-for="@userSensor.Latitude" type="hidden" value="@userSensor.Latitude" />
+                    <input asp-for="@userSensor.Longtitude" type="hidden" value="@userSensor.Longtitude" />
                 </div>
-            </li>
-        }
-        else
-        {
+                @{ string isPublic = userSensor.IsPublic ? "On" : "Off";
+                    string alarm = userSensor.Alarm ? "On" : "Off";
+                }
 
-            if (currentValue == "True" || currentValue == "False" || currentValue == "Open" || currentValue == "Close")
-            {
-                <li class="list-group-item progressBarField">
-                    <div class="led-box">
-                        <div class="led-green"></div>
+                <div class="card">
+                    <img class="card-img-top" src=@userSensor.ImageUrl alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@userSensor.Name</h5>
+                        <p class="card-text">@userSensor.Description</p>
                     </div>
-                </li>
-            }
-            else
-            {
-                <li class="list-group-item progressBarField">
-                    <div class="col container">
-                        <div class="form-row ">
-                            <div class="col-lg-12 my-1">
-                                <div id="sensorsProgressBar" class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color:#FD8227; width: @((Model.Value - Model.MinValue)*100/(Model.MaxValue - Model.MinValue))%"> @Model.Value &#8451;</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Public: @isPublic</li>
+                        <li class="list-group-item">Alarm: @alarm</li>
+                        <li id="currentValue" data-Id="@userSensor.IcbSensorId" class="list-group-item">Value: @currentValue</li>
+                        @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
+                        {
+                            <li class="list-group-item progressBarField">
+
+                                <div class="led-box">
+
+                                    <div class="led-box">
+                                        <div class="led-red"></div>
+                                    </div>
+
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        }
+                        else
+                        {
+
+                            if (currentValue == "True" || currentValue == "False" || currentValue == "Open" || currentValue == "Close")
+                            {
+                                <li class="list-group-item progressBarField">
+                                    <div class="led-box">
+                                        <div class="led-green"></div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item progressBarField">
+                                    <div class="col container">
+                                        <div class="form-row ">
+                                            <div class="col-lg-12 my-1">
+                                                <div id="sensorsProgressBar" class="progress">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color:#FD8227; width: @((userSensor.Value - userSensor.MinValue)*100/(userSensor.MaxValue - userSensor.MinValue))%"> @userSensor.Value &#8451;</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2  my-md-2" id="adminDashboardButtnon">Edit</a>
+                    <a asp-controller="User" asp-action="DeleteSensor" asp-route-name="@userSensor.Name" class="btn my-2  my-md-2" id="adminDashboardButtnon">Delete</a>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated @userSensor.ModifiedOn</small>
                     </div>
-                </li>
-            }
+                </div>
+            </div>
         }
-    </ul>
-    <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2  my-md-2" id="adminDashboardButtnon">Edit</a>
-    <a asp-controller="User" asp-action="DeleteSensor" asp-route-name="@Model.Name" class="btn my-2  my-md-2" id="adminDashboardButtnon">Delete</a>
-    <div class="card-footer">
-        <small class="text-muted">Last updated @Model.ModifiedOn</small>
     </div>
+
 </div>
+
+
+
+
+
+
+

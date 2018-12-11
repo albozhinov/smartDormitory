@@ -1,4 +1,5 @@
-﻿using smartDormitory.Data.Models;
+﻿using smartDormitory.Data;
+using smartDormitory.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,5 +30,7 @@ namespace smartDormitory.Services.Contracts
         Task EditSensor(int sensorId, string icbSensorId,string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
 
         Task DeleteSensor(string name);
+
+        Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn);
     }
 }

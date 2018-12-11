@@ -76,7 +76,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!enableLockOutResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could enable the lockout on the user!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var lockOutTimeResult = await this._userManager.SetLockoutEndDateAsync(user, DateTime.Today.AddYears(10));
@@ -84,12 +84,12 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!lockOutTimeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not add time to user's lockout!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             this.StatusMessage = "The user has been successfully locked for 10 years!";
 
-            return View("_StatusMessage", this.StatusMessage);
+            return View("_UserStatusMessage", this.StatusMessage);
         }
 
         [HttpPost]
@@ -101,7 +101,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (user is null)
             {
                 this.StatusMessage = "Error: User not found!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var lockoutTimeResult = await this._userManager.SetLockoutEndDateAsync(user, DateTime.Now);
@@ -109,11 +109,11 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!lockoutTimeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not add time to user's lockout!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
             
             this.StatusMessage = "The user has been successfully unlocked!";
-            return View("_StatusMessage", this.StatusMessage);
+            return View("_UserStatusMessage", this.StatusMessage);
         }
 
         [HttpPost]
@@ -124,7 +124,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (user is null)
             {
                 this.StatusMessage = "Error: User not found!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             foreach (var validator in _userManager.PasswordValidators)
@@ -133,30 +133,30 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
                 if (!result.Succeeded)
                 {
                     this.StatusMessage = $"Error: {string.Join(" ", result.Errors.Select(e => e.Description)).Replace(".", "!")}";
-                    return View("_StatusMessage", this.StatusMessage);
+                    return View("_UserStatusMessage", this.StatusMessage);
                 }
             }
 
             if (!ModelState.IsValid)
             {
                 this.StatusMessage = "Error: Passwords do not match!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var removeResult = await _userManager.RemovePasswordAsync(user);
             if (!removeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not remove the old password!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
             var addPasswordResult = await _userManager.AddPasswordAsync(user, input.NewPassword);
             if (!addPasswordResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not change the password!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
             this.StatusMessage = "The user's password has been changed!";
-            return View("_StatusMessage", this.StatusMessage);
+            return View("_UserStatusMessage", this.StatusMessage);
         }
 
         [HttpPost]
@@ -190,13 +190,13 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(Id))
             {
                 this.StatusMessage = "Error: User's Id is incorrect!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             if (string.IsNullOrEmpty(Role))
             {
                 this.StatusMessage = "Error: Role is incorrect!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var user = this._userManager.Users.Where(u => u.Id == Id).FirstOrDefault();
@@ -204,14 +204,14 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (user is null)
             {
                 this.StatusMessage = "Error: User not found!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
             
             var roleCheck = await this._roleManager.RoleExistsAsync(Role);
             if (!roleCheck)
             {
                 this.StatusMessage = "Error: Role not found!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var userRole = await this._userManager.GetRolesAsync(user);
@@ -221,17 +221,17 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             if (!removeResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not remove the old role!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
 
             var addRoleResult = await this._userManager.AddToRoleAsync(user, Role);
             if (!addRoleResult.Succeeded)
             {
                 this.StatusMessage = "Error: Could not change the role!";
-                return View("_StatusMessage", this.StatusMessage);
+                return View("_UserStatusMessage", this.StatusMessage);
             }
             this.StatusMessage = "The user's role has been changed!";
-            return View("_StatusMessage", this.StatusMessage);
+            return View("_UserStatusMessage", this.StatusMessage);
         }
     }
 }

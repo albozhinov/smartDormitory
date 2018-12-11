@@ -54,6 +54,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
 
         public async Task<IActionResult> SensorGrid(AllSensorsViewModel viewModel)
         {
+
             var isTagTextNull = viewModel.SearchByTag ?? "";
             var isNameTextNull = viewModel.SearchByName ?? "";
 
@@ -76,7 +77,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
                 viewModel.TotalPages = (int)Math.Ceiling(totalUserSensors / (double)Page_Size);
             }
 
-            return PartialView("_SensorGrid" ,viewModel);
+            return PartialView("_SensorGrid", viewModel);
         }
 
         [HttpGet]
@@ -92,6 +93,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditSensorPost(SensorViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -117,6 +119,21 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
         public IActionResult SensorGraphic(SensorViewModel viewModel)
         {
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateSensor(string apiSensroId, int pollingInterval, int value, DateTime modifiedOn)
+        {
+            try
+            {
+                var sensor = await this.userSensorService.UpdateSensorValue(apiSensroId, pollingInterval, value, modifiedOn);
+                var viewModel = new SensorViewModel();
+                return new JsonResult(viewModel);
+            }
+            catch (Exception)
+            {
+               return new JsonResult("Error: Sensor data is incorrect!");
+            }
         }
     }
 }

@@ -5,11 +5,9 @@
 
 <h2 class="text-light">ModifySensor</h2>
 @{
-    string imageUrl = String.Empty;
     var currentValue = "" + Model.Value;
     if (Model.Tag.Contains("Door"))
-    {
-        imageUrl = "/images/doorSensor.png";
+    {      
         if (Model.Value == 0)
         {
             currentValue = "Close";
@@ -21,8 +19,7 @@
     }
 
     else if (Model.Tag.Contains("Occupancy"))
-    {
-        imageUrl = "/images/occupancySensor.png";
+    {    
         if (Model.Value == 0)
         {
             currentValue = "False";
@@ -32,33 +29,13 @@
             currentValue = "True";
         }
     }
-
-    else if (Model.Tag.Contains("Temperature"))
-    {
-        imageUrl = "/images/temperatureSensor.png";
-    }
-
-    else if (Model.Tag.Contains("Humidity"))
-    {
-        imageUrl = "/images/humiditySensor.png";
-    }
-
-    else if (Model.Tag.Contains("Electric"))
-    {
-        imageUrl = "/images/electricSensor.png";
-    }
-
-    else if (Model.Tag.Contains("Noise"))
-    {
-        imageUrl = "/images/noiseSensor.png";
-    }
 }
 
 <form asp-area="UserManagement" asp-controller="User" asp-action="ModifySensorPost" method="post">
     <div class="row">
         <div class="col-md-4">
             <div class="card" style="width:20rem;">
-                <img class="card-img-top" src=@imageUrl style="height:13rem;" alt="Card image cap">
+                <img class="card-img-top" src=@Model.ImageUrl style="height:13rem;" alt="Card image cap">
                 <div class="card-body">
                     <input asp-for="@Model.Name" type="text" class="card-title form-control" />
                     <span asp-validation-for="@Model.Name" class="text-danger"></span>
