@@ -236,19 +236,19 @@ namespace smartDormitory.Services
             this.context.SaveChanges();
         }
 
-        public async Task DeleteSensor(string name)
+        public async Task DeleteSensor(int id)
         {
-            if (string.IsNullOrEmpty(name))
+            if (id < 0)
             {
-                throw new ArgumentNullException("Name cannot be null!");
+                throw new ArgumentException("Invalid Id!");
             }
 
              var sensor = await this.context.UserSensors.
-                FirstOrDefaultAsync(s => s.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+                FirstOrDefaultAsync(s => s.Id == id);
 
             if(sensor == null)
             {
-                throw new ArgumentNullException($"Sensor with name {name} does not exist!");
+                throw new ArgumentNullException($"Sensor with Id {id} does not exist!");
             }
 
             sensor.IsDeleted = true;
