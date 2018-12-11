@@ -4,13 +4,41 @@
     ViewData["Title"] = "SensorGraphicRepresentation";
 }
 
-<h2 class="text-light">SensorGraphicRepresentation</h2>
+@{
+    string isPublic = Model.IsPublic ? "On" : "Off";
+    string alarm = Model.Alarm ? "On" : "Off";
+}
 
-
-<div id="jg3" class="gauge size-3"></div>
-
-<div id="g1" class="gauge"></div>
-
+<div class="container text-light">
+    <div class="row">
+        <div id="jg3" class="gauge size-3 m-md-auto"></div>
+    </div>
+    <br />
+    <div class="row">
+        <h4 class="border-bottom m-md-auto">Last updated @Model.ModifiedOn</h4>
+    </div>
+    <br />
+    <div class="row text-md-center">
+        <div class="col">
+            <h3 class="border-bottom">User: @Model.UserName</h3>
+        </div>
+        <div class="col">
+            <h3 class="border-bottom">Public: @isPublic</h3>
+        </div>
+        <div class="col">
+            <h3 class="border-bottom">Alarm: @alarm</h3>
+        </div>
+    </div>
+    <br />
+    <div class="row text-md-center">
+        <div class="col">
+            <h3 class="text-md-left">Description:</h3><h3 class="border-bottom"> @Model.Description</h3>
+        </div>
+    </div>
+    <div class="row">
+        <partial name="_GraphicMapPartial" model="@Model" />
+    </div>
+</div>
 
 
 @section Scripts{
@@ -19,15 +47,18 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
-
+            
             var defs1 = {
-                label: "label",
+                label: "@Model.Tag",
                 value: @Model.Value,
-                min: 0,
-                max: 100,
+                min: @Model.MinValue,
+                max: @Model.MaxValue,
                 decimals: 0,
                 gaugeWidthScale: 0.6,
                 pointer: true,
+                symbol: ' °C',
+                valueFontColor: '#FFFFFF',
+                labelFontColor: '#FFFFFF',
                 pointerOptions: {
                     toplength: -15,
                     bottomlength: 10,
@@ -38,13 +69,24 @@
                     stroke_linecap: 'round'
                 },
                 counter: true,
-                relativeGaugeSize: true
+                relativeGaugeSize: true,
+                @*textRenderer: function (value) {
+                    if (value < @Model.MinValue) {
+                        return 'Cold';
+                    } else if (value > @Model.MaxValue) {
+                        return 'Hot';
+                    } 
+                },*@
             };
 
             var jg3 = new JustGage({
                 id: "jg3",
                 defaults: defs1,
-            });       
+            });
+
+            setInterval(function () {
+                jg3.refresh(getRandomInt(16, 28));
+            }, 10000);
         });
     </script>
 }

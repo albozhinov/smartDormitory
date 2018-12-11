@@ -1,0 +1,38 @@
+﻿@model SensorViewModel
+
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 350px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>    
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script src="~/js/markerCluster/markerclusterer.js"></script>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // The location of Sofia
+            var sensor = { lat: @Model.Latitude, lng: @Model.Longtitude };
+            // The map, centered at sensor
+            var map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 6, center: sensor });
+
+                            var pin = { lat: @Model.Latitude, lng: @Model.Longtitude };                           
+
+                        var marker = new google.maps.Marker({
+                                position: pin, animation: google.maps.Animation.BOUNCE, map: map, title: '@Model.Tag'
+                        });         
+            markers.push(marker);
+        }       
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
+    </script>
+</body>
+</html>
