@@ -77,11 +77,11 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteSensor(string name)
+        public async Task<IActionResult> DeleteSensor(int id)
         {
             try
             {
-                await this.userSensorService.DeleteSensor(name);
+                await this.userSensorService.DeleteSensor(id);
             }
             catch (Exception)
             {

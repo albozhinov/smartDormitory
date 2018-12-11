@@ -28,6 +28,6 @@ namespace smartDormitory.Services.Contracts
 
         Task EditSensor(int sensorId, string icbSensorId,string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
 
-        Task DeleteSensor(string name);
+        Task DeleteSensor(int id);
     }
 }

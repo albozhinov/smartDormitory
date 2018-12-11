@@ -11,17 +11,29 @@
         }
         <div class="col-md-3 p-3">
             <partial name="_MySensorGrid" for="@userSensor" />
+            <partial name="_DeleteSensorModal" model="null" />
         </div>
     }
 </div>
 
-<script>
-    function a() {
-        location.reload();
-    };
+@section Scripts{
+    <script>
+        jQuery.noConflict();
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var id = button.data('sensor-id') // Extract info from data-* attributes
+            console.log(id);
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
 
+            modal.find('input[name="Id"]').val(id)
+        });
 
-    setInterval(a, 30000);
+        function a() {
+            location.reload();
+        };
 
-</script>
-
+        setInterval(a, 30000);
+    </script>
+}
