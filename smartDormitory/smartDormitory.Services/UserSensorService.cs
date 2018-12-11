@@ -19,7 +19,7 @@ namespace smartDormitory.Services
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
+        public async Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl)
         {
             if (userId == null)
             {
@@ -66,7 +66,12 @@ namespace smartDormitory.Services
             if (pollingInterval < 10 || pollingInterval > 40)
             {
                 throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
-            }                 
+            }
+
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                throw new ArgumentNullException("Image URL cannot be null or empty!");
+            }
 
             var newUserSensor = new UserSensors
             {
@@ -81,6 +86,8 @@ namespace smartDormitory.Services
                 Longitude = longitude,
                 IsPublic = isPublic,
                 Alarm = alarm,
+                ImageUrl = imageUrl,
+                IsDeleted = false
             };
 
             this.context.UserSensors.Add(newUserSensor);
@@ -225,6 +232,27 @@ namespace smartDormitory.Services
             userSensorToUpdate.Alarm = alarm;        
 
             this.context.UserSensors.Update(userSensorToUpdate);
+            this.context.SaveChanges();
+        }
+
+        public async Task DeleteSensor(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("Name cannot be null!");
+            }
+
+             var sensor = await this.context.UserSensors.
+                FirstOrDefaultAsync(s => s.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+
+            if(sensor == null)
+            {
+                throw new ArgumentNullException($"Sensor with name {name} does not exist!");
+            }
+
+            sensor.IsDeleted = true;
+
+            this.context.UserSensors.Update(sensor);
             this.context.SaveChanges();
         }
     }

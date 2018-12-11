@@ -10,7 +10,7 @@ namespace smartDormitory.Services.Contracts
     {
         Task<IEnumerable<double>> GetSensorsTypeMinMaxValues(string tag);
 
-        Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
+        Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl);
 
         Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync();
 
@@ -27,5 +27,7 @@ namespace smartDormitory.Services.Contracts
         int TotalByName(string textName);
 
         Task EditSensor(int sensorId, string icbSensorId,string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm);
+
+        Task DeleteSensor(string name);
     }
 }

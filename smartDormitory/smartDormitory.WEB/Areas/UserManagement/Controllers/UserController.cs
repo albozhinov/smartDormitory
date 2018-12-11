@@ -75,5 +75,22 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             this.StatusMessage = "The sensor has been successfully edited!";
             return View("_EditStatusMessage", this.StatusMessage);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteSensor(string name)
+        {
+            try
+            {
+                await this.userSensorService.DeleteSensor(name);
+            }
+            catch (Exception)
+            {
+                this.StatusMessage = "Error: Sensor could not be deleted!";
+                return View("_EditStatusMessage", this.StatusMessage);
+            }
+
+            this.StatusMessage = "The sensor has been successfully deleted!";
+            return View("_EditStatusMessage", this.StatusMessage);
+        }
     }
 }

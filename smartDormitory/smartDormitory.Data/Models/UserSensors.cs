@@ -49,5 +49,11 @@ namespace smartDormitory.Data.Models
 
         [Required]
         public bool Alarm { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
     }
 }
