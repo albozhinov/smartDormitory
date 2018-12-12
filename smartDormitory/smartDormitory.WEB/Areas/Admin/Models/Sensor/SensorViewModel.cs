@@ -33,6 +33,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
             this.MinValue = userSensors.MinValue;
             this.MaxValue = userSensors.MaxValue;
             this.ImageURL = userSensors.ImageUrl;
+            this.MeasureType = userSensors.Sensor.MeasureType.Type;
         }
 
         public SensorViewModel(smartDormitory.Data.Sensor sensor)
@@ -94,5 +95,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
         public double SensorTypeMaxVal { get; set; }
 
         public string ImageURL { get; set; }
+
+        public string MeasureType { get; set; }
     }
 }

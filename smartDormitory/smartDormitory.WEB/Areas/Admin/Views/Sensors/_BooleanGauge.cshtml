@@ -1,0 +1,70 @@
+﻿
+@model SensorViewModel
+@{
+
+    string maxValueText = "";
+    string minValueText = "";
+    if (Model.Tag.Contains("Door"))
+    {
+        maxValueText = "Open";
+        minValueText = "Close";
+    }
+    else
+    {
+        maxValueText = "True";
+        minValueText = "False";
+    }
+}
+
+<div id="g1" class="gauge m-md-auto"></div>
+
+<script src="~/lib/guage/justgage.js"></script>
+<script src="~/lib/guage/raphael-2.1.4.min.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+           g1 = new JustGage({
+            id: "g1",
+            value: @Model.Value,
+            min: 0,
+            max: 1,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            counter: true,
+               hideInnerShadow: true,
+               valueFontColor: '#FFFFFF',
+               textRenderer: function (value) {
+                    if (value === @Model.MinValue) {
+                        return '@minValueText';
+                    } else if (value === @Model.MaxValue) {
+                        return '@maxValueText';
+                    } else {
+                        return "@maxValueText";
+                    }
+               },
+               levelColors: [
+                   "#F92D2D",
+                   "#EAD934",
+                   "#96FF45"
+               ],
+               gaugeColor: "#F92D2D",
+        });
+
+            setInterval(function () {
+                const requestData = {
+                    apiSensorId: "@Model.IcbSensorId",
+                };
+
+                $.post(
+                    '@Url.Action("UpdateSensor", "Sensors")',
+                    requestData,
+                    function (data) {
+                        console.log(data)
+                        g1.refresh(data.value);
+                        $('#lastUpdated').html('Last updated ' + data.modifiedOn);
+                    },
+                );
+            }, @Model.PollingInterval * 1000);
+        });
+</script>
+

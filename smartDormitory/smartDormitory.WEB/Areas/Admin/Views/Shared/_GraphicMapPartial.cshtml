@@ -13,7 +13,6 @@
 <body>    
     <!--The div element for the map -->
     <div id="map"></div>
-    <script src="~/js/markerCluster/markerclusterer.js"></script>
     <script>
         // Initialize and add the map
         function initMap() {
@@ -26,9 +25,8 @@
                             var pin = { lat: @Model.Latitude, lng: @Model.Longtitude };                           
 
                         var marker = new google.maps.Marker({
-                                position: pin, animation: google.maps.Animation.BOUNCE, map: map, title: '@Model.Tag'
-                        });         
-            markers.push(marker);
+                                position: pin, animation: google.maps.Animation.BOUNCE, map: map, title: 'Sensor'
+                        });   
         }       
     </script>
     <script async defer

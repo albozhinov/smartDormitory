@@ -31,6 +31,6 @@ namespace smartDormitory.Services.Contracts
 
         Task DeleteSensor(int id);
 
-        Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn);
+        Task<Sensor> UpdateSensorValue(string apiSensorId);
     }
 }

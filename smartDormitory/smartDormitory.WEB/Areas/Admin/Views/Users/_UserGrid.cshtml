@@ -67,6 +67,14 @@
                                     <button type="button" class="btn p-1" id="roleButton" data-toggle="modal" data-target="#roleModal" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-account-24.png" /></button>
                                     <span class="tooltiptext">Change Role</span>
                                 </div>
+
+                                <!--ADD SENSOR BUTTON-->
+                                <form>
+                                    <div class="tooltip-inside ml-2">
+                                        <button asp-area="Admin" asp-controller="Sensors" asp-action="" type="button" class="btn p-1" id="sensorsButton" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-plus-24.png" /></button>
+                                        <span class="tooltiptext">Add Sensor</span>
+                                    </div>
+                                </form>
                             </div>
                         </td>
                     </tr>

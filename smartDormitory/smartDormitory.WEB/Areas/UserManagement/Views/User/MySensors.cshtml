@@ -4,7 +4,11 @@
 }
 
 @{
-    int minimalPolling = 1000 * Model.UserSensors.Min(s => s.PollingInterval);
+    int minimalPolling = int.MaxValue;
+    if (Model.UserSensors.Count() != 0)
+    {
+        minimalPolling = 1000 * Model.UserSensors.Min(s => s.PollingInterval);
+    }
 }
 
 
@@ -27,7 +31,7 @@
         });
     </script>
     <script>
-        function ajaxCall() {
+                function ajaxCall() {
             $.ajax({
                 url: '/UserManagement/User/UpdateSensors',
                 type: 'GET',
@@ -37,7 +41,7 @@
                 }
             });
         }
-        setInterval(ajaxCall, @minimalPolling);
+        setInterval(ajaxCall, @minimalPolling);    
     </script>
 }
 

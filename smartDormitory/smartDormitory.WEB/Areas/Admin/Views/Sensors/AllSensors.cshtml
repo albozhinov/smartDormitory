@@ -6,7 +6,11 @@
 
 <h2 class="text-light">AllSensors</h2>
 @{
-    int minimalPolling = 1000 * Model.Sensors.Min(s => s.PollingInterval);
+    int minimalPolling = int.MaxValue;
+    if (Model.Sensors.Count() != 0)
+    {
+        minimalPolling = 1000 * Model.Sensors.Min(s => s.PollingInterval);
+    }
 }
 
 
@@ -28,7 +32,7 @@
             return false;
         });
 
-         function ajaxCall() {
+         @*function ajaxCall() {
              $.ajax({
                  url: '/Admin/Sensors/SensorGrid?searchtext=@Model.SearchByName&page=' + page,
                 type: 'GET',
@@ -38,10 +42,40 @@
                 }
             });
         }
-        setInterval(ajaxCall, @minimalPolling);
-    </script>
+        setInterval(ajaxCall, @minimalPolling);*@
 
-    <script>        
-       
+
+         @*function ajaxCall() {
+            $.ajax({
+                url: '/Admin/Sensors/UpdateAllSensors',
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    result.sensors.forEach(userSensor => {
+                        let currentValue = userSensor.value;
+                        if (userSensor.tag.includes("Door")) {
+                            if (userSensor.value == 0) {
+                                currentValue = "Close";
+                            }
+                            else {
+                                currentValue = "Open";
+                            }
+                        }
+                        else if (userSensor.tag.includes("Occupancy")) {
+                            if (userSensor.value == 0) {
+                                currentValue = "False";
+                            }
+                            else {
+                                currentValue = "True";
+                            }
+                        }
+                        $('#' + userSensor.icbSensorId).html('Value: ' + currentValue);
+                        $('#Date_' + userSensor.icbSensorId).html('<small>Last updated: ' + userSensor.modifiedOn + '</small>');
+                    })
+                }
+            });
+        }
+        setInterval(ajaxCall, @minimalPolling);*@
     </script>
 }

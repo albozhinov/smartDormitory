@@ -99,7 +99,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
-            return PartialView("_MySensorGrid", allSensorsModel);
+            return Json(allSensorsModel);
         }
     }
 }

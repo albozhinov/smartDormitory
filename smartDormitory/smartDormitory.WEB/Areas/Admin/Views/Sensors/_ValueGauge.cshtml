@@ -1,0 +1,70 @@
+﻿@model SensorViewModel
+@{
+
+    string symbol = Model.MeasureType;
+    if (Model.Tag.Contains("Temperature"))
+    {
+        symbol = "C";
+    }
+}
+
+<div id="jg3" class="gauge size-3 m-md-auto"></div>
+
+
+    <script src="~/lib/guage/justgage.js"></script>
+    <script src="~/lib/guage/raphael-2.1.4.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            jg3 = new JustGage({
+                id: "jg3",
+                label: "@Model.Name",
+                value: @Model.Value,
+                min: @Model.MinValue,
+                max: @Model.MaxValue,
+                decimals: 0,
+                gaugeWidthScale: 0.6,
+                pointer: true,
+                symbol: ' @symbol',
+                valueFontColor: '#FFFFFF',
+                labelFontColor: '#FFFFFF',
+                pointerOptions: {
+                    toplength: -15,
+                    bottomlength: 10,
+                    bottomwidth: 12,
+                    color: '#8e8e93',
+                    stroke: '#ffffff',
+                    stroke_width: 3,
+                    stroke_linecap: 'round'
+                },
+                counter: true,
+                relativeGaugeSize: true,
+                textRenderer: function (value) {
+                    if (value < @Model.MinValue) {
+                        return 'ALERT';
+                    } else if (value > @Model.MaxValue) {
+                        return 'ALERT';
+                    } else {
+                        return value + ' @symbol';
+                    }
+                },
+            });
+
+
+            setInterval(function () {
+                const requestData = {
+                    apiSensorId: "@Model.IcbSensorId",
+                };
+
+                $.post(
+                    '@Url.Action("UpdateSensor", "Sensors")',
+                    requestData,
+                    function (data) {
+                        console.log(data)
+                        jg3.refresh(data.value);
+                        $('#lastUpdated').html('Last updated ' + data.modifiedOn);
+                    },
+                );
+            }, @Model.PollingInterval * 1000);
+        });
+    </script>

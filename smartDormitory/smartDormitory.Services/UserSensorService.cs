@@ -155,6 +155,7 @@ namespace smartDormitory.Services
                 .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase))
                 .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase))
                 .Include(s => s.Sensor)
+                    .ThenInclude(s => s.MeasureType)
                 .Include(u => u.User)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -257,27 +258,12 @@ namespace smartDormitory.Services
             this.context.SaveChanges();
         }
 
-        public async Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn)
+        public async Task<Sensor> UpdateSensorValue(string apiSensorId)
         {
             if (string.IsNullOrEmpty(apiSensorId))
             {
                 throw new ArgumentNullException("Sensor Id cannot be null!");
-            }
-            if (modifiedOn > DateTime.Now)
-            {
-                throw new ArgumentNullException("Last Modified date is inccorect!");
-            }
-            if (pollingInterval < 10)
-            {                
-                throw new ArgumentException("Polling interval cannot be less than 10!");
-            }
-
-            var nextUpdate = modifiedOn.AddSeconds(pollingInterval);
-
-            if (nextUpdate > DateTime.Now)
-            {
-                return new Sensor() { Value = value, ModifiedOn = modifiedOn };
-            }
+            }         
 
             return await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == apiSensorId);
         }
