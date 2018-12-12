@@ -6,19 +6,11 @@
 @{
     int minimalPolling = 1000 * Model.UserSensors.Min(s => s.PollingInterval);
 }
-<div class="row img-responsive" style="background-size:100% auto;">
-    @foreach (var userSensor in Model.UserSensors)
-    {
-        if (userSensor.IsDeleted)
-        {
-            continue;
-        }
-        <div class="col-md-3 p-3">
-            <partial name="_MySensorGrid" for="@userSensor" />
-            <partial name="_DeleteSensorModal" model="null" />
-        </div>
-    }
-</div>
+
+
+<partial name="_MySensorGrid" for="@Model" />
+<partial name="_DeleteSensorModal" model="null" />
+
 
 @section Scripts{
     <script>
@@ -33,14 +25,7 @@
 
             modal.find('input[name="Id"]').val(id)
         });
-
-        function a() {
-            location.reload();
-        };
-
-
-@section Scripts{
-
+    </script>
     <script>
         function ajaxCall() {
             $.ajax({

@@ -4,7 +4,7 @@
 <div id="content">
     <div class="row img-responsive" style="background-size:100% auto;">
         @foreach (var userSensor in Model.UserSensors)
-        {           
+        {
             <div class="col-md-3 p-3">
 
                 @{
@@ -111,7 +111,7 @@
                         }
                     </ul>
                     <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-2  my-md-2" id="adminDashboardButtnon">Edit</a>
-                    <a asp-controller="User" asp-action="DeleteSensor" asp-route-name="@userSensor.Name" class="btn my-2  my-md-2" id="adminDashboardButtnon">Delete</a>
+                    <button class="btn my-2  my-md-2" id="adminDashboardButtnon" data-toggle="modal" data-target="#deleteModal" data-sensor-id="@userSensor.Id">Delete</button>
                     <div class="card-footer">
                         <small class="text-muted">Last updated @userSensor.ModifiedOn</small>
                     </div>
@@ -119,7 +119,6 @@
             </div>
         }
     </div>
-
 </div>
 
 
