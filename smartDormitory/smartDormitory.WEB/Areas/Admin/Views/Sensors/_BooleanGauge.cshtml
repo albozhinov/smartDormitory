@@ -59,7 +59,6 @@
                     '@Url.Action("UpdateSensor", "Sensors")',
                     requestData,
                     function (data) {
-                        console.log(data)
                         g1.refresh(data.value);
                         $('#lastUpdated').html('Last updated ' + data.modifiedOn);
                     },

@@ -167,9 +167,27 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             return Json(viewModel);
         }
 
+        public async Task<IActionResult> AllPrivateAndPublicUsersSensors()
+        {
+            var sensors = await this.userSensorService.GetAllPublicAndPrivateUsersSensorsAsync();
+            var sensorsViewModel = sensors.Select(s => new SensorViewModel()
+            {
+                Latitude = s.Latitude,
+                Longtitude = s.Longitude,
+                UserName = s.User.UserName,
+                Description = s.Description,
+                Tag = s.Sensor.Tag,
+                Id = s.Id,
+                ModifiedOn = s.Sensor.ModifiedOn,
+                Value = s.Sensor.Value,
+                Alarm = s.Alarm,
+                Name = s.Name,
+                URL = s.Sensor.Url,
+            })
+            .ToList();
 
-
-
+            return View(sensorsViewModel);
+        }
         //[Authorize]
         //[HttpGet]
         //public IActionResult RegisterSensor(int sensorId, string tag, string description)

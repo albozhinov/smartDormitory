@@ -379,8 +379,13 @@ textarea {
     }
 
 /*Progress Bar*/
+.progress-bar {
+    color: black;
+    font-weight: bold;
+
+}
 #sensorsProgressBar {
-    height: 2.5em;
+    height: 2.5em;    
 }
 
 .progressBarField {

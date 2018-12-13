@@ -99,7 +99,7 @@ namespace smartDormitory.Services
         {
             return await this.context
                                 .UserSensors
-                                .Where(s => s.IsPublic)
+                                .Where(s => s.IsPublic && !s.IsDeleted)
                                 .Include(u => u.User)
                                 .Include(s => s.Sensor)
                                 .ToListAsync();
@@ -143,7 +143,7 @@ namespace smartDormitory.Services
         public async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id)
         {
             return await this.context.UserSensors
-                                     .Where(s => s.UserId == id && !s.IsPublic)
+                                     .Where(s => s.UserId == id && !s.IsPublic && !s.IsDeleted)
                                      .Include(u => u.User)
                                      .Include(s => s.Sensor)
                                      .ToListAsync();
@@ -152,7 +152,7 @@ namespace smartDormitory.Services
         public async Task<IEnumerable<UserSensors>> GetAllUsersSensorsAsync(string searchByName, string searchByTag, int page = 1, int pageSize = 10)
         {
             return await this.context.UserSensors
-                .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase) && !us.IsDeleted)
                 .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase))
                 .Include(s => s.Sensor)
                     .ThenInclude(s => s.MeasureType)
@@ -266,6 +266,15 @@ namespace smartDormitory.Services
             }         
 
             return await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == apiSensorId);
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllPublicAndPrivateUsersSensorsAsync()
+        {
+            return await this.context.UserSensors
+                                     .Where(s => !s.IsDeleted)
+                                     .Include(u => u.User)
+                                     .Include(s => s.Sensor)
+                                     .ToListAsync();
         }
     }
 }

@@ -59,8 +59,7 @@
                 $.post(
                     '@Url.Action("UpdateSensor", "Sensors")',
                     requestData,
-                    function (data) {
-                        console.log(data)
+                    function (data) {                      
                         jg3.refresh(data.value);
                         $('#lastUpdated').html('Last updated ' + data.modifiedOn);
                     },

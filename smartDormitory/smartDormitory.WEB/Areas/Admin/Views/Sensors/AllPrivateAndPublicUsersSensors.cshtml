@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SensorViewModel>
+
+@{
+    ViewData["Title"] = "AllPrivateAndPublicUsersSensors";
+}
+
+<h2 class="text-light">All Users Sensors</h2>
+
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #adminMap {
+            height: 500px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>
+    <div>
+    </div>
+    <!--The div element for the map -->
+    <div id="adminMap"></div>
+    <script src="~/js/markerCluster/markerclusterer.js"></script>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // The location of Sofia
+            var sofia = { lat: 42.698334, lng: 23.319941 };
+            // The map, centered at Sofia
+            let map = new google.maps.Map(
+                document.getElementById('adminMap'), { zoom: 3.7, center: sofia });
+            let markers = [];
+
+            @{
+                        string symbol = "";
+                        string value = "";
+                        string alarm = "";
+                        foreach (var userSensor in Model)
+                        {
+                    <text>
+                            var pin = { lat: @userSensor.Latitude, lng: @userSensor.Longtitude };
+                    </text>
+
+                            value = userSensor.Value.ToString();
+                            alarm = userSensor.Alarm.ToString();
+                            alarm = userSensor.Alarm ? "On" : "Off";
+
+                            if (userSensor.Tag.StartsWith("Temperature"))
+                            {
+                                symbol = "°C";
+                            }
+                            else if (userSensor.Tag.StartsWith("Humidity"))
+                            {
+                                symbol = "%";
+                            }
+                            else if (userSensor.Tag.StartsWith("Electric"))
+                            {
+                                symbol = "W";
+                            }
+                            else if (userSensor.Tag.StartsWith("Occupancy"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "false" : "true";
+                            }
+                            else if (userSensor.Tag.StartsWith("Door"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "close" : "open";
+                            }
+                            else if (userSensor.Tag.StartsWith("Noise"))
+                            {
+                                symbol = "dB";
+                            }
+
+                    <text>
+                            var contentString = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h5 id="firstHeading" class="firstHeading">@userSensor.Name</h5>' +
+                                '<div id="bodyContent">' +
+                                '<div><b>Username:</b> @userSensor.UserName</div>' +
+                                '<div><b>Description:</b> @userSensor.Description</div>' +
+                                '<div><b>Tag:</b> @userSensor.Tag</div>' +
+                                '<div><b>Alarm:</b> @alarm</div>' +
+                                '<div><b>Value:</b> @value @symbol</div>' +
+                                '<div><b>ModifiedOn:</b> @userSensor.ModifiedOn</div>' +
+                                '<div><b>Latitude:</b> @userSensor.Latitude</div>' +
+                                '<div><b>Longitude:</b> @userSensor.Longtitude</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString,
+                                disableAutoPan: true
+                                    });
+
+                        var marker = new google.maps.Marker({
+                                position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
+            });
+            markers.push(marker);
+                            google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
+                                        return function () {
+                        infowindow.setContent(contentString);
+                                            infowindow.open(map, marker);
+
+                                            google.maps.event.addListener(map, 'click', function () {
+                                                infowindow.close(map, marker);
+                                            });
+                                            setTimeout(function () { infowindow.close(); }, 5000);
+                    };
+                })(marker, contentString, infowindow));
+                    </text>
+                }
+            }
+            console.log(markers);
+            let markerCluster = new MarkerClusterer(map, markers);
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">
+    </script>
+</body>
+</html>
