@@ -35,21 +35,10 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
 
         public async Task<IActionResult> MySensors(UserAllSensorsModel userSensorsModel)
         {
-            bool isMailSended = false;
-            IEnumerable<UserSensors> userSensors = new List<UserSensors>();
-            
+            IEnumerable<UserSensors> userSensors = new List<UserSensors>();         
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             userSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
-
-            try
-            {
-                await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
-                isMailSended = true;
-            }
-            catch (Exception)
-            {
-                isMailSended = false;
-            }
+           
             return View(userSensorsModel);
         }
 
@@ -110,6 +99,14 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             IEnumerable<UserSensors> userSensors = new List<UserSensors>();
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
+
+            try
+            {
+                await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
+            }
+            catch (Exception)
+            {
+            }
 
             return PartialView("_MySensorGrid", allSensorsModel);
         }
