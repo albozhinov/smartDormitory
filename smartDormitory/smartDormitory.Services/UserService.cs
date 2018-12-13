@@ -33,7 +33,15 @@ namespace smartDormitory.Services
                                      .Where(u => u.UserName
                                         .Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                      .CountAsync();
-        }        
+        }     
+        
+        public async Task<string> GetUserEmailAsync(string id)
+        {
+            return await this.context.Users
+                .Where(u => u.Id == id)
+                .Select(u => u.Email)
+                .FirstOrDefaultAsync();
+        }
     }
 }
 

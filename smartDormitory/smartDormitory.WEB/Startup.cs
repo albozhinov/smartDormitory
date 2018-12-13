@@ -65,6 +65,7 @@ namespace smartDormitory.WEB
             services.AddScoped(typeof(IRoleManager<>), typeof(RoleManagerWrapper<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserSensorService, UserSensorService>();
+            services.AddScoped<IMailService, MailService>();
 
 
             services.AddTransient<IEmailSender, EmailSender>();

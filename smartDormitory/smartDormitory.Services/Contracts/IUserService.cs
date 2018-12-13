@@ -12,5 +12,7 @@ namespace smartDormitory.Services.Contracts
         Task<ICollection<User>> GetUsersAsync(string searchText,int page = 1, int pageSize = 5);
 
         Task<int> GetTotalUserAsync(string searchText);
+
+        Task<string> GetUserEmailAsync(string id);
     }
 }

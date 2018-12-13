@@ -8,5 +8,7 @@ namespace smartDormitory.Data.Models
     public class User : IdentityUser
     {
         public ICollection<UserSensors> UserSensors { get; set; }
+
+        public bool ReceiveEmails { get; set; }
     }
 }

@@ -19,25 +19,37 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         private readonly IUserService userService;
         private readonly IUserSensorService userSensorService;
         private readonly UserManager<User> userManager;
+        private readonly IMailService mailService;
         private readonly int Page_Size = 10;
 
         [TempData]
         public string StatusMessage { get; set; }
 
-        public UserController(IUserService userService, IUserSensorService userSensorService, UserManager<User> userManager)
+        public UserController(IUserService userService, IUserSensorService userSensorService, UserManager<User> userManager, IMailService mailService)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
         }
-
 
         public async Task<IActionResult> MySensors(UserAllSensorsModel userSensorsModel)
         {
+            bool isMailSended = false;
             IEnumerable<UserSensors> userSensors = new List<UserSensors>();
+            
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             userSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
+            try
+            {
+                await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
+                isMailSended = true;
+            }
+            catch (Exception)
+            {
+                isMailSended = false;
+            }
             return View(userSensorsModel);
         }
 
