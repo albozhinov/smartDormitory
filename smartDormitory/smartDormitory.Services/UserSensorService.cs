@@ -124,20 +124,21 @@ namespace smartDormitory.Services
             return await this.context.UserSensors
                 .Where(us => us.UserId == id && !us.IsDeleted)
                 .Include(s => s.Sensor)
+                    .ThenInclude(s => s.MeasureType)
                 .ToListAsync();
         }
 
         public int TotalContainingText(string searchText)
         {
             return this.context.UserSensors
-                .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && !s.IsDeleted)
                 .ToList()
                 .Count();
         }
 
         public int Total()
         {
-            return this.context.UserSensors.Count();
+            return this.context.UserSensors.Where(s => !s.IsDeleted).Count();
         }
 
         public async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id)
@@ -165,7 +166,7 @@ namespace smartDormitory.Services
         public int TotalByName(string textName)
         {
             return this.context.UserSensors.Where(s => s.User.UserName
-                                               .Contains(textName, StringComparison.InvariantCultureIgnoreCase))
+                                               .Contains(textName, StringComparison.InvariantCultureIgnoreCase) && !s.IsDeleted)
                                            .Include(s => s.User)
                                            .Count();
         }

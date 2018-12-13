@@ -188,6 +188,25 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
 
             return View(sensorsViewModel);
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteSensor(int id)
+        {
+            try
+            {
+                await this.userSensorService.DeleteSensor(id);
+            }
+            catch (Exception)
+            {
+                this.StatusMessage = "Error: Sensor could not be deleted!";
+                return View("_EditStatusMessage", this.StatusMessage);
+            }
+
+            this.StatusMessage = "The sensor has been successfully deleted!";
+            return View("_EditStatusMessage", this.StatusMessage);
+        }
+
+
         //[Authorize]
         //[HttpGet]
         //public IActionResult RegisterSensor(int sensorId, string tag, string description)

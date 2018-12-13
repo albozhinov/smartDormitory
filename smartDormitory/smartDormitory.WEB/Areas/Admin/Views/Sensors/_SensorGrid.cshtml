@@ -88,8 +88,9 @@
                             </div>
                             <a asp-area="Admin" asp-controller="Sensors" asp-action="SensorGraphic" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Graphic View</a>
                             <a asp-area="Admin" asp-controller="Sensors" asp-action="EditSensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
+                            <button class="btn my-2  my-md-2" id="adminDashboardButtnon" data-toggle="modal" data-target="#deleteModal" data-sensor-id="@sensor.Id">Delete</button>
                             <div class="card-footer">
-                                <small id="Date_@sensor.IcbSensorId" class="text-muted">Last updated @sensor.ModifiedOn</small>
+                                <small class="text-muted">Last updated @sensor.ModifiedOn</small>
                             </div>
                         </div>
                     </div>
@@ -119,4 +120,3 @@
         </ul>
     </nav>
 </div>
-

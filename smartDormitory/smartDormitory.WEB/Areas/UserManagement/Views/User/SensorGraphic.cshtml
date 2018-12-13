@@ -1,0 +1,52 @@
+﻿@model UserSensorModel
+
+@{
+    ViewData["Title"] = "SensorGraphic";
+}
+
+@{
+    string isPublic = Model.IsPublic ? "On" : "Off";
+    string alarm = Model.Alarm ? "On" : "Off";
+
+    string partialName = "";
+    if (Model.Tag.Contains("Temperature") ||
+        Model.Tag.Contains("Humidity") ||
+        Model.Tag.Contains("ElectricPowerConsumtion") ||
+        Model.Tag.Contains("Noise"))
+    {
+        partialName = "_ValueGauge";
+    }
+    else if (Model.Tag.Contains("Door") ||
+             Model.Tag.Contains("Occupancy"))
+    {
+        partialName = "_BooleanGauge";
+    }
+}
+<div class="container text-light">
+    <div id="probno" class="row row-">
+        <partial name="@partialName" model="Model" />
+    </div>
+    <br />
+    <div class="row">
+        <h4 id="lastUpdated" class="border-bottom m-md-auto">Last updated @Model.ModifiedOn</h4>
+    </div>
+    <br />
+    <div class="row text-md-center">       
+        <div class="col">
+            <h3 class="border-bottom">Public: @isPublic</h3>
+        </div>
+        <div class="col">
+            <h3 class="border-bottom">Alarm: @alarm</h3>
+        </div>
+    </div>
+    <br />
+    <div class="row text-md-center">
+        <div class="col">
+            <h3 class="text-md-left">Description:</h3><h3 class="border-bottom">  @Model.Description</h3>
+        </div>
+    </div>
+    <div class="row">
+        <partial name="_GraphicMapPartial" model="@Model" />
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿@model SensorViewModel
+﻿@model UserSensorModel
 @{
 
     string maxValueText = "";
@@ -55,7 +55,7 @@
                 };
 
                 $.post(
-                    '@Url.Action("UpdateSensor", "Sensors")',
+                    '@Url.Action("UpdateSensor", "User")',
                     requestData,
                     function (data) {
                         g1.refresh(data.value);

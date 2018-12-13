@@ -12,25 +12,37 @@
         minimalPolling = 1000 * Model.Sensors.Min(s => s.PollingInterval);
     }
 }
-
-
 <partial name="_SensorGrid" model="@Model" />
+<partial name="_ModalGrid" model="null" />
+
 
 @section Scripts {
     <script>
-        var page = 1;
-        $(document).on("click", ".page-item a", function () {
-            $.ajax({
-                url: $(this).attr("href"),
-                type: 'GET',
-                cache: false,
-                success: function (result) {
+    $(document).on("click", ".page-item a", function () {
+        $.ajax({
+            url: $(this).attr("href"),
+            type: 'GET',
+            cache: false,
+            success: function (result) {
 
-                    $('#content').html(result);
-                }
-            });
-            return false;
+                $('#content').html(result);
+            }
         });
+        return false;
+        });
+
+        jQuery.noConflict();
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('sensor-id')
+            console.log(id);
+            var modal = $(this)
+            
+            modal.find('input[name="id"]').val(id)
+        });
+
+             
+
 
          @*function ajaxCall() {
              $.ajax({
