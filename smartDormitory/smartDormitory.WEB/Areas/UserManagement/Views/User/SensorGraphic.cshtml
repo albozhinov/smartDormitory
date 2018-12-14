@@ -1,7 +1,7 @@
-﻿@model SensorViewModel
+﻿@model UserSensorModel
 
 @{
-    ViewData["Title"] = "SensorGraphicRepresentation";
+    ViewData["Title"] = "SensorGraphic";
 }
 
 @{
@@ -31,10 +31,7 @@
         <h4 id="lastUpdated" class="border-bottom m-md-auto">Last updated @Model.ModifiedOn</h4>
     </div>
     <br />
-    <div class="row text-md-center">
-        <div class="col">
-            <h3 class="border-bottom">User: @Model.UserName</h3>
-        </div>
+    <div class="row text-md-center">       
         <div class="col">
             <h3 class="border-bottom">Public: @isPublic</h3>
         </div>
@@ -52,3 +49,4 @@
         <partial name="_GraphicMapPartial" model="@Model" />
     </div>
 </div>
+

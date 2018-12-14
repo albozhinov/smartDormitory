@@ -13,6 +13,9 @@ namespace smartDormitory.Services
 {
     public class UserSensorService : IUserSensorService
     {
+        /// <summary>
+        /// TEST GIT MERGE
+        /// </summary>
         private readonly smartDormitoryDbContext context;
 
         public UserSensorService(smartDormitoryDbContext context)
@@ -99,7 +102,7 @@ namespace smartDormitory.Services
         {
             return await this.context
                                 .UserSensors
-                                .Where(s => s.IsPublic)
+                                .Where(s => s.IsPublic && !s.IsDeleted)
                                 .Include(u => u.User)
                                 .Include(s => s.Sensor)
                                 .ToListAsync();
@@ -124,26 +127,27 @@ namespace smartDormitory.Services
             return await this.context.UserSensors
                 .Where(us => us.UserId == id && !us.IsDeleted)
                 .Include(s => s.Sensor)
+                    .ThenInclude(s => s.MeasureType)
                 .ToListAsync();
         }
 
         public int TotalContainingText(string searchText)
         {
             return this.context.UserSensors
-                .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && !s.IsDeleted)
                 .ToList()
                 .Count();
         }
 
         public int Total()
         {
-            return this.context.UserSensors.Count();
+            return this.context.UserSensors.Where(s => !s.IsDeleted).Count();
         }
 
         public async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id)
         {
             return await this.context.UserSensors
-                                     .Where(s => s.UserId == id && !s.IsPublic)
+                                     .Where(s => s.UserId == id && !s.IsPublic && !s.IsDeleted)
                                      .Include(u => u.User)
                                      .Include(s => s.Sensor)
                                      .ToListAsync();
@@ -152,9 +156,10 @@ namespace smartDormitory.Services
         public async Task<IEnumerable<UserSensors>> GetAllUsersSensorsAsync(string searchByName, string searchByTag, int page = 1, int pageSize = 10)
         {
             return await this.context.UserSensors
-                .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase) && !us.IsDeleted)
                 .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase))
                 .Include(s => s.Sensor)
+                    .ThenInclude(s => s.MeasureType)
                 .Include(u => u.User)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -164,7 +169,7 @@ namespace smartDormitory.Services
         public int TotalByName(string textName)
         {
             return this.context.UserSensors.Where(s => s.User.UserName
-                                               .Contains(textName, StringComparison.InvariantCultureIgnoreCase))
+                                               .Contains(textName, StringComparison.InvariantCultureIgnoreCase) && !s.IsDeleted)
                                            .Include(s => s.User)
                                            .Count();
         }
@@ -257,29 +262,23 @@ namespace smartDormitory.Services
             this.context.SaveChanges();
         }
 
-        public async Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn)
+        public async Task<Sensor> UpdateSensorValue(string apiSensorId)
         {
             if (string.IsNullOrEmpty(apiSensorId))
             {
                 throw new ArgumentNullException("Sensor Id cannot be null!");
-            }
-            if (modifiedOn > DateTime.Now)
-            {
-                throw new ArgumentNullException("Last Modified date is inccorect!");
-            }
-            if (pollingInterval < 10)
-            {                
-                throw new ArgumentException("Polling interval cannot be less than 10!");
-            }
-
-            var nextUpdate = modifiedOn.AddSeconds(pollingInterval);
-
-            if (nextUpdate > DateTime.Now)
-            {
-                return new Sensor() { Value = value, ModifiedOn = modifiedOn };
-            }
+            }         
 
             return await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == apiSensorId);
+        }
+
+        public async Task<IEnumerable<UserSensors>> GetAllPublicAndPrivateUsersSensorsAsync()
+        {
+            return await this.context.UserSensors
+                                     .Where(s => !s.IsDeleted)
+                                     .Include(u => u.User)
+                                     .Include(s => s.Sensor)
+                                     .ToListAsync();
         }
     }
 }

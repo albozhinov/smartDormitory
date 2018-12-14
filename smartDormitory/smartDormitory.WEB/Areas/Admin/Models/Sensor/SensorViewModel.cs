@@ -33,12 +33,21 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
             this.MinValue = userSensors.MinValue;
             this.MaxValue = userSensors.MaxValue;
             this.ImageURL = userSensors.ImageUrl;
+            this.MeasureType = userSensors.Sensor.MeasureType.Type;
         }
 
         public SensorViewModel(smartDormitory.Data.Sensor sensor)
         {
-            this.ModifiedOn = sensor.ModifiedOn;
+            this.Id = sensor.Id;
+            this.Description = sensor.Description;
+            this.Tag = sensor.Tag;
             this.Value = sensor.Value;
+            this.PollingInterval = sensor.PollingInterval;
+            this.ModifiedOn = sensor.ModifiedOn;
+            this.URL = sensor.Url;
+            this.MinValue = sensor.MinValue;
+            this.MaxValue = sensor.MaxValue;
+            this.MeasureType = sensor.MeasureType.Type;
         }
         [Required]
         public int Id { get; set; }
@@ -94,5 +103,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
         public double SensorTypeMaxVal { get; set; }
 
         public string ImageURL { get; set; }
+
+        public string MeasureType { get; set; }
     }
 }

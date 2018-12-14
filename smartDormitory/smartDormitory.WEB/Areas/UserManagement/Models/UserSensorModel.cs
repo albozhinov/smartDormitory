@@ -1,4 +1,5 @@
-﻿using smartDormitory.Data.Models;
+﻿using smartDormitory.Data;
+using smartDormitory.Data.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,6 +30,13 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
             this.Longtitude = userSensor.Longitude;
             this.ImageUrl = userSensor.ImageUrl;
             this.IsDeleted = userSensor.IsDeleted;
+            this.MeasureType = userSensor.Sensor.MeasureType.Type;
+        }
+
+        public UserSensorModel(Sensor dataSensor)
+        {
+            this.ModifiedOn = dataSensor.ModifiedOn;
+            this.Value = dataSensor.Value;
         }
 
         public int Id { get; set; }
@@ -79,5 +87,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Models
         public double SensorTypeMaxVal { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public string MeasureType { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SensorViewModel
+﻿@model UserSensorModel
 
 <html>
 <head>
@@ -10,7 +10,7 @@
         }
     </style>
 </head>
-<body>    
+<body>
     <!--The div element for the map -->
     <div id="map"></div>
     <script>
@@ -22,12 +22,12 @@
             var map = new google.maps.Map(
                 document.getElementById('map'), { zoom: 6, center: sensor });
 
-                            var pin = { lat: @Model.Latitude, lng: @Model.Longtitude };                           
+                            var pin = { lat: @Model.Latitude, lng: @Model.Longtitude };
 
                         var marker = new google.maps.Marker({
                                 position: pin, animation: google.maps.Animation.BOUNCE, map: map, title: 'Sensor'
-                        });   
-        }       
+                        });
+        }
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjLtaycPzwgQOUjWv9ONKdMDCkLXafak&callback=initMap">

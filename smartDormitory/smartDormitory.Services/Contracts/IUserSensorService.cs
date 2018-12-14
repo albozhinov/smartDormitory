@@ -15,6 +15,8 @@ namespace smartDormitory.Services.Contracts
 
         Task<IEnumerable<UserSensors>> GetAllPublicUsersSensorsAsync();
 
+        Task<IEnumerable<UserSensors>> GetAllPublicAndPrivateUsersSensorsAsync();
+
         Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id);
     
         Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id);
@@ -31,6 +33,6 @@ namespace smartDormitory.Services.Contracts
 
         Task DeleteSensor(int id);
 
-        Task<Sensor> UpdateSensorValue(string apiSensorId, int pollingInterval, int value, DateTime modifiedOn);
+        Task<Sensor> UpdateSensorValue(string apiSensorId);
     }
 }

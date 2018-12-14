@@ -15,7 +15,7 @@
     @{
         if (Model.Sensors.Count() == 0)
         {
-            <h5>No data available</h5>
+            <h5 class="text-light">No data available</h5>
         }
         else
         {
@@ -42,6 +42,8 @@
 {"Latitude", "" + sensor.Latitude },
 {"Longtitude", "" + sensor.Longtitude },
 {"ImageURL", "" + sensor.ImageURL },
+{"MeasureType", "" + sensor.MeasureType },
+
 };
                     var currentValue = "" + sensor.Value;
                     if (sensor.Tag.Contains("Door"))
@@ -81,11 +83,12 @@
                                     <li class="list-group-item">User Name: @sensor.UserName</li>
                                     <li class="list-group-item">Public: @isPublic</li>
                                     <li class="list-group-item">Alarm: @alarm</li>
-                                    <li class="list-group-item">Value: @sensor.Value</li>
+                                    <li id="@sensor.IcbSensorId" class="list-group-item">Value: @currentValue</li>
                                 </ul>
                             </div>
                             <a asp-area="Admin" asp-controller="Sensors" asp-action="SensorGraphic" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Graphic View</a>
                             <a asp-area="Admin" asp-controller="Sensors" asp-action="EditSensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
+                            <button class="btn my-2  my-md-2" id="adminDashboardButtnon" data-toggle="modal" data-target="#deleteModal" data-sensor-id="@sensor.Id">Delete</button>
                             <div class="card-footer">
                                 <small class="text-muted">Last updated @sensor.ModifiedOn</small>
                             </div>
@@ -117,4 +120,3 @@
         </ul>
     </nav>
 </div>
-

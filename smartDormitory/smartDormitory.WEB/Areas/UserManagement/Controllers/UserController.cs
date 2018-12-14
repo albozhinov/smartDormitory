@@ -113,5 +113,24 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
 
             return PartialView("_MySensorGrid", allSensorsModel);
         }
+
+        public IActionResult SensorGraphic(UserSensorModel viewModel)
+        {
+            return View(viewModel);
+        }
+
+        public async Task<JsonResult> UpdateSensor(string apiSensorId)
+        {
+            try
+            {
+                var sensor = await this.userSensorService.UpdateSensorValue(apiSensorId);
+                var viewModel = new UserSensorModel(sensor);
+                return new JsonResult(viewModel);
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Error: Sensor data is incorrect!");
+            }
+        }
     }
 }
