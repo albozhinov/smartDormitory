@@ -48,6 +48,13 @@ namespace smartDormitory.WEB
                 .AddEntityFrameworkStores<smartDormitoryDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            services.AddAuthentication().AddGoogle(googleOptions =>  
+            {  
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];  
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];  
+            }); 
+
             //Disable some password options to test easily!
             services.Configure<IdentityOptions>(options =>
            {
@@ -67,6 +74,7 @@ namespace smartDormitory.WEB
             services.AddScoped<IUserSensorService, UserSensorService>();
             services.AddScoped<IMailService, MailService>();
 
+            services.AddMemoryCache();
 
             services.AddTransient<IEmailSender, EmailSender>();
 

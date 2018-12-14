@@ -20,7 +20,6 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         private readonly IUserSensorService userSensorService;
         private readonly UserManager<User> userManager;
         private readonly IMailService mailService;
-        private readonly int Page_Size = 10;
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -35,10 +34,10 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
 
         public async Task<IActionResult> MySensors(UserAllSensorsModel userSensorsModel)
         {
-            IEnumerable<UserSensors> userSensors = new List<UserSensors>();         
+            IEnumerable<UserSensors> userSensors = new List<UserSensors>();
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
             userSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
-           
+
             return View(userSensorsModel);
         }
 
@@ -97,15 +96,19 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
         public async Task<IActionResult> UpdateSensors(UserAllSensorsModel allSensorsModel)
         {
             IEnumerable<UserSensors> userSensors = new List<UserSensors>();
-            userSensors = await this.userSensorService.GetAllUserSensorsAsync(userManager.GetUserId(User));
+            var userId = userManager.GetUserId(User);
+            userSensors = await this.userSensorService.GetAllUserSensorsAsync(userId);
             allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
-            try
+            if (await userService.GetUserReceiveEmailsAsync(userId))
             {
-                await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
-            }
-            catch (Exception)
-            {
+                try
+                {
+                    await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
+                }
+                catch (Exception)
+                {//TODO: Log Errors
+                }
             }
 
             return PartialView("_MySensorGrid", allSensorsModel);

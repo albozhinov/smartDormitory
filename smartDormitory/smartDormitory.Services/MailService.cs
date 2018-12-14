@@ -22,7 +22,6 @@ namespace smartDormitory.Services
 
         public async Task SendEmail(IEnumerable<UserSensors> userSensors, string username, string email)
         {
-
             if (userSensors != null && userSensors.Count() != 0)
             {
                 foreach (var sensor in userSensors)

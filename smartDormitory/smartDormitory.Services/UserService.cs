@@ -42,6 +42,14 @@ namespace smartDormitory.Services
                 .Select(u => u.Email)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> GetUserReceiveEmailsAsync(string id)
+        {
+            return await this.context.Users
+                .Where(u => u.Id == id)
+                .Select(u => u.ReceiveEmails)
+                .FirstOrDefaultAsync();
+        }
     }
 }
 
