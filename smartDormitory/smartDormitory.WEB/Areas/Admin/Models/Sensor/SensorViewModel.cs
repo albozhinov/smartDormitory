@@ -38,8 +38,16 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
 
         public SensorViewModel(smartDormitory.Data.Sensor sensor)
         {
-            this.ModifiedOn = sensor.ModifiedOn;
+            this.Id = sensor.Id;
+            this.Description = sensor.Description;
+            this.Tag = sensor.Tag;
             this.Value = sensor.Value;
+            this.PollingInterval = sensor.PollingInterval;
+            this.ModifiedOn = sensor.ModifiedOn;
+            this.URL = sensor.Url;
+            this.MinValue = sensor.MinValue;
+            this.MaxValue = sensor.MaxValue;
+            this.MeasureType = sensor.MeasureType.Type;
         }
         [Required]
         public int Id { get; set; }

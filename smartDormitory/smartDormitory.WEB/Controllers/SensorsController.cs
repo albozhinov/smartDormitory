@@ -55,7 +55,7 @@ namespace smartDormitory.WEB.Controllers
             }
 
             return View(model);
-        }       
+        }
 
         [Authorize]
         public IActionResult AllSensorTypesGrid(SensorTypesViewModel model)
@@ -79,6 +79,7 @@ namespace smartDormitory.WEB.Controllers
         public IActionResult RegisterSensor(int sensorId, string tag, string description)
         {
             var userId = userManager.GetUserId(User);
+
             var validationsMinMax = this.GetMinMaxValidations(description);
 
             var userSensorModel = new UserSensorViewModel()
@@ -86,7 +87,7 @@ namespace smartDormitory.WEB.Controllers
                 Id = sensorId,
                 UserId = userId,
                 Tag = tag,
-                ValidationsMinMax = validationsMinMax         
+                ValidationsMinMax = validationsMinMax
             };
 
             return View(userSensorModel);

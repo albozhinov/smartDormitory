@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
     public class SensorsController : Controller
     {
         private readonly IUserSensorService userSensorService;
+        private readonly IICBApiSensorsService apiSensorsService;
         private readonly int Page_Size = 4;
 
         [TempData]
@@ -126,7 +128,10 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             try
             {
                 var sensor = await this.userSensorService.UpdateSensorValue(apiSensorId);
-                var viewModel = new SensorViewModel(sensor);
+                var viewModel = new SensorViewModel() {
+                    Value = sensor.Value,
+                    ModifiedOn = sensor.ModifiedOn,
+                };
                 return new JsonResult(viewModel);
             }
             catch (Exception)
@@ -190,6 +195,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteSensor(int id)
         {
             try
@@ -206,39 +212,85 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             return View("_EditStatusMessage", this.StatusMessage);
         }
 
+        public IActionResult AllSensorTypes(AllSensorsViewModel model)
+        {
+            if (model.SearchByTag == null)
+            {
+                var dataSensors  = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
+                model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)Page_Size);
+            }
+            else
+            {
+                var dataSensors = this.apiSensorsService.ListByContainingText(model.SearchByTag, model.Page, Page_Size);
+                model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)4);
+            }
 
-        //[Authorize]
-        //[HttpGet]
-        //public IActionResult RegisterSensor(int sensorId, string tag, string description)
-        //{
-        //    var userId = userManager.GetUserId(User);
-        //    var validationsMinMax = this.GetMinMaxValidations(description);
+            return View(model);
+        }
+        
+        public IActionResult AllSensorTypesGrid(AllSensorsViewModel model)
+        {
+            if (model.SearchByTag == null)
+            {
+                var dataSensors = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
+                model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)Page_Size);
+            }
+            else
+            {
+                var dataSensors = this.apiSensorsService.ListByContainingText(model.SearchByTag, model.Page, Page_Size);
+                model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)4);
+            }
 
-        //    var userSensorModel = new UserSensorViewModel()
-        //    {
-        //        Id = sensorId,
-        //        UserId = userId,
-        //        Tag = tag,
-        //        ValidationsMinMax = validationsMinMax
-        //    };
+            return PartialView("_AllSensorTypesGrid", model);
+        }
+        
+        public IActionResult RegisterSensor(string userId, int sensorId, string tag, string description)
+        {
+            var validationsMinMax = this.GetMinMaxValidations(description);
 
-        //    return View(userSensorModel);
-        //}
+            var userSensorModel = new SensorViewModel()
+            {
+                Id = sensorId,
+                UserId = userId,
+                Tag = tag,
+                ValidationsMinMax = validationsMinMax
+            };
 
-        //[Authorize]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> RegisterSensor(UserSensorViewModel model)
-        //{
-        //    if (!this.ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
+            return View(userSensorModel);
+        }
 
-        //    await this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
-        //         model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm, model.ImageUrl);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterSensor(SensorViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        //    return RedirectToAction("Index", "Home");
-        //}
+            await this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
+                 model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm, model.ImageURL);
+
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
+
+        private List<double> GetMinMaxValidations(string description)
+        {
+            var validations = new List<double>();
+
+            string[] numbers = Regex.Split(description, @"\D+");
+            foreach (string value in numbers)
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    validations.Add(double.Parse(value));
+                }
+            }
+            return validations;
+        }     
     }
 }

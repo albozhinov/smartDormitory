@@ -69,9 +69,12 @@
                                 </div>
 
                                 <!--ADD SENSOR BUTTON-->
-                                <form>
+                                @{ 
+                                            var dataDict = new Dictionary<string, string>() {{ "userId", "" + user.Id }};
+                                        }
+                                <form asp-area="Admin" asp-controller="Sensors" asp-action="RegisterSensor" asp-all-route-data="dataDict" method="post">
                                     <div class="tooltip-inside ml-2">
-                                        <button asp-area="Admin" asp-controller="Sensors" asp-action="" type="button" class="btn p-1" id="sensorsButton" data-whatever="@user.UserName" data-user-id="@user.Id"><img src="~/images/icons8-plus-24.png" /></button>
+                                        <button type="submit" class="btn p-1" id="sensorsButton"><img src="~/images/icons8-plus-24.png" /></button>
                                         <span class="tooltiptext">Add Sensor</span>
                                     </div>
                                 </form>
