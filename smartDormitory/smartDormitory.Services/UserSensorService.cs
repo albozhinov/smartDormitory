@@ -13,6 +13,9 @@ namespace smartDormitory.Services
 {
     public class UserSensorService : IUserSensorService
     {
+        /// <summary>
+        /// TEST GIT MERGE
+        /// </summary>
         private readonly smartDormitoryDbContext context;
 
         public UserSensorService(smartDormitoryDbContext context)
