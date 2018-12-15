@@ -3,6 +3,7 @@ using smartDormitory.Data;
 using smartDormitory.Data.Context;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
+using smartDormitory.Services.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,59 +21,23 @@ namespace smartDormitory.Services
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl)
+        public async Task AddSensorAsync(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl)
         {
-            if (userId == null)
-            {
-                throw new ArgumentNullException("User Id cannot be null!");
-            }
+            Validator.IfNull<ArgumentNullException>(userId, "Sensor Id cannot be less or equal 0!");
+            Validator.IfNull<ArgumentNullException>(name, "Name cannot be null!");
+            Validator.IfNull<ArgumentNullException>(description, "Description cannot be null!");
+            Validator.IfIsNotPositive(sensorId, "Sensor Id cannot be less than 0!");
+            Validator.IfIsNotInRangeInclusive(name.Length, 3, 20, "Name must be between 3 and 20 symbols!");
+            Validator.IfIsNotInRangeInclusive(description.Length, 3, 250, "Description must be between 3 and 250 symbols!");
+            Validator.IfNull<ArgumentNullException>(imageUrl, "Image URL cannot be null or empty!");
+            Validator.IfIsNotInRangeInclusive(pollingInterval, 10, 40, "Polling interval must be between 10 and 40 seconds!");
 
-            if (sensorId < 0)
-            {
-                throw new ArgumentException("Sensor Id cannot be less than 0!");
-            }
+            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
 
-            if (name == null)
-            {
-                throw new ArgumentNullException("Name cannot be null!");
-            }
+            Validator.IfNull<ArgumentNullException>(sensor, $"Sensor with Id {sensorId} does not exist!");
 
-            if (name.Length < 3 || name.Length > 20)
-            {
-                throw new ArgumentException("Name must be between 3 and 20 symbols!");
-            }
-
-            if (description == null)
-            {
-                throw new ArgumentNullException("Description cannot be null!");
-            }
-
-            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);                
-
-            if (sensor is null)
-            {
-                throw new ArgumentNullException($"Sensor with Id {sensorId} does not exist!");
-            }
-
-            if (minValue < sensor.MinValue || minValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (maxValue < sensor.MinValue || maxValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (pollingInterval < 10 || pollingInterval > 40)
-            {
-                throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
-            }
-
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                throw new ArgumentNullException("Image URL cannot be null or empty!");
-            }
+            Validator.IfIsNotInRangeInclusive(minValue, sensor.MinValue, sensor.MaxValue, $"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
+            Validator.IfIsNotInRangeInclusive(maxValue, sensor.MinValue, sensor.MaxValue, $"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");                  
 
             var newUserSensor = new UserSensors
             {
