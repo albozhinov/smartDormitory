@@ -51,7 +51,7 @@ namespace smartDormitory.WEB.Controllers
             else
             {
                 model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)Page_Size);
             }
 
             return View(model);
@@ -68,7 +68,7 @@ namespace smartDormitory.WEB.Controllers
             else
             {
                 model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)Page_Size);
             }
 
             return PartialView("_AllSensorTypesGrid", model);

@@ -22,9 +22,10 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
         public string StatusMessage { get; set; }
 
 
-        public SensorsController(IUserSensorService userSensorService)
+        public SensorsController(IUserSensorService userSensorService, IICBApiSensorsService apiSensorsService)
         {
             this.userSensorService = userSensorService;
+            this.apiSensorsService = apiSensorsService;
         }
 
         public async Task<IActionResult> AllSensors(AllSensorsViewModel viewModel)
@@ -214,25 +215,26 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
 
         public IActionResult AllSensorTypes(AllSensorsViewModel model)
         {
-            if (model.SearchByTag == null)
+            if (string.IsNullOrEmpty(model.SearchByTag) || string.IsNullOrWhiteSpace(model.SearchByTag))
             {
-                var dataSensors  = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
+                var dataSensors  = this.apiSensorsService.ListAllSensors(model.Page, 100);
                 model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
                 model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.Total() / (double)Page_Size);
             }
             else
             {
-                var dataSensors = this.apiSensorsService.ListByContainingText(model.SearchByTag, model.Page, Page_Size);
+                var dataSensors = this.apiSensorsService.ListByContainingText(model.SearchByTag, model.Page, 100);
                 model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)4);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)Page_Size);
             }
 
             return View(model);
         }
-        
+
+        [HttpGet]
         public IActionResult AllSensorTypesGrid(AllSensorsViewModel model)
         {
-            if (model.SearchByTag == null)
+            if (string.IsNullOrEmpty(model.SearchByTag) || string.IsNullOrWhiteSpace(model.SearchByTag))
             {
                 var dataSensors = this.apiSensorsService.ListAllSensors(model.Page, Page_Size);
                 model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
@@ -242,13 +244,13 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
             {
                 var dataSensors = this.apiSensorsService.ListByContainingText(model.SearchByTag, model.Page, Page_Size);
                 model.Sensors = dataSensors.Select(s => new SensorViewModel(s)).ToList();
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)4);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchByTag) / (double)Page_Size);
             }
 
             return PartialView("_AllSensorTypesGrid", model);
         }
-        
-        public IActionResult RegisterSensor(string userId, int sensorId, string tag, string description)
+
+        public IActionResult RegisterSensor(string userId, string userName, int sensorId, string tag, string description)
         {
             var validationsMinMax = this.GetMinMaxValidations(description);
 
@@ -257,6 +259,7 @@ namespace smartDormitory.WEB.Areas.Admin.Controllers
                 Id = sensorId,
                 UserId = userId,
                 Tag = tag,
+                UserName = userName,
                 ValidationsMinMax = validationsMinMax
             };
 
