@@ -15,10 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\ICBApiSensorsServicesTests\" />
     <Folder Include="Services\MeasureTypesServicesTests\" />
     <Folder Include="Services\UserServicesTests\" />
     <Folder Include="Services\UserSensorServicesTests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\smartDormitory.Data\smartDormitory.Data.csproj" />
   </ItemGroup>
 
 </Project>
