@@ -96,7 +96,7 @@
 
                         var marker = new google.maps.Marker({
                                 position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
-            });
+                        });
             markers.push(marker);
                             google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
                                         return function () {

@@ -72,6 +72,8 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<double>> GetSensorsTypeMinMaxValues(string tag)
         {
+            Validator.IfNull<ArgumentNullException>(tag, "Tag cannot be null!");
+
             var minMax = await this.context.Sensors
                 .Where(s => s.Tag.Contains(tag.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 .Select(s => new
