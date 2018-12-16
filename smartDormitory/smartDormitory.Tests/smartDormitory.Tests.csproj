@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\MeasureTypesServicesTests\" />
     <Folder Include="Services\UserServicesTests\" />
   </ItemGroup>
 
