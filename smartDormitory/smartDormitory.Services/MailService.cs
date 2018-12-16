@@ -22,6 +22,16 @@ namespace smartDormitory.Services
 
         public async Task SendEmail(IEnumerable<UserSensors> userSensors, string username, string email)
         {
+            if (username == null)
+            {
+                throw new ArgumentNullException("Username cannot be null!");
+            }
+
+            if(email == null)
+            {
+                throw new ArgumentNullException("Email cannot be null!");
+            }
+
             if (userSensors != null && userSensors.Count() != 0)
             {
                 foreach (var sensor in userSensors)

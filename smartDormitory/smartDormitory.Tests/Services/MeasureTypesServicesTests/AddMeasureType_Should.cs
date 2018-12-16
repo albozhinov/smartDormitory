@@ -69,22 +69,22 @@ namespace smartDormitory.Tests.Services.MeasureTypesServicesTests
         {
             //Arrange
             contextOptions = new DbContextOptionsBuilder<smartDormitoryDbContext>()
-                .UseInMemoryDatabase(databaseName: "ThrowArgumentNullException_WhenSensorExists")
+                .UseInMemoryDatabase(databaseName: "ThrowArgumentNullException_WhenParameterTypeIsCorrect")
                 .Options;
 
             using (var assertContext = new smartDormitoryDbContext(contextOptions))
             {
-                assertContext.MeasureTypes.Add(new MeasureType()
+                await assertContext.MeasureTypes.AddRangeAsync(new MeasureType()
                 {
                     Type = "Type"
-                });
+                },
 
-                assertContext.MeasureTypes.Add(new MeasureType()
+                new MeasureType()
                 {
                     Type = "TestType"
-                });
+                },
 
-                assertContext.MeasureTypes.Add(new MeasureType()
+                new MeasureType()
                 {
                     Type = "C"
                 });
