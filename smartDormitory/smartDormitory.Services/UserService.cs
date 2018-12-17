@@ -13,13 +13,28 @@ namespace smartDormitory.Services
     {
         private smartDormitoryDbContext context;
 
-        public UserService(smartDormitoryDbContext dbContext)
+        public UserService(smartDormitoryDbContext context)
         {
-            this.context = dbContext;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<ICollection<User>> GetUsersAsync(string searchText, int page = 1, int pageSize = 3)
         {
+            if(searchText == null)
+            {
+                throw new ArgumentNullException("Search text cannot be null!");
+            }
+
+            if (page < 1)
+            {
+                throw new ArgumentException("Page cannot be less than 1!");
+            }
+
+            if (pageSize < 1)
+            {
+                throw new ArgumentException("Page cannot be less than 1!");
+            }
+
             return await this.context
                                     .Users
                                     .Where(u => u.UserName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
@@ -29,6 +44,11 @@ namespace smartDormitory.Services
         }
         public async Task<int> GetTotalUserAsync(string searchText)
         {
+            if (searchText == null)
+            {
+                throw new ArgumentNullException("Search text cannot be null!");
+            }
+
             return await this.context.Users
                                      .Where(u => u.UserName
                                         .Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
@@ -37,17 +57,14 @@ namespace smartDormitory.Services
         
         public async Task<string> GetUserEmailAsync(string id)
         {
+            if(id == null)
+            {
+                throw new ArgumentNullException("Id cannot be null!");
+            }
+
             return await this.context.Users
                 .Where(u => u.Id == id)
                 .Select(u => u.Email)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<bool> GetUserReceiveEmailsAsync(string id)
-        {
-            return await this.context.Users
-                .Where(u => u.Id == id)
-                .Select(u => u.ReceiveEmails)
                 .FirstOrDefaultAsync();
         }
     }

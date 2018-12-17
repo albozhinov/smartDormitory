@@ -14,7 +14,5 @@ namespace smartDormitory.Services.Contracts
         Task<int> GetTotalUserAsync(string searchText);
 
         Task<string> GetUserEmailAsync(string id);
-
-        Task<bool> GetUserReceiveEmailsAsync(string id);
     }
 }

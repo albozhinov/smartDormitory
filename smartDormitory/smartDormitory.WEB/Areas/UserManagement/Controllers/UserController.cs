@@ -100,7 +100,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userId);
             allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
-            if (await userService.GetUserReceiveEmailsAsync(userId))
+           /* if (await userService.GetUserReceiveEmailsAsync(userId))
             {
                 try
                 {
@@ -109,7 +109,7 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
                 catch (Exception)
                 {//TODO: Log Errors
                 }
-            }
+            }*/
 
             return PartialView("_MySensorGrid", allSensorsModel);
         }

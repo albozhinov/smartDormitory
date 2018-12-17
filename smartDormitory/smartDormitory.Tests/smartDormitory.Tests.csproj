@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\UserServicesTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\smartDormitory.Data\smartDormitory.Data.csproj" />
     <ProjectReference Include="..\smartDormitory.Services\smartDormitory.Services.csproj" />
   </ItemGroup>
