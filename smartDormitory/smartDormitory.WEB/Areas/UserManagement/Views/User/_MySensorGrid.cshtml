@@ -3,12 +3,19 @@
 
 <div id="content">
     <div class="row img-responsive" style="background-size:100% auto;">
-        @foreach (var userSensor in Model.UserSensors)
-        {
-            <div class="col-md-3 p-3">
+        @{
+            if (Model.UserSensors.Count() == 0)
+            {
+                <h3 class="text-light">No Available Sensors</h3>
+            }
+            else
+            {
+                foreach (var userSensor in Model.UserSensors)
+                {
+                    <div class="col-md-3 p-3">
 
-                @{
-                    var dictModel = new Dictionary<string, string>
+                        @{
+                            var dictModel = new Dictionary<string, string>
 {
 {"Id", "" + userSensor.Id },
 {"IcbSensorId", "" + @userSensor.IcbSensorId },
@@ -28,98 +35,100 @@
 {"MeasureTyoe", "" + @userSensor.MeasureType },
 
 };
-                    var currentValue = userSensor.Value.ToString();
-                    if (userSensor.Tag.Contains("Door"))
-                    {
-                        if (userSensor.Value == 0)
-                        {
-                            currentValue = "Close";
-                        }
-                        else
-                        {
-                            currentValue = "Open";
-                        }
-                    }
-
-                    else if (userSensor.Tag.Contains("Occupancy"))
-                    {
-                        if (userSensor.Value == 0)
-                        {
-                            currentValue = "False";
-                        }
-                        else
-                        {
-                            currentValue = "True";
-                        }
-                    }
-                }
-
-                <div>
-                    <input asp-for="@userSensor.Latitude" type="hidden" value="@userSensor.Latitude" />
-                    <input asp-for="@userSensor.Longtitude" type="hidden" value="@userSensor.Longtitude" />
-                </div>
-                @{ string isPublic = userSensor.IsPublic ? "On" : "Off";
-                    string alarm = userSensor.Alarm ? "On" : "Off";
-                }
-
-                <div class="card">
-                    <img class="card-img-top" src=@userSensor.ImageUrl alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">@userSensor.Name</h5>
-                        <p class="card-text">@userSensor.Description</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Public: @isPublic</li>
-                        <li class="list-group-item">Alarm: @alarm</li>
-                        <li id="@userSensor.IcbSensorId" data-Id="@userSensor.IcbSensorId" class="list-group-item">Value: @currentValue</li>
-                        @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
-                        {
-                            <li class="list-group-item progressBarField">
-
-                                <div class="led-box">
-
-                                    <div class="led-box">
-                                        <div class="led-red"></div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        }
-                        else
-                        {
-
-                            if (currentValue == "True" || currentValue == "False" || currentValue == "Open" || currentValue == "Close")
+                            var currentValue = userSensor.Value.ToString();
+                            if (userSensor.Tag.Contains("Door"))
                             {
-                                <li class="list-group-item progressBarField">
-                                    <div class="led-box">
-                                        <div class="led-green"></div>
-                                    </div>
-                                </li>
+                                if (userSensor.Value == 0)
+                                {
+                                    currentValue = "Close";
+                                }
+                                else
+                                {
+                                    currentValue = "Open";
+                                }
                             }
-                            else
+
+                            else if (userSensor.Tag.Contains("Occupancy"))
                             {
-                                <li class="list-group-item progressBarField">
-                                    <div class="col container">
-                                        <div class="form-row ">
-                                            <div class="col-lg-12 my-1">
-                                                <div id="sensorsProgressBar" class="progress">
-                                                    <div id="@userSensor.IcbSensorId" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color: #FD8227; width: @((userSensor.Value - userSensor.MinValue)*100/(userSensor.MaxValue - userSensor.MinValue))%"> @userSensor.Value &#8451;</div>
+                                if (userSensor.Value == 0)
+                                {
+                                    currentValue = "False";
+                                }
+                                else
+                                {
+                                    currentValue = "True";
+                                }
+                            }
+                        }
+
+                        <div>
+                            <input asp-for="@userSensor.Latitude" type="hidden" value="@userSensor.Latitude" />
+                            <input asp-for="@userSensor.Longtitude" type="hidden" value="@userSensor.Longtitude" />
+                        </div>
+                        @{ string isPublic = userSensor.IsPublic ? "On" : "Off";
+                            string alarm = userSensor.Alarm ? "On" : "Off";
+                        }
+
+                        <div class="card">
+                            <img class="card-img-top" src=@userSensor.ImageUrl alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">@userSensor.Name</h5>
+                                <p class="card-text">@userSensor.Description</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Public: @isPublic</li>
+                                <li class="list-group-item">Alarm: @alarm</li>
+                                <li id="@userSensor.IcbSensorId" data-Id="@userSensor.IcbSensorId" class="list-group-item">Value: @currentValue</li>
+                                @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
+                                {
+                                    <li class="list-group-item progressBarField">
+
+                                        <div class="led-box">
+
+                                            <div class="led-box">
+                                                <div class="led-red"></div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+
+                                    if (currentValue == "True" || currentValue == "False" || currentValue == "Open" || currentValue == "Close")
+                                    {
+                                        <li class="list-group-item progressBarField">
+                                            <div class="led-box">
+                                                <div class="led-green"></div>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item progressBarField">
+                                            <div class="col container">
+                                                <div class="form-row ">
+                                                    <div class="col-lg-12 my-1">
+                                                        <div id="sensorsProgressBar" class="progress">
+                                                            <div id="@userSensor.IcbSensorId" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color: #FD8227; width: @((userSensor.Value - userSensor.MinValue) * 100 / (userSensor.MaxValue - userSensor.MinValue))%"> @userSensor.Value &#8451;</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                        }
-                    </ul>
-                    <a asp-area="UserManagement" asp-controller="User" asp-action="SensorGraphic" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Sensor Graphic</a>
-                    <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
-                    <button class="btn my-2  my-md-2" id="adminDashboardButtnon" data-toggle="modal" data-target="#deleteModal" data-sensor-id="@userSensor.Id">Delete</button>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated @userSensor.ModifiedOn</small>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <a asp-area="UserManagement" asp-controller="User" asp-action="SensorGraphic" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Sensor Graphic</a>
+                            <a asp-controller="User" asp-action="ModifySensor" asp-all-route-data="dictModel" class="btn my-md-2" id="adminDashboardButtnon">Edit</a>
+                            <button class="btn my-2  my-md-2" id="adminDashboardButtnon" data-toggle="modal" data-target="#deleteModal" data-sensor-id="@userSensor.Id">Delete</button>
+                            <div class="card-footer">
+                                <small class="text-muted">Last updated @userSensor.ModifiedOn</small>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
         }
     </div>
 </div>
