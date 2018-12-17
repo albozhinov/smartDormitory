@@ -20,8 +20,6 @@
                 <th><label>Tag</label></th>
                 <th class="w-25"><label>Description</label></th>
                 <th><label>MeasureType</label></th>
-                <th><label>Value</label></th>
-                <th class="w-25"><label>ModifiedOn</label></th>
                 <th><label>Register Sensor</label></th>
             </tr>
         </thead>
@@ -42,8 +40,6 @@
                         <td class="sorting_1">@sensor.Tag</td>
                         <td class="w-25">@sensor.Description</td>
                         <td>@sensor.MeasureType.Type</td>
-                        <td>@sensor.Value</td>
-                        <td class="w-25">@sensor.ModifiedOn</td>
                         <td><a asp-controller="Sensors" asp-action="RegisterSensor" asp-route-sensorid="@sensor.Id" asp-route-tag="@sensor.Tag" asp-route-description="@sensor.Description"  class="btn" id="registerButton">Register</a></td>
 
                     </tr>
