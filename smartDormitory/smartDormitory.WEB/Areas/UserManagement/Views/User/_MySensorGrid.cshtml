@@ -77,7 +77,7 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">Public: @isPublic</li>
                                 <li class="list-group-item">Alarm: @alarm</li>
-                                <li id="@userSensor.IcbSensorId" data-Id="@userSensor.IcbSensorId" class="list-group-item">Value: @currentValue</li>
+                                <li id="@userSensor.IcbSensorId" data-Id="@userSensor.IcbSensorId" class="list-group-item">Value: @currentValue @userSensor.MeasureType</li>
                                 @if (userSensor.Value < userSensor.MinValue || userSensor.Value > userSensor.MaxValue)
                                 {
                                     <li class="list-group-item progressBarField">
@@ -109,7 +109,7 @@
                                                 <div class="form-row ">
                                                     <div class="col-lg-12 my-1">
                                                         <div id="sensorsProgressBar" class="progress">
-                                                            <div id="@userSensor.IcbSensorId" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color: #FD8227; width: @((userSensor.Value - userSensor.MinValue) * 100 / (userSensor.MaxValue - userSensor.MinValue))%"> @userSensor.Value &#8451;</div>
+                                                            <div id="@userSensor.IcbSensorId" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="10" aria-valuemin="10" aria-valuemax="20" style="background-color: #FD8227; width: @((userSensor.Value - userSensor.MinValue) * 100 / (userSensor.MaxValue - userSensor.MinValue))%"> @userSensor.Value @userSensor.MeasureType</div>
                                                         </div>
                                                     </div>
                                                 </div>

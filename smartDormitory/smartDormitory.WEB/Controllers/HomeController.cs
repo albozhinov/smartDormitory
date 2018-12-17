@@ -66,6 +66,11 @@ namespace smartDormitory.WEB.Controllers
             return View(sensorsViewModel);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         private async Task<IEnumerable<UserSensors>> GetAllPublicUserSensorsCashedAsync()
         {
             return await this._cache.GetOrCreate("AllPublicUserSensors", entry =>
@@ -79,7 +84,7 @@ namespace smartDormitory.WEB.Controllers
         {
             return await this._cache.GetOrCreate("AllPrivateUserSensors", entry =>
             {
-                entry.AbsoluteExpiration = DateTime.UtcNow.AddHours(3);
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddMinutes(30);
                 return this.userSensorService.GetAllPrivateUserSensorsAsync(userId);
             });
         }

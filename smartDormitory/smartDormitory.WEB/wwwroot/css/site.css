@@ -161,6 +161,7 @@ a.disabled {
     border-radius: 5px;
     background-color: white;
 }
+
     #sensorsButton:hover {
         background-color: lightgray;
     }
@@ -382,10 +383,10 @@ textarea {
 .progress-bar {
     color: black;
     font-weight: bold;
-
 }
+
 #sensorsProgressBar {
-    height: 2.5em;    
+    height: 2.5em;
 }
 
 .progressBarField {
@@ -590,9 +591,10 @@ textarea {
 .card {
     width: 17rem;
 }
+
 .card-img-top {
     background-color: #DDE0E5;
-    height:13rem;
+    height: 13rem;
 }
 
 .clear:before,
@@ -619,3 +621,81 @@ textarea {
 .size-3 {
     width: 48%;
 }
+
+/*About Page*/
+.profileImgSize {
+    height: 15rem;
+}
+
+.imgSize {
+    height: 3rem;
+}
+
+.card-profile {
+    width: 340px;
+    margin: 50px auto;
+    background-color: #e6e5e1;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 1em 1em 2em rgba(0, 0, 0, 0.2);
+}
+
+    .card-profile .card-img-top {
+        border-radius: 0;
+    }
+
+    .card-profile .card-img-profile {
+        max-width: 100%;
+        border-radius: 50%;
+        margin-top: -95px;
+        margin-bottom: 35px;
+        border: 5px solid #e6e5e1;
+    }
+
+    .card-profile .card-title {
+        margin-bottom: 50px;
+    }
+
+        .card-profile .card-title small {
+            display: block;
+            font-size: .6em;
+            margin-top: .2em;
+        }
+
+    .card-profile .card-links {
+        margin-bottom: 25px;
+    }
+
+        .card-profile .card-links .fa {
+            margin: 0 1em;
+            font-size: 1.6em;
+        }
+
+            .card-profile .card-links .fa:focus, .card-profile .card-links .fa:hover {
+                text-decoration: none;
+            }
+
+            .card-profile .card-links .fa.fa-dribbble {
+                color: #ea4b89;
+                font-weight: bold;
+            }
+
+                .card-profile .card-links .fa.fa-dribbble:hover {
+                    color: #e51d6b;
+                }
+
+            .card-profile .card-links .fa.fa-twitter {
+                color: #68aade;
+            }
+
+                .card-profile .card-links .fa.fa-twitter:hover {
+                    color: #3e92d5;
+                }
+
+            .card-profile .card-links .fa.fa-facebook {
+                color: #3b5999;
+            }
+
+                .card-profile .card-links .fa.fa-facebook:hover {
+                    color: #2d4474;
+                }
