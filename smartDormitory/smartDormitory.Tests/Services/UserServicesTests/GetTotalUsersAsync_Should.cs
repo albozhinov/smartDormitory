@@ -22,7 +22,7 @@ namespace smartDormitory.Tests.Services.UserServicesTests
             var UserServiceMock = new UserService(contextMock.Object);
 
             //Act && Assert
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await UserServiceMock.GetUsersAsync(null, 1, 1));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await UserServiceMock.GetTotalUserAsync(null));
         }
 
         [TestMethod]
