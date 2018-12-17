@@ -8,6 +8,6 @@ namespace smartDormitory.Services.Contracts
 {
     public interface IMailService
     {
-        Task SendEmail(IEnumerable<UserSensors> userSensors, string username, string email);
+        Task<bool> SendEmail(IEnumerable<UserSensors> userSensors, string username, string email);
     }
 }

@@ -100,16 +100,13 @@ namespace smartDormitory.WEB.Areas.UserManagement.Controllers
             userSensors = await this.userSensorService.GetAllUserSensorsAsync(userId);
             allSensorsModel.UserSensors = userSensors.Select(s => new UserSensorModel(s));
 
-           /* if (await userService.GetUserReceiveEmailsAsync(userId))
+            try
             {
-                try
-                {
-                    await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
-                }
-                catch (Exception)
-                {//TODO: Log Errors
-                }
-            }*/
+                await mailService.SendEmail(userSensors, this.userManager.GetUserName(User), await this.userService.GetUserEmailAsync(userManager.GetUserId(User)));
+            }
+            catch (Exception)
+            {//TODO: Log Errors
+            }
 
             return PartialView("_MySensorGrid", allSensorsModel);
         }
