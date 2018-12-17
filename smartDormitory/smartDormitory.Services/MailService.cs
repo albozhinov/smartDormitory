@@ -20,13 +20,28 @@ namespace smartDormitory.Services
         private readonly string smtp = "smtp.gmail.com";
         private readonly int smtpPort = 587;
 
-        public async Task SendEmail(IEnumerable<UserSensors> userSensors, string username, string email)
+        public async Task<bool> SendEmail(IEnumerable<UserSensors> userSensors, string username, string email)
         {
-            if (userSensors != null && userSensors.Count() != 0)
+            if (userSensors == null)
+            {
+                throw new ArgumentNullException("User sensors cannot be null!");
+            }
+
+            if (username == null)
+            {
+                throw new ArgumentNullException("Username cannot be null!");
+            }
+
+            if (email == null)
+            {
+                throw new ArgumentNullException("Email cannot be null!");
+            }
+
+            if (userSensors.Count() != 0)
             {
                 foreach (var sensor in userSensors)
                 {
-                    if (sensor.Sensor.Value < sensor.MinValue || sensor.Sensor.Value > sensor.MaxValue)
+                    if ((sensor.Alarm == true && sensor.IsDeleted == false) && (sensor.Sensor.Value < sensor.MinValue || sensor.Sensor.Value > sensor.MaxValue))
                     {
                         emailMessage.Append($"Your sensor with name {sensor.Name} is out of range!\n");
                     }
@@ -46,8 +61,10 @@ namespace smartDormitory.Services
                     client.Authenticate(emailFromAddress, emailAuthenticatePassword);
                     await client.SendAsync(message);
                     client.Disconnect(true);
+                    return true;
                 }
             }
+            return false;
 
         }
     }

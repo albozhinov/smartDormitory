@@ -148,6 +148,16 @@ namespace smartDormitory.Services
 
         public IEnumerable<Sensor> ListAllSensors(int page = 1, int pageSize = 10)
         {
+            if(page < 1)
+            {
+                throw new ArgumentException("Page cannot be less than 1!");
+            }
+
+            if(pageSize < 1)
+            {
+                throw new ArgumentException("Page cannot be less than 1!");
+            }
+
             return this.context.Sensors
                 .Include(s => s.MeasureType)
                 .Skip((page - 1) * pageSize)
@@ -155,7 +165,7 @@ namespace smartDormitory.Services
                 .ToList();
         }
 
-        public IEnumerable<Sensor> ListAllSensors()
+        public IEnumerable<Sensor> ListAllApiSensors()
         {
             return this.context.Sensors
                 .Include(s => s.MeasureType)
@@ -179,6 +189,10 @@ namespace smartDormitory.Services
 
         public int TotalContainingText(string searchText)
         {
+            if(searchText == null)
+            {
+                throw new ArgumentNullException("Search text cannot be null!");
+            }
             return this.context.Sensors
                 .Include(s => s.MeasureType)
                 .Where(s => s.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))

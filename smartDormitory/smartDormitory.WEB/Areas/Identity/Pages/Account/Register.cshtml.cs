@@ -62,9 +62,6 @@ namespace smartDormitory.WEB.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [Display(Name = "ReceiveEmails")]
-            public bool ReceiveEmails { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -77,7 +74,7 @@ namespace smartDormitory.WEB.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.UserName, Email = Input.Email, ReceiveEmails = Input.ReceiveEmails };
+                var user = new User { UserName = Input.UserName, Email = Input.Email};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

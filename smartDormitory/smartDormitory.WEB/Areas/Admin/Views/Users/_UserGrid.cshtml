@@ -68,15 +68,14 @@
                                     <span class="tooltiptext">Change Role</span>
                                 </div>
 
-                                <!--ADD SENSOR BUTTON-->
-                                @{ 
-                                            var dataDict = new Dictionary<string, string>() {{ "userId", "" + user.Id }};
-                                        }
-                                <form asp-area="Admin" asp-controller="Sensors" asp-action="RegisterSensor" asp-all-route-data="dataDict" method="post">
+                                <!--ADD SENSOR BUTTON-->                               
+                                <form asp-area="Admin" asp-controller="Sensors" asp-action="AllSensorTypes" method="post">
                                     <div class="tooltip-inside ml-2">
                                         <button type="submit" class="btn p-1" id="sensorsButton"><img src="~/images/icons8-plus-24.png" /></button>
                                         <span class="tooltiptext">Add Sensor</span>
                                     </div>
+                                    <input class="text-hide" type="hidden" name="UserName" value="@user.UserName" />
+                                    <input class="text-hide" type="hidden" name="UserId" value="@user.Id" />
                                 </form>
                             </div>
                         </td>

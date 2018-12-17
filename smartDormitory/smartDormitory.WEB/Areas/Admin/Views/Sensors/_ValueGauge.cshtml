@@ -1,12 +1,5 @@
 ﻿@model SensorViewModel
-@{
 
-    string symbol = Model.MeasureType;
-    if (Model.Tag.Contains("Temperature"))
-    {
-        symbol = "C";
-    }
-}
 
 <div id="jg3" class="gauge size-3 m-md-auto"></div>
 
@@ -25,7 +18,7 @@
                 decimals: 0,
                 gaugeWidthScale: 0.6,
                 pointer: true,
-                symbol: ' @symbol',
+                symbol: '',
                 valueFontColor: '#FFFFFF',
                 labelFontColor: '#FFFFFF',
                 pointerOptions: {
@@ -45,7 +38,7 @@
                     } else if (value > @Model.MaxValue) {
                         return 'ALERT';
                     } else {
-                        return value + ' @symbol';
+                        return value;
                     }
                 },
             });

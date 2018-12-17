@@ -4,12 +4,12 @@
     ViewData["Title"] = "AllSensorTypes";
 }
 
-<h2 class="text-light">AllSensorTypes</h2>
+<h2 class="text-light font-italic">All Sensor Types</h2>
 
 <partial name="_AllSensorTypesGrid" model="@Model" />
 
 @section Scripts{
-    <script>
+    <script> 
         $(document).on("click", ".page-item a", function () {
             $.ajax({
                 url: $(this).attr("href"),

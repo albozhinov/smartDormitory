@@ -27,8 +27,13 @@
         <partial name="@partialName" model="Model" />
     </div>
     <br />
-    <div class="row">
-        <h4 id="lastUpdated" class="border-bottom m-md-auto">Last updated @Model.ModifiedOn</h4>
+    <div class="row text-md-center">
+        <div class="col">
+                <h4 id="lastUpdated" class="border-bottom">Last updated @Model.ModifiedOn</h4>
+        </div>
+        <div class="col">
+            <h4 class="border-bottom">Measure type: @Model.MeasureType</h4>
+        </div>
     </div>
     <br />
     <div class="row text-md-center">

@@ -19,5 +19,7 @@ namespace smartDormitory.WEB.Areas.Admin.Models.Sensor
         public string SearchByTag { get; set; } = string.Empty;
         public string SearchByName { get; set; } = string.Empty;
         public string StatusMessage { get; set; }
+        public string UserName { get; set; }
+        public string UserId { get; set; }
     }
 }

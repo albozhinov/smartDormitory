@@ -51,7 +51,7 @@ namespace smartDormitory.WEB.Controllers
             else
             {
                 model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)Page_Size);
             }
 
             return View(model);
@@ -68,7 +68,7 @@ namespace smartDormitory.WEB.Controllers
             else
             {
                 model.Sensors = this.apiSensorsService.ListByContainingText(model.SearchText, model.Page, Page_Size);
-                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)5);
+                model.TotalPages = (int)Math.Ceiling(this.apiSensorsService.TotalContainingText(model.SearchText) / (double)Page_Size);
             }
 
             return PartialView("_AllSensorTypesGrid", model);
@@ -103,7 +103,7 @@ namespace smartDormitory.WEB.Controllers
                 return View(model);
             }
 
-            await this.userSensorService.AddSensor(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
+            await this.userSensorService.AddSensorAsync(model.UserId, model.Id, model.Name, model.Description, model.MinValue, model.MaxValue,
                  model.PollingInterval, model.Latitude, model.Longtitude, model.IsPublic, model.Alarm, model.ImageUrl);
 
             return RedirectToAction("Index", "Home");

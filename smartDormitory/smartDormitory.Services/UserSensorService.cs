@@ -3,6 +3,7 @@ using smartDormitory.Data;
 using smartDormitory.Data.Context;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
+using smartDormitory.Services.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,6 @@ namespace smartDormitory.Services
 {
     public class UserSensorService : IUserSensorService
     {
-        /// <summary>
-        /// TEST GIT MERGE
-        /// </summary>
         private readonly smartDormitoryDbContext context;
 
         public UserSensorService(smartDormitoryDbContext context)
@@ -23,59 +21,23 @@ namespace smartDormitory.Services
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddSensor(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl)
+        public async Task AddSensorAsync(string userId, int sensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm, string imageUrl)
         {
-            if (userId == null)
-            {
-                throw new ArgumentNullException("User Id cannot be null!");
-            }
+            Validator.IfNull<ArgumentNullException>(userId, "Sensor Id cannot be less or equal 0!");
+            Validator.IfNull<ArgumentNullException>(name, "Name cannot be null!");
+            Validator.IfNull<ArgumentNullException>(description, "Description cannot be null!");
+            Validator.IfIsNotPositive(sensorId, "Sensor Id cannot be less than 0!");
+            Validator.IfIsNotInRangeInclusive(name.Length, 3, 20, "Name must be between 3 and 20 symbols!");
+            Validator.IfIsNotInRangeInclusive(description.Length, 3, 250, "Description must be between 3 and 250 symbols!");
+            Validator.IfNull<ArgumentNullException>(imageUrl, "Image URL cannot be null or empty!");
+            Validator.IfIsNotInRangeInclusive(pollingInterval, 10, 40, "Polling interval must be between 10 and 40 seconds!");
 
-            if (sensorId < 0)
-            {
-                throw new ArgumentException("Sensor Id cannot be less than 0!");
-            }
+            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
 
-            if (name == null)
-            {
-                throw new ArgumentNullException("Name cannot be null!");
-            }
+            Validator.IfNull<ArgumentNullException>(sensor, $"Sensor with Id {sensorId} does not exist!");
 
-            if (name.Length < 3 || name.Length > 20)
-            {
-                throw new ArgumentException("Name must be between 3 and 20 symbols!");
-            }
-
-            if (description == null)
-            {
-                throw new ArgumentNullException("Description cannot be null!");
-            }
-
-            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);                
-
-            if (sensor is null)
-            {
-                throw new ArgumentNullException($"Sensor with Id {sensorId} does not exist!");
-            }
-
-            if (minValue < sensor.MinValue || minValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (maxValue < sensor.MinValue || maxValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (pollingInterval < 10 || pollingInterval > 40)
-            {
-                throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
-            }
-
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                throw new ArgumentNullException("Image URL cannot be null or empty!");
-            }
+            Validator.IfIsNotInRangeInclusive(minValue, sensor.MinValue, sensor.MaxValue, $"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
+            Validator.IfIsNotInRangeInclusive(maxValue, sensor.MinValue, sensor.MaxValue, $"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");                  
 
             var newUserSensor = new UserSensors
             {
@@ -110,6 +72,8 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<double>> GetSensorsTypeMinMaxValues(string tag)
         {
+            Validator.IfNull<ArgumentNullException>(tag, "Tag cannot be null!");
+
             var minMax = await this.context.Sensors
                 .Where(s => s.Tag.Contains(tag.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 .Select(s => new
@@ -124,6 +88,8 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<UserSensors>> GetAllUserSensorsAsync(string id)
         {
+            Validator.IfNull<ArgumentNullException>(id, "Id cannot be null!");
+
             return await this.context.UserSensors
                 .Where(us => us.UserId == id && !us.IsDeleted)
                 .Include(s => s.Sensor)
@@ -133,6 +99,8 @@ namespace smartDormitory.Services
 
         public int TotalContainingText(string searchText)
         {
+            Validator.IfNull<ArgumentNullException>(searchText, "Search text cannot be null!");
+
             return this.context.UserSensors
                 .Where(s => s.Sensor.Tag.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && !s.IsDeleted)
                 .ToList()
@@ -146,6 +114,8 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsAsync(string id)
         {
+            Validator.IfNull<ArgumentNullException>(id, "Id cannot be null!");
+
             return await this.context.UserSensors
                                      .Where(s => s.UserId == id && !s.IsPublic && !s.IsDeleted)
                                      .Include(u => u.User)
@@ -155,9 +125,12 @@ namespace smartDormitory.Services
 
         public async Task<IEnumerable<UserSensors>> GetAllUsersSensorsAsync(string searchByName, string searchByTag, int page = 1, int pageSize = 10)
         {
+            Validator.IfNull<ArgumentNullException>(searchByName, "Search by name text cannot be null!");
+            Validator.IfNull<ArgumentNullException>(searchByTag, "Search by tag text cannot be null");
+
             return await this.context.UserSensors
                 .Where(us => us.User.UserName.Contains(searchByName, StringComparison.InvariantCultureIgnoreCase) && !us.IsDeleted)
-                .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase))
+                .Where(us => us.Sensor.Tag.Contains(searchByTag, StringComparison.InvariantCultureIgnoreCase) && !us.IsDeleted)
                 .Include(s => s.Sensor)
                     .ThenInclude(s => s.MeasureType)
                 .Include(u => u.User)
@@ -175,57 +148,24 @@ namespace smartDormitory.Services
         }
 
         public async Task EditSensor(int userSensorId, string icbSensorId, string name, string description, double minValue, double maxValue, int pollingInterval, double latitude, double longitude, bool isPublic, bool alarm)
-        {   
+        {
 
-            if (userSensorId <= 0 )
-            {
-                throw new ArgumentException("Sensor Id cannot be less or equal 0!");
-            }
+            Validator.IfIsNotPositive(userSensorId, "User sensor Id cannot be less or equal 0!");
+            Validator.IfNull<ArgumentNullException>(icbSensorId, "Icb sensor Id cannot be null!");
+            Validator.IfNull<ArgumentNullException>(name, "Name cannot be null!");
+            Validator.IfIsNotInRangeInclusive(name.Length, 3, 20, "Name must be between 3 and 20 symbols!");
+            Validator.IfNull<ArgumentNullException>(description, "Description cannot be null!");
+            Validator.IfIsNotInRangeInclusive(pollingInterval, 10, 40, "Polling interval must be between 10 and 40 seconds!");          
 
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("Name cannot be null!");
-            }
-
-            if (name.Length < 3 || name.Length > 20)
-            {
-                throw new ArgumentException("Name must be between 3 and 20 symbols!");
-            }
-
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException("Description cannot be null!");
-            }
-
-            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == icbSensorId);               
-
-            if (sensor is null)
-            {
-                throw new ArgumentNullException($"ICB Sensor with Id {icbSensorId} does not exist!");
-            }
-
-            if (minValue < sensor.MinValue || minValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (maxValue < sensor.MinValue || maxValue > sensor.MaxValue)
-            {
-                throw new ArgumentException($"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
-            }
-
-            if (pollingInterval < 10 || pollingInterval > 40)
-            {
-                throw new ArgumentException("Polling interval must be between 10 and 40 seconds!");
-            }
+            var sensor = await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == icbSensorId);  
+         
+            Validator.IfNull<ArgumentNullException>(sensor, $"ICB Sensor with Id {icbSensorId} does not exist!");
+            Validator.IfIsNotInRangeInclusive(minValue, sensor.MinValue, sensor.MaxValue, $"Minimal value must be between {sensor.MinValue} and {sensor.MaxValue}!");
+            Validator.IfIsNotInRangeInclusive(maxValue, sensor.MinValue, sensor.MaxValue, $"Maximal value must be between {sensor.MinValue} and {sensor.MaxValue}!");                     
 
             var userSensorToUpdate = await this.context.UserSensors.FirstOrDefaultAsync(s => s.Id == userSensorId);
 
-            if (userSensorToUpdate is null)
-            {
-                throw new ArgumentNullException("Error: Sensor not found!");
-            }
-
+            Validator.IfNull<ArgumentNullException>(userSensorToUpdate, "Error: Sensor not found!");       
 
             userSensorToUpdate.Name = name;
             userSensorToUpdate.Description = description;
@@ -243,18 +183,12 @@ namespace smartDormitory.Services
 
         public async Task DeleteSensor(int id)
         {
-            if (id < 0)
-            {
-                throw new ArgumentException("Invalid Id!");
-            }
+            Validator.IfIsNotPositive(id, "Invalid Id!");            
 
              var sensor = await this.context.UserSensors.
                 FirstOrDefaultAsync(s => s.Id == id);
 
-            if(sensor == null)
-            {
-                throw new ArgumentNullException($"Sensor with Id {id} does not exist!");
-            }
+            Validator.IfNull<ArgumentNullException>(sensor, $"Sensor with Id {id} does not exist!");            
 
             sensor.IsDeleted = true;
 
@@ -264,10 +198,7 @@ namespace smartDormitory.Services
 
         public async Task<Sensor> UpdateSensorValue(string apiSensorId)
         {
-            if (string.IsNullOrEmpty(apiSensorId))
-            {
-                throw new ArgumentNullException("Sensor Id cannot be null!");
-            }         
+            Validator.IfNull<ArgumentNullException>(apiSensorId, "Sensor Id cannot be null!");                   
 
             return await this.context.Sensors.FirstOrDefaultAsync(s => s.IcbSensorId == apiSensorId);
         }

@@ -16,7 +16,7 @@
 </head>
 <body>
     <div>
-        <h3 class="text-light">All public sensors all over the world</h3>
+        <h3 class="text-light font-italic">All Public Sensors</h3>
     </div>
     <!--The div element for the map -->
     <div id="map"></div>
@@ -96,7 +96,7 @@
 
                         var marker = new google.maps.Marker({
                                 position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
-            });
+                        });
             markers.push(marker);
                             google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
                                         return function () {
