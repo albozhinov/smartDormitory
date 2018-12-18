@@ -1,6 +1,4 @@
-﻿//using MailKit.Net.Smtp;
-//using MimeKit;
-using smartDormitory.Data.Models;
+﻿using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -15,7 +13,6 @@ namespace smartDormitory.Services
     public class MailService : IMailService
     {
         private readonly StringBuilder emailMessage = new StringBuilder();
-        private readonly string emailName = "ICB Smart Dormitory";
         private readonly string emailFromAddress = "smart.dormitory.mb@gmail.com";
         private readonly string emailSubject = "Sensors out of range";
         private readonly string emailAuthenticatePassword = "smartdormitory123";
@@ -56,13 +53,13 @@ namespace smartDormitory.Services
                 mailMsg.Subject = emailSubject;
                 mailMsg.Body = emailMessage.ToString();
 
-                using (var smtp = new SmtpClient())
+                using (var client = new SmtpClient())
                 {
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.Port = 587;
-                    smtp.Credentials = new NetworkCredential(emailFromAddress, emailAuthenticatePassword);
-                    smtp.EnableSsl = true;
-                    await smtp.SendMailAsync(mailMsg);
+                    client.Host = smtp;
+                    client.Port = smtpPort;
+                    client.Credentials = new NetworkCredential(emailFromAddress, emailAuthenticatePassword);
+                    client.EnableSsl = true;
+                    await client.SendMailAsync(mailMsg);
                     return true;
                 }
             }
