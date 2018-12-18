@@ -1,10 +1,12 @@
-﻿using MailKit.Net.Smtp;
-using MimeKit;
+﻿//using MailKit.Net.Smtp;
+//using MimeKit;
 using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,26 +48,25 @@ namespace smartDormitory.Services
                         emailMessage.Append($"Your sensor with name {sensor.Name} is out of range!\n");
                     }
                 }
-                var message = new MimeMessage();
-                message.From.Add(new MailboxAddress(emailName, emailFromAddress));
-                message.To.Add(new MailboxAddress(username, email));
-                message.Subject = emailSubject;
-                message.Body = new TextPart("plain")
-                {
-                    Text = emailMessage.ToString()
-                };
+             
+                MailAddress recipientMail = new MailAddress(email);
+                MailAddress senderMail = new MailAddress(emailFromAddress);
+                MailMessage mailMsg = new MailMessage(senderMail, recipientMail);
 
-                using (var client = new SmtpClient())
+                mailMsg.Subject = emailSubject;
+                mailMsg.Body = emailMessage.ToString();
+
+                using (var smtp = new SmtpClient())
                 {
-                    client.Connect(smtp, smtpPort, false);
-                    client.Authenticate(emailFromAddress, emailAuthenticatePassword);
-                    await client.SendAsync(message);
-                    client.Disconnect(true);
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.Credentials = new NetworkCredential(emailFromAddress, emailAuthenticatePassword);
+                    smtp.EnableSsl = true;
+                    await smtp.SendMailAsync(mailMsg);
                     return true;
                 }
             }
             return false;
-
         }
     }
 }
