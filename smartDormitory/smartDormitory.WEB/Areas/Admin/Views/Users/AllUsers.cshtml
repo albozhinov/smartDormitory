@@ -1,0 +1,100 @@
+﻿@model AllUsersViewModel
+
+@{
+    ViewData["Title"] = "AllUsers";
+}
+
+<partial name="_UserGrid" for="@Model" />
+
+<partial name="_UserModal" model="null" />
+
+@section Scripts{
+
+    <script>
+jQuery.noConflict();
+$('#unlockModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    var userId = button.data('user-id')
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('Unlock "' + recipient + '"')
+    modal.find('.modal-body').text('You are about to unlock "' + recipient + '", are you sure?')
+    modal.find('input[name="Id"]').val(userId)
+});
+
+
+jQuery.noConflict();
+$('#lockModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    var userId = button.data('user-id')
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('Lock "' + recipient + '"')
+    modal.find('.modal-body').text('You are about to lock "' + recipient + '", are you sure?')
+    modal.find('input[name="Id"]').val(userId)
+});
+
+
+jQuery.noConflict();
+$('#passwordModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    var userId = button.data('user-id')
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-title').text('Change The ' + recipient + '\'s Password')
+    modal.find('.modal-body input[name="Id"]').val(userId)
+});
+
+jQuery.noConflict();
+$('#roleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    var userId = button.data('user-id')
+    var currRole = "";
+
+    var modal = $(this);
+
+    // Get current user's role!!!
+    $.post('@Url.Action("GetRole", "Users")', { Id: userId }, function (data) {
+        modal.find('.modal-body').text('Current role: "' + data + '".');
+        currRole = data;
+
+        // Get all exists roles!!!
+        $.get('@Url.Action("GetAllExistsRoles", "Users")', function (data) {
+            data.forEach((value) => {
+                if (value.name != currRole) {
+
+                    modal.find('.modal-body').append('<div>You can set "<b>' + value.name + '</b>" role!</div>');
+                    modal.find('input[name="Role"]').val(value.name);
+                }
+            })
+        }).fail(function () { });
+    }).fail(function () { });
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    modal.find('.modal-title').text('Change The ' + recipient + '\'s Role')
+    modal.find('input[name="Id"]').val(userId)
+        });
+    </script>
+
+    <script>
+        $(document).on("click", ".page-item a", function () {
+            $.ajax({
+                url: $(this).attr("href"),                
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+            return false;
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

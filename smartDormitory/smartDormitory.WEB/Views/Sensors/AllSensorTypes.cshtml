@@ -1,0 +1,25 @@
+﻿@model SensorTypesViewModel
+
+@{
+    ViewData["Title"] = "AllSensorTypes";
+}
+
+<h2 class="text-light font-italic">All Sensor Types</h2>
+
+<partial name="_AllSensorTypesGrid" model="@Model" />
+
+@section Scripts{
+    <script> 
+        $(document).on("click", ".page-item a", function () {
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+            return false;
+        });
+    </script> 
+}

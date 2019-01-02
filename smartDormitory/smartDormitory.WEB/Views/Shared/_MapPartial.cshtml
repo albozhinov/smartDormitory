@@ -1,26 +1,26 @@
-﻿
+﻿@model IEnumerable<UserSensorViewModel>
 
-@* // TODO: In this view must to include ICollection<UserSensorViewModel> and list all public sensors.  *@
 @{
     ViewData["Title"] = "_MapPartial";
 }
+
 <html>
 <head>
     <style>
         /* Set the size of the div element that contains the map */
         #map {
-            height: 400px; /* The height is 400 pixels */
+            height: 500px; /* The height is 400 pixels */
             width: 100%; /* The width is the width of the web page */
         }
     </style>
 </head>
 <body>
     <div>
-        <br />
-        <h3>All public sensors all over the world</h3>
+        <h3 class="text-light font-italic">All Public Sensors</h3>
     </div>
     <!--The div element for the map -->
     <div id="map"></div>
+    <script src="~/js/markerCluster/markerclusterer.js"></script>
     <script>
         // Initialize and add the map
         function initMap() {
@@ -28,20 +28,92 @@
             var sofia = { lat: 42.698334, lng: 23.319941 };
             // The map, centered at Sofia
             var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 4, center: sofia });
-            // The marker, positioned at Uluru
-            var marker = new google.maps.Marker({ position: sofia, map: map });
+                document.getElementById('map'), { zoom: 3.7, center: sofia });
+            var markers = [];
 
-            // TODO: On this part of view must to foreach all public sensors!
-            var plovdiv = { lat: 42.142582, lng: 24.743277 };
-            var blagoevgrad = { lat: 42.022516, lng: 23.096039 };
-            var burgas = { lat: 42.492521, lng: 27.478111 };
-            var varna = { lat: 43.207705, lng: 27.905096 };
-            
-            var plovdivMarker = new google.maps.Marker({ position: plovdiv, map: map });
-            var blagMarker = new google.maps.Marker({ position: blagoevgrad, map: map });
-            var burgasMarker = new google.maps.Marker({ position: burgas, map: map });
-            var varnaMarker = new google.maps.Marker({ position: varna, map: map });
+            @{
+                        string symbol = "";
+                        string value = "";
+                        string alarm = "";
+                        foreach (var userSensor in Model)
+                        {
+                    <text>
+                            var pin = { lat: @userSensor.Latitude, lng: @userSensor.Longtitude };
+                    </text>
+
+                            value = userSensor.Value.ToString();
+                            alarm = userSensor.Alarm.ToString();
+                            alarm = userSensor.Alarm ? "On" : "Off";
+
+                            if (userSensor.Tag.StartsWith("Temperature"))
+                            {
+                                symbol = "°C";
+                            }
+                            else if (userSensor.Tag.StartsWith("Humidity"))
+                            {
+                                symbol = "%";
+                            }
+                            else if (userSensor.Tag.StartsWith("Electric"))
+                            {
+                                symbol = "W";
+                            }
+                            else if (userSensor.Tag.StartsWith("Occupancy"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "false" : "true";
+                            }
+                            else if (userSensor.Tag.StartsWith("Door"))
+                            {
+                                symbol = "";
+                                value = value == "0" ? "close" : "open";
+                            }
+                            else if (userSensor.Tag.StartsWith("Noise"))
+                            {
+                                symbol = "dB";
+                            }
+
+                    <text>
+                            var contentString = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h5 id="firstHeading" class="firstHeading">@userSensor.Name</h5>' +
+                                '<div id="bodyContent">' +
+                                '<div><b>Username:</b> @userSensor.UserName</div>' +
+                                '<div><b>Description:</b> @userSensor.Description</div>' +
+                                '<div><b>Tag:</b> @userSensor.Tag</div>' +
+                                '<div><b>Alarm:</b> @alarm</div>' +
+                                '<div><b>Value:</b> @value @symbol</div>' +
+                                '<div><b>ModifiedOn:</b> @userSensor.ModifiedOn</div>' +
+                                '<div><b>Latitude:</b> @userSensor.Latitude</div>' +
+                                '<div><b>Longitude:</b> @userSensor.Longtitude</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString,
+                                disableAutoPan: true
+                                    });
+
+                        var marker = new google.maps.Marker({
+                                position: pin, animation: google.maps.Animation.DROP, map: map, title: '@userSensor.Tag'
+                        });
+            markers.push(marker);
+                            google.maps.event.addListener(marker, 'click', (function (marker, contentString, infowindow) {
+                                        return function () {
+                        infowindow.setContent(contentString);
+                                            infowindow.open(map, marker);
+
+                                            google.maps.event.addListener(map, 'click', function () {
+                                                infowindow.close(map, marker);
+                                            });
+                                            setTimeout(function () { infowindow.close(); }, 5000);
+                    };
+                })(marker, contentString, infowindow));
+                    </text>
+                }
+            }
+            console.log(markers);
+            var markerCluster = new MarkerClusterer(map, markers,);
         }
     </script>
     <script async defer
@@ -49,3 +121,4 @@
     </script>
 </body>
 </html>
+

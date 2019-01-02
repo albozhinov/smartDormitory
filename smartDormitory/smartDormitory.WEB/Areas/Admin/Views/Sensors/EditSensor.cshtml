@@ -1,0 +1,132 @@
+﻿@model SensorViewModel
+
+<h2 class="text-light">Edit Sensor</h2>
+@{
+    var currentValue = "" + Model.Value;
+    if (Model.Tag.Contains("Door"))
+    {
+        if (Model.Value == 0)
+        {
+            currentValue = "Close";
+        }
+        else
+        {
+            currentValue = "Open";
+        }
+    }
+
+    else if (Model.Tag.Contains("Occupancy"))
+    {
+        if (Model.Value == 0)
+        {
+            currentValue = "False";
+        }
+        else
+        {
+            currentValue = "True";
+        }
+    }
+
+}
+
+<form asp-area="Admin" asp-controller="Sensors" asp-action="EditSensorPost" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="width:20rem;">
+                <img class="card-img-top" src=@Model.ImageURL style="height:13rem;" alt="Card image cap">
+                <div class="card-body">
+                    <input asp-for="@Model.Name" type="text" class="card-title form-control" />
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                    <textarea asp-for="@Model.Description" class="card-text form-control"></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <label asp-for="@Model.PollingInterval"></label>
+                        <input asp-for="@Model.PollingInterval" type="text" class="form-control" />
+                        <span asp-validation-for="@Model.PollingInterval" class="text-danger"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <label id="checkbox">
+                            <input asp-for="@Model.IsPublic" type="checkbox" autocomplete="off" checked>
+                            <label asp-for="@Model.IsPublic">Public</label>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="" id="checkbox">
+                            <input asp-for="Alarm" type="checkbox" autocomplete="off">
+                            <label asp-for="Alarm">Alarm</label>
+                            <span class="checkmark"></span>
+                        </label>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="form-row">
+                            @if (Model.MinValue == Model.MaxValue)
+                            {
+                                <div class="form-group col-md-6">
+                                    <label asp-for=MinValue>Set normal sensor state</label>
+                                    <select asp-for="MinValue" class="custom-select form-control" id="boolInputMinValue" onchange="changeMaxValue()">
+                                        @if (@Model.Tag.Contains("Door"))
+                                        {
+                                            <option value="1" selected>Open</option>
+                                            <option value="0">Close</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1" selected>True</option>
+                                            <option value="0">False</option>
+                                        }
+                                    </select>
+                                    <input asp-for="MaxValue" value="1" type="hidden" id="boolInputMaxValue">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-md-6">
+                                    <label asp-for=MinValue>Sensor Minimal Value</label>
+                                    <input value=@Model.MinValue class="form-control input-validation-error" type="text" data-val="true" data-val-number="The field MinValue must be a number." data-val-range="The field MinValue must be between @Model.SensorTypeMinVal and @Model.SensorTypeMaxVal." data-val-range-max="@Model.SensorTypeMaxVal" data-val-range-min="@Model.SensorTypeMinVal" data-val-required="The MinValue field is required." id="MinValue" name="MinValue" aria-describedby="MinValue-error" aria-invalid="true">
+                                    <span asp-validation-for="MinValue" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label asp-for="MaxValue">Sensor Maximal Value</label>
+                                    <input value=@Model.MaxValue class="form-control input-validation-error" type="text" data-val="true" data-val-number="The field MaxValue must be a number." data-val-range="The field MaxValue must be between @Model.SensorTypeMinVal and @Model.SensorTypeMaxVal." data-val-range-max="@Model.SensorTypeMaxVal" data-val-range-min="@Model.SensorTypeMinVal" data-val-required="The MaxValue field is required." id="MaxValue" name="MaxValue" aria-describedby="MaxValue-error" aria-invalid="true">
+                                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                                </div>
+                            }
+                        </div>
+                    </li>
+                    <li class="list-group-item text-center">
+                        <div class="text-hide">
+                            <input asp-for="@Model.IcbSensorId" type="hidden" value="@Model.IcbSensorId" />
+                            <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+                            <input asp-for="@Model.Tag" type="hidden" value="@Model.Tag" />
+                        </div>
+                        <button type="submit" class="btn" id="registerSensorButton">
+                            Apply
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group row text-light">
+                <partial name="_RegisterSensorMapPartial" />
+                <div class="form-group col-md-6">
+                    <label asp-for="Latitude">Latitude</label>
+                    <input asp-for="Latitude" type="text" class="form-control" id="latitude" placeholder="Read only field" readonly>
+                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Longtitude">Longtitude</label>
+                    <input asp-for="Longtitude" type="text" class="form-control" id="longtitude" placeholder="Read only field" readonly>
+                    <span asp-validation-for="Longtitude" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

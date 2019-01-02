@@ -1,0 +1,48 @@
+﻿@model UserAllSensorsModel
+@{
+    ViewData["Title"] = "MySensors";
+}
+
+@{
+    int minimalPolling = int.MaxValue;
+    if (Model.UserSensors.Count() != 0)
+    {
+        minimalPolling = 1000 * Model.UserSensors.Min(s => s.PollingInterval);
+    }
+}
+
+
+<partial name="_MySensorGrid" for="@Model" />
+<partial name="_DeleteSensorModal" model="null" />
+
+
+@section Scripts{
+    <script>
+        jQuery.noConflict();
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var id = button.data('sensor-id') // Extract info from data-* attributes
+            console.log(id);
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+
+            modal.find('input[name="Id"]').val(id)
+        });
+    </script>
+    <script>
+        function ajaxCall() {
+            $.ajax({
+                url: '/UserManagement/User/UpdateSensors',
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+        }
+        setInterval(ajaxCall, @minimalPolling);    
+    </script>
+}
+
+

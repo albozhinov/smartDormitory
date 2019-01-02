@@ -173,6 +173,8 @@ namespace smartDormitory.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<bool>("ReceiveEmails");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -195,11 +197,19 @@ namespace smartDormitory.Data.Migrations
 
             modelBuilder.Entity("smartDormitory.Data.Models.UserSensors", b =>
                 {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("SensorId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Alarm");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsPublic");
 
@@ -211,11 +221,21 @@ namespace smartDormitory.Data.Migrations
 
                     b.Property<double>("MinValue");
 
+                    b.Property<string>("Name")
+                        .IsRequired();
+
                     b.Property<int>("PollingInterval");
 
-                    b.HasKey("UserId", "SensorId");
+                    b.Property<int>("SensorId");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
 
                     b.HasIndex("SensorId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserSensors");
                 });
@@ -226,9 +246,11 @@ namespace smartDormitory.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
-                    b.Property<string>("Guid");
+                    b.Property<string>("IcbSensorId")
+                        .IsRequired();
 
                     b.Property<double>("MaxValue");
 
@@ -236,13 +258,18 @@ namespace smartDormitory.Data.Migrations
 
                     b.Property<double>("MinValue");
 
+                    b.Property<DateTime?>("ModifiedOn")
+                        .IsRequired();
+
                     b.Property<int>("PollingInterval");
 
-                    b.Property<string>("Tag");
+                    b.Property<string>("Tag")
+                        .IsRequired();
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<string>("URL");
+                    b.Property<string>("Url")
+                        .IsRequired();
 
                     b.Property<double>("Value");
 

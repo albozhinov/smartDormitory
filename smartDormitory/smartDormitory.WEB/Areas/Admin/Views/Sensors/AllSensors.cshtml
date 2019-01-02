@@ -1,0 +1,93 @@
+﻿@model AllSensorsViewModel
+
+@{
+    ViewData["Title"] = "AllSensors";
+}
+
+<h2 class="text-light">AllSensors</h2>
+@{
+    int minimalPolling = int.MaxValue;
+    if (Model.Sensors.Count() != 0)
+    {
+        minimalPolling = 1000 * Model.Sensors.Min(s => s.PollingInterval);
+    }
+}
+<partial name="_SensorGrid" model="@Model" />
+<partial name="_ModalGrid" model="null" />
+
+
+@section Scripts {
+    <script>
+    $(document).on("click", ".page-item a", function () {
+        $.ajax({
+            url: $(this).attr("href"),
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+
+                $('#content').html(result);
+            }
+        });
+        return false;
+        });
+
+        jQuery.noConflict();
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('sensor-id')
+            console.log(id);
+            var modal = $(this)
+            
+            modal.find('input[name="id"]').val(id)
+        });
+
+             
+
+
+         @*function ajaxCall() {
+             $.ajax({
+                 url: '/Admin/Sensors/SensorGrid?searchtext=@Model.SearchByName&page=' + page,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#content').html(result);
+                }
+            });
+        }
+        setInterval(ajaxCall, @minimalPolling);*@
+
+
+         @*function ajaxCall() {
+            $.ajax({
+                url: '/Admin/Sensors/UpdateAllSensors',
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    result.sensors.forEach(userSensor => {
+                        let currentValue = userSensor.value;
+                        if (userSensor.tag.includes("Door")) {
+                            if (userSensor.value == 0) {
+                                currentValue = "Close";
+                            }
+                            else {
+                                currentValue = "Open";
+                            }
+                        }
+                        else if (userSensor.tag.includes("Occupancy")) {
+                            if (userSensor.value == 0) {
+                                currentValue = "False";
+                            }
+                            else {
+                                currentValue = "True";
+                            }
+                        }
+                        $('#' + userSensor.icbSensorId).html('Value: ' + currentValue);
+                        $('#Date_' + userSensor.icbSensorId).html('<small>Last updated: ' + userSensor.modifiedOn + '</small>');
+                    })
+                }
+            });
+        }
+        setInterval(ajaxCall, @minimalPolling);*@
+    </script>
+}

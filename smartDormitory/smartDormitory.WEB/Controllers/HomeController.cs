@@ -1,76 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using smartDormitory.Data.Models;
 using smartDormitory.Services.Contracts;
 using smartDormitory.WEB.Models;
+using smartDormitory.WEB.Providers;
 
 namespace smartDormitory.WEB.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IICBApiSensorsService apiSensorsService;
+        private readonly IUserSensorService userSensorService;
+        private readonly IUserManager<User> _userManager;
+        private readonly IMemoryCache _cache;
 
-        public HomeController(IICBApiSensorsService apiSensorsService)
+        public HomeController(IICBApiSensorsService apiSensorsService, IUserSensorService userSensorService, IUserManager<User> userManager, IMemoryCache cache)
         {
             this.apiSensorsService = apiSensorsService ?? throw new ArgumentNullException(nameof(apiSensorsService));
+            this.userSensorService = userSensorService ?? throw new ArgumentNullException(nameof(userSensorService));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var allPublicSensors = await this.GetAllPublicUserSensorsCashedAsync();
+            List<UserSensors> allSensors = null;
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                string userId = await this._userManager.GetUserIdAsync(await this._userManager.GetUserAsync(HttpContext.User));
+                var userSensors = await this.GetAllPrivateUserSensorsCashedAsync(userId);
+                allSensors = allPublicSensors.ToList();
+                allSensors.AddRange(userSensors);
+            }
+            else
+            {
+                allSensors = allPublicSensors.ToList();
+            }
+
+            var sensorsViewModel = allSensors
+                                    .Select(s => new UserSensorViewModel()
+                                    {
+                                        Latitude = s.Latitude,
+                                        Longtitude = s.Longitude,
+                                        UserName = s.User.UserName,
+                                        Description = s.Description,
+                                        Tag = s.Sensor.Tag,
+                                        Id = s.Id,
+                                        ModifiedOn = s.Sensor.ModifiedOn,
+                                        Value = s.Sensor.Value,
+                                        Alarm = s.Alarm,
+                                        Name = s.Name,
+                                        URL = s.Sensor.Url,
+                                    })
+                                    .ToList();
+
+            return View(sensorsViewModel);
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        public IActionResult Contact()
+        private async Task<IEnumerable<UserSensors>> GetAllPublicUserSensorsCashedAsync()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> RegisterSensor()
-        {
-            try
+            return await this._cache.GetOrCreate("AllPublicUserSensors", entry =>
             {
-                await this.apiSensorsService.UpdateSensorsAsync();
-                return Ok();
-            }
-                   
-             catch (HttpRequestException httpRequestException)
-            {
-                return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
-            }
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddHours(3);
+                return this.userSensorService.GetAllPublicUsersSensorsAsync();
+            });
         }
 
-        public IActionResult Sensors(List<SensorsViewModel> model)
+        private async Task<IEnumerable<UserSensors>> GetAllPrivateUserSensorsCashedAsync(string userId)
         {
-            var sensors = this.apiSensorsService.ListAllSensors();
-
-            foreach (var sensor in sensors)
+            return await this._cache.GetOrCreate("AllPrivateUserSensors", entry =>
             {
-                model.Add(new SensorsViewModel(sensor));
-            }
-            return View(model);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddMinutes(30);
+                return this.userSensorService.GetAllPrivateUserSensorsAsync(userId);
+            });
         }
     }
 }

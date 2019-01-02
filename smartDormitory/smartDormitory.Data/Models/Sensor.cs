@@ -1,32 +1,50 @@
 ﻿using smartDormitory.Data.Models;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace smartDormitory.Data
 {
     public class Sensor
     {
+        [Key]
         public int Id { get; set; }
 
-        public string Guid { get; set; }
+        [Required]
+        public string IcbSensorId { get; set; }
 
+        [Required]
         public string Tag { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public int PollingInterval { get; set; }
 
         public int MeasureTypeId { get; set; }
 
         public MeasureType MeasureType { get; set; }
 
+        [Required]
         public DateTime TimeStamp { get; set; }
 
+        [Required]
+        [Range(0, 5000)]
         public double Value { get; set; }
 
+        [Required]
+        [Range(0, 5000)]
         public double MinValue { get; set; }
 
+        [Required]
+        [Range(0, 5000)]
         public double MaxValue { get; set; }
 
-        public string URL { get; set; }
+        [Required]
+        public string Url { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
     }
 }

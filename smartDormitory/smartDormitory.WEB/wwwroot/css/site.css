@@ -3,17 +3,31 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /*Navbar background color*/
 .navbar {
-    background-color: #EBEBEB;
+    background-color: none;
 }
 
+#navigationBar .nav-link {
+    color: white;
+}
+
+#navigationBar.scrolled {
+    background-color: #F1F3F4 !important;
+    transition: background-color 200ms linear;
+}
+
+    #navigationBar.scrolled .nav-link {
+        color: black;
+    }
 /*Page title*/
 #title {
     font-weight: bold;
     color: #FD8227;
+    transition: all .2s ease-in-out;
 }
 
     #title:hover {
-        color: orangered;
+        /*color: orangered;*/
+        transform: scale(1.1);
     }
 
 /*Register, login and logout buttons*/
@@ -30,3 +44,658 @@ for details on configuring this project to bundle and minify static web assets. 
         border-color: lightgray;
         background-color: #EAEAEA;
     }
+/*Button - Admin Dashboard*/
+#adminDashboardButtnon {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #adminDashboardButtnon:hover {
+        color: #FD8227;
+        border-color: #FD8227;
+        background-color: white;
+    }
+
+#userSettingsButton {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #userSettingsButton:hover {
+        color: #FD8227;
+        border-color: #FD8227;
+        background-color: white;
+    }
+
+#registerButton {
+    color: white;
+    border-color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #registerButton:hover {
+        color: #FD8227;
+        background-color: white;
+    }
+
+a.disabled {
+    pointer-events: none;
+}
+
+.table table-striped table-bordered table-hover {
+    width: 100%;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #FD8227;
+    color: black;
+}
+
+.nav-link {
+    color: yellow;
+}
+
+    .nav-link:hover {
+        border-bottom: 2px solid #FD8227;
+    }
+
+#userDropDownButton {
+    color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+#lockButton {
+    border: solid 1px red;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #lockButton:hover {
+        background-color: lightgray;
+    }
+
+#unlockButton {
+    border: solid 1px #249E84;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #unlockButton:hover {
+        background-color: lightgray;
+    }
+
+#passwordButton {
+    border: solid 1px grey;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #passwordButton:hover {
+        background-color: lightgray;
+    }
+
+#roleButton {
+    border: solid 1px grey;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #roleButton:hover {
+        background-color: lightgray;
+    }
+
+#sensorsButton {
+    border: solid 1px grey;
+    border-radius: 5px;
+    background-color: white;
+}
+
+    #sensorsButton:hover {
+        background-color: lightgray;
+    }
+
+
+/*Home page*/
+#allRegisterSensors {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+}
+
+body {
+    background: url(/images/home-banner.jpg);
+    padding-top: 0px;
+    background-size: cover;
+}
+
+textarea {
+    resize: none;
+}
+
+/* Customize the label (the container) */
+#checkbox {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default checkbox */
+    #checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 30px;
+    border: 1px solid grey;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+}
+
+/* On mouse-over, add a grey background color */
+#checkbox:hover input ~ .checkmark {
+    background-color: orange;
+}
+
+/* When the checkbox is checked, add a blue background */
+#checkbox input:checked ~ .checkmark {
+    background-color: #FD8227;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+#checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+#checkbox .checkmark:after {
+    left: 10px;
+    top: 4px;
+    width: 10px;
+    height: 17px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+#mapp {
+    border: 1px solid #E8EBEE;
+    border-radius: 15px
+}
+
+/*Led Lights*/
+.led-box p {
+    font-size: 12px;
+    text-align: center;
+    margin: 1em;
+}
+
+.led-red {
+    margin: 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #F00;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+    -webkit-animation: blinkRed 0.5s infinite;
+    -moz-animation: blinkRed 0.5s infinite;
+    -ms-animation: blinkRed 0.5s infinite;
+    -o-animation: blinkRed 0.5s infinite;
+    animation: blinkRed 0.5s infinite;
+}
+
+@-webkit-keyframes blinkRed {
+    from {
+        background-color: #F00;
+    }
+
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+
+    to {
+        background-color: #F00;
+    }
+}
+
+@-moz-keyframes blinkRed {
+    from {
+        background-color: #F00;
+    }
+
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+
+    to {
+        background-color: #F00;
+    }
+}
+
+@-ms-keyframes blinkRed {
+    from {
+        background-color: #F00;
+    }
+
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+
+    to {
+        background-color: #F00;
+    }
+}
+
+@-o-keyframes blinkRed {
+    from {
+        background-color: #F00;
+    }
+
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+
+    to {
+        background-color: #F00;
+    }
+}
+
+@keyframes blinkRed {
+    from {
+        background-color: #F00;
+    }
+
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+
+    to {
+        background-color: #F00;
+    }
+}
+
+
+.led-green {
+    margin: 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #ABFF00;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px;
+}
+
+#registerSensorButton {
+    color: white;
+    border-color: white;
+    border-radius: 5px 5px;
+    background-color: #FD8227;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+}
+
+    #registerSensorButton:hover {
+        color: #FD8227;
+        background-color: white;
+        border-color: #FD8227;
+    }
+
+/*Progress Bar*/
+.progress-bar {
+    color: black;
+    font-weight: bold;
+}
+
+#sensorsProgressBar {
+    height: 2.5em;
+}
+
+.progressBarField {
+    height: 4em
+}
+
+/*Register Map*/
+/* Set the size of the div element that contains the map */
+#registerMap {
+    height: 25rem; /* The height is 400 pixels */
+    width: 100%; /* The width is the width of the web page */
+}
+
+/* Tooltip container */
+.tooltip-inside {
+    position: relative;
+    display: inline-block;
+    /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+    /* tooltip-inside text */
+    .tooltip-inside .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        /* Fade in tooltip  */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+        /* Tooltip arrow */
+        .tooltip-inside .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip-inside:hover .tooltiptext {
+        visibility: visible;
+        opacity: 0.8;
+    }
+
+/* customizable snowflake styling */
+.snowflake {
+    color: #fff;
+    font-size: 1em;
+    font-family: Arial;
+    text-shadow: 0 0 1px #000;
+}
+
+@-webkit-keyframes snowflakes-fall {
+    0% {
+        top: -10%
+    }
+
+    100% {
+        top: 100%
+    }
+}
+
+@-webkit-keyframes snowflakes-shake {
+    0% {
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px)
+    }
+
+    50% {
+        -webkit-transform: translateX(80px);
+        transform: translateX(80px)
+    }
+
+    100% {
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px)
+    }
+}
+
+@keyframes snowflakes-fall {
+    0% {
+        top: -10%
+    }
+
+    100% {
+        top: 100%
+    }
+}
+
+@keyframes snowflakes-shake {
+    0% {
+        transform: translateX(0px)
+    }
+
+    50% {
+        transform: translateX(80px)
+    }
+
+    100% {
+        transform: translateX(0px)
+    }
+}
+
+.snowflake {
+    font-size: 40px;
+    position: fixed;
+    top: -10%;
+    z-index: 9999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    -webkit-animation-name: snowflakes-fall,snowflakes-shake;
+    -webkit-animation-duration: 10s,3s;
+    -webkit-animation-timing-function: linear,ease-in-out;
+    -webkit-animation-iteration-count: infinite,infinite;
+    -webkit-animation-play-state: running,running;
+    animation-name: snowflakes-fall,snowflakes-shake;
+    animation-duration: 10s,3s;
+    animation-timing-function: linear,ease-in-out;
+    animation-iteration-count: infinite,infinite;
+    animation-play-state: running,running
+}
+
+    .snowflake:nth-of-type(0) {
+        left: 1%;
+        -webkit-animation-delay: 0s,0s;
+        animation-delay: 0s,0s
+    }
+
+    .snowflake:nth-of-type(1) {
+        left: 10%;
+        -webkit-animation-delay: 1s,1s;
+        animation-delay: 1s,1s
+    }
+
+    .snowflake:nth-of-type(2) {
+        left: 20%;
+        -webkit-animation-delay: 6s,.5s;
+        animation-delay: 6s,.5s
+    }
+
+    .snowflake:nth-of-type(3) {
+        left: 30%;
+        -webkit-animation-delay: 4s,2s;
+        animation-delay: 4s,2s
+    }
+
+    .snowflake:nth-of-type(4) {
+        left: 40%;
+        -webkit-animation-delay: 2s,2s;
+        animation-delay: 2s,2s
+    }
+
+    .snowflake:nth-of-type(5) {
+        left: 50%;
+        -webkit-animation-delay: 8s,3s;
+        animation-delay: 8s,3s
+    }
+
+    .snowflake:nth-of-type(6) {
+        left: 60%;
+        -webkit-animation-delay: 6s,2s;
+        animation-delay: 6s,2s
+    }
+
+    .snowflake:nth-of-type(7) {
+        left: 70%;
+        -webkit-animation-delay: 2.5s,1s;
+        animation-delay: 2.5s,1s
+    }
+
+    .snowflake:nth-of-type(8) {
+        left: 80%;
+        -webkit-animation-delay: 1s,0s;
+        animation-delay: 1s,0s
+    }
+
+    .snowflake:nth-of-type(9) {
+        left: 90%;
+        -webkit-animation-delay: 3s,1.5s;
+        animation-delay: 3s,1.5s
+    }
+
+.card {
+    width: 17rem;
+}
+
+.card-img-top {
+    background-color: #DDE0E5;
+    height: 13rem;
+}
+
+.clear:before,
+.clear:after {
+    content: "";
+    display: table;
+}
+
+.clear:after {
+    clear: both;
+}
+
+.clear {
+    *zoom: 1;
+}
+
+.gauge {
+    display: block;
+    float: left;
+    box-sizing: border-box;
+    margin: 0 0 1% 0;
+}
+
+.size-3 {
+    width: 48%;
+}
+
+/*About Page*/
+.profileImgSize {
+    height: 15rem;
+}
+
+.imgSize {
+    height: 3rem;
+}
+
+.card-profile {
+    width: 340px;
+    margin: 50px auto;
+    background-color: #e6e5e1;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 1em 1em 2em rgba(0, 0, 0, 0.2);
+}
+
+    .card-profile .card-img-top {
+        border-radius: 0;
+    }
+
+    .card-profile .card-img-profile {
+        max-width: 100%;
+        border-radius: 50%;
+        margin-top: -95px;
+        margin-bottom: 35px;
+        border: 5px solid #e6e5e1;
+    }
+
+    .card-profile .card-title {
+        margin-bottom: 50px;
+    }
+
+        .card-profile .card-title small {
+            display: block;
+            font-size: .6em;
+            margin-top: .2em;
+        }
+
+    .card-profile .card-links {
+        margin-bottom: 25px;
+    }
+
+        .card-profile .card-links .fa {
+            margin: 0 1em;
+            font-size: 1.6em;
+        }
+
+            .card-profile .card-links .fa:focus, .card-profile .card-links .fa:hover {
+                text-decoration: none;
+            }
+
+            .card-profile .card-links .fa.fa-dribbble {
+                color: #ea4b89;
+                font-weight: bold;
+            }
+
+                .card-profile .card-links .fa.fa-dribbble:hover {
+                    color: #e51d6b;
+                }
+
+            .card-profile .card-links .fa.fa-twitter {
+                color: #68aade;
+            }
+
+                .card-profile .card-links .fa.fa-twitter:hover {
+                    color: #3e92d5;
+                }
+
+            .card-profile .card-links .fa.fa-facebook {
+                color: #3b5999;
+            }
+
+                .card-profile .card-links .fa.fa-facebook:hover {
+                    color: #2d4474;
+                }

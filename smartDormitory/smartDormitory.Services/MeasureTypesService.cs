@@ -19,6 +19,16 @@ namespace smartDormitory.Services
 
         public MeasureType AddMeasureType(string type)
         {
+            if(type == null)
+            {
+                throw new ArgumentNullException("Type cannot be null");
+            }
+
+            if(type.Length < 1 || type.Length > 20)
+            {
+                throw new ArgumentException("Type must be between 1 and 20 symbols");
+            }
+
             var sensorType = this.context.MeasureTypes
                     .FirstOrDefault(st => st.Type == type);
 
